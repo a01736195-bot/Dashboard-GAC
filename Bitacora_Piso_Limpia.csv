@@ -1,0 +1,198 @@
+Fecha,Mes_Num,Mes,Cliente,Asesor,Estatus_Lead,PDM,SDC,Venta,Inter_Gerente,Prueba_Manejo
+2025-04-01,4,Abril,Ubaldo Cruz Hernandez ,Aurelio,Activo,1,0,0,1,Sí
+2025-04-01,4,Abril,Olivia Cabello,Pedro,Activo,0,0,0,1,No
+2025-04-02,4,Abril,Ana Laura Espinoza,Mauricio,Activo,1,1,1,1,Sí
+2025-04-02,4,Abril,Elvis Sanchez ,Aurelio,Activo,0,0,0,1,No
+2025-04-03,4,Abril,Ariel Fernando López ,Alan,Activo,1,0,0,1,Sí
+2025-04-04,4,Abril,Carlos Hernández Fonseca ,Pedro,Activo,0,0,0,1,No
+2025-04-04,4,Abril,Flaviano Guzman ,Alan,Cerrado,1,1,0,1,Sí
+2025-04-05,4,Abril,Jose Carlos Flores García,Mauricio,Venta,0,0,0,1,No
+2025-04-05,4,Abril,Martha Buendía García,Victor,Activo,0,0,0,0,No
+2025-04-05,4,Abril,Jorge Avalos,Victor,Activo,0,0,0,0,No
+2025-04-06,4,Abril,Manuel Abascal Santillan,Pedro,Activo,0,0,0,0,No
+2025-04-07,4,Abril,Adriana Denise Jimenez Carmona,Mauricio,Activo,1,1,0,1,Sí
+2025-04-07,4,Abril,Silvia María del Rpcío Valchis Baldit,Ricardo,Activo,1,0,0,1,Sí
+2025-04-08,4,Abril,Padre Guillermo Pablo Guillermo,Aurelio,Activo,1,0,0,1,Sí
+2025-04-08,4,Abril,Esteban Hernandez Chantes ,Pedro,Activo,1,0,0,0,Sí
+2025-04-09,4,Abril,Eduardo Balderrama ,Victor,Activo,0,0,0,0,No
+2025-04-10,4,Abril,Roberto García Serrano ,Alan,Activo,0,0,0,0,No
+2025-04-11,4,Abril,Osvaldo Zamora Gonzalez,Pedro,Cerrado,0,0,0,0,No
+2025-04-11,4,Abril,Kevin Jatniel Muñoz,Aurelio,Activo,1,0,0,0,Sí
+2025-04-13,4,Abril,Alma Trujillo,Alan,Activo,0,0,0,0,No
+2025-04-15,4,Abril,Juan Orlando Ojeda,Aurelio,Activo,1,0,0,1,Sí
+2025-04-15,4,Abril,Gerardo Barrera,Mauricio,Activo,0,0,0,1,No
+2025-04-16,4,Abril,Rebeca Ortiz ,Mauricio,Activo,0,0,0,0,No
+2025-04-16,4,Abril,Carlos Alberto Ramos,Aurelio,Activo,1,0,0,0,Sí
+2025-04-17,4,Abril,Roberto ,Otros,Activo,0,0,0,0,No
+2025-04-17,4,Abril,Victor Manuel Palacios,Ricardo,Activo,0,0,0,1,No
+2025-04-17,4,Abril,Saul,Otros,Cerrado,0,0,0,0,No
+2025-04-18,4,Abril,Maricarmen Lopez Perez,Ricardo,Activo,1,0,0,0,Sí
+2025-04-18,4,Abril,Miguel Angel,Otros,Activo,0,0,0,0,No
+2025-04-19,4,Abril,Adrian González,Otros,Activo,1,0,0,0,Sí
+2025-04-19,4,Abril,Dalia Huelpare,Otros,Activo,0,0,0,0,No
+2025-04-20,4,Abril,Vida Valeria Morales Herrera,Pedro,Activo,1,0,0,0,Sí
+2025-04-20,4,Abril,Isaías Lopez Lopez,Mauricio,Activo,1,0,0,0,Sí
+2025-04-21,4,Abril,Ruben Andrade Portillo,Alan,Activo,1,0,0,0,Sí
+2025-04-21,4,Abril,Juan Pablo,Otros,Activo,0,0,0,1,No
+2025-04-23,4,Abril,Israel Lara,Mauricio,Activo,0,0,0,1,No
+2025-04-24,4,Abril,Alejandro Tagle,Aurelio,Activo,0,0,0,0,No
+2025-04-25,4,Abril,Victor Rojas Ortega,Aurelio,Activo,0,0,0,0,No
+2025-04-25,4,Abril,Victor Saavedra,Ricardo,Activo,0,0,0,0,No
+2025-04-26,4,Abril,Atenas Guadalupe Hernaández,Pedro,Activo,0,0,0,0,No
+2025-04-26,4,Abril,Neftali Rodriguez Maldonado ,Ricardo,Activo,0,0,0,0,No
+2025-04-28,4,Abril,Cristian Bautista Navarro,Pedro,Activo,1,0,0,0,Sí
+2025-04-28,4,Abril,Jose Solano Ram?rez  ,Aurelio,Venta,0,0,0,0,No
+2025-04-30,4,Abril,Victor Herrero,Victor,Activo,0,0,0,0,No
+2025-04-02,4,Abril,Antonio Escobar,Pedro,Activo,1,0,0,1,Sí
+2025-04-02,4,Abril,Edmundo Carmelo Carballo,Pedro,Activo,1,0,0,1,Sí
+2025-05-02,5,Mayo,Edmundo Carmelo Carballo,Pedro,Cerrado,1,0,0,1,Sí
+2025-05-02,5,Mayo,Antonio Escobar Tetla,Pedro,Activo,1,0,0,1,Sí
+2025-05-05,5,Mayo,Oswaldo Torres,Aurelio,Cerrado,0,0,0,0,No
+2025-05-05,5,Mayo,Griselda Fuentes,Aurelio,Activo,0,0,0,0,No
+2025-05-06,5,Mayo,Rocío,Victor,Activo,0,0,0,0,No
+2025-05-06,5,Mayo,Jesus Olvera Sanchez ,Pedro,Activo,1,0,0,1,Sí
+2025-05-06,5,Mayo,Francisco Valencia,Pedro,Activo,0,0,0,1,No
+2025-05-06,5,Mayo,Juan Gomez,Victor,Activo,1,0,0,1,Sí
+2025-05-06,5,Mayo,Faviola Villar,Victor,Activo,0,0,0,0,No
+2025-05-08,5,Mayo,Hanny Trejo,Victor,Activo,1,0,0,0,Sí
+2025-05-09,5,Mayo,Manuel Domínguez Ramírez,Aurelio,Activo,1,0,1,1,Sí
+2025-05-09,5,Mayo,Gerardo Cabañas ,Mauricio,Cerrado,0,0,0,0,No
+2025-05-10,5,Mayo,Jose Juan Florentino González,Mauricio,Activo,0,0,0,0,No
+2025-05-10,5,Mayo,Angel Aguilar ,Pedro,Activo,0,0,0,0,No
+2025-05-10,5,Mayo,Jose Luis Muñoz,Mauricio,Activo,0,0,0,0,No
+2025-05-12,5,Mayo,Ignacio Trejo,Otros,Activo,0,0,0,0,No
+2025-05-12,5,Mayo,Ericka Cruz,Aurelio,Activo,0,0,0,0,No
+2025-05-12,5,Mayo,Omar Platas,Aurelio,Activo,0,0,0,0,No
+2025-05-12,5,Mayo,Omar Ortega,Aurelio,Activo,0,0,0,0,No
+2025-05-12,5,Mayo,Raymundo Aburto,Aurelio,Activo,1,0,0,0,Sí
+2025-05-12,5,Mayo,Cesar Mondragon,Aurelio,Activo,0,0,0,0,No
+2025-05-13,5,Mayo,Luis Real,Pedro,Activo,1,0,0,0,Sí
+2025-05-14,5,Mayo,Berenice,Mauricio,Activo,0,0,0,0,No
+2025-05-14,5,Mayo,Emilio Sanchez,Aurelio,Activo,0,0,0,0,No
+2025-05-14,5,Mayo,Juan Manuel Martagon Leyva,Mauricio,Activo,0,0,0,0,No
+2025-05-15,5,Mayo,Daniela Andrea Maldonado,Pedro,Activo,0,0,0,0,No
+2025-05-16,5,Mayo,Daniel Suarez,Mauricio,Activo,1,0,0,0,Sí
+2025-05-16,5,Mayo,Jonathan Espino,Mauricio,Activo,0,0,0,0,No
+2025-05-16,5,Mayo,Oscar Alvarez ,Alan,Activo,1,0,0,0,Sí
+2025-05-16,5,Mayo,Neviye Vazquez,Mauricio,Activo,1,0,0,0,Sí
+2025-05-17,5,Mayo,Fernando Quinto,Pedro,Activo,0,0,0,0,No
+2025-05-17,5,Mayo,Luis Alberto García,Alan,Activo,1,0,0,0,Sí
+2025-05-17,5,Mayo,Isabel Hernandez,Alan,Activo,1,0,0,0,Sí
+2025-05-17,5,Mayo,Raul García Acevedo,Alan,Activo,0,0,0,0,No
+2025-05-17,5,Mayo,Rolando,Pedro,Activo,0,0,0,0,No
+2025-05-17,5,Mayo,Cynthia Placencia,Alan,Activo,0,0,0,0,No
+2025-05-18,5,Mayo,Luis blanco,Victor,Activo,1,0,0,0,Sí
+2025-05-19,5,Mayo,Manuel Aguilar Luna,Pedro,Activo,0,0,0,0,No
+2025-05-19,5,Mayo,Carlos Cardona Najera,Alan,Activo,0,0,0,0,No
+2025-05-19,5,Mayo,Cesar Cortés,Mauricio,Activo,0,0,0,0,No
+2025-05-21,5,Mayo,Veronica Carbajal,Aurelio,Activo,1,0,0,0,Sí
+2025-05-22,5,Mayo,Jose Francisco Caselin,Mauricio,Activo,1,0,0,0,Sí
+2025-05-23,5,Mayo,Edgar Yañez,Alan,Activo,0,0,0,0,No
+2025-05-24,5,Mayo,Victor Saavedra,Ricardo,Venta,0,0,1,1,No
+2025-05-24,5,Mayo,Becerra Velázquez De la Rosa,Victor,Activo,1,0,0,0,Sí
+2025-05-25,5,Mayo,Jesus Olvera Sanchez ,Alan,Activo,1,0,0,0,Sí
+2025-05-25,5,Mayo,Ari Yuel Valdivia,Aurelio,Activo,1,0,0,0,Sí
+2025-05-25,5,Mayo,Cesar Moreno,Aurelio,Activo,1,0,0,0,Sí
+2025-05-26,5,Mayo,Raul Karam,Ricardo,Activo,0,0,0,0,No
+2025-05-26,5,Mayo,Julian,Victor,Activo,0,0,0,0,No
+2025-05-26,5,Mayo,Angelica Simoni,Victor,Activo,1,0,0,1,Sí
+2025-05-27,5,Mayo,Said Abaid,Mauricio,Activo,1,0,0,1,Sí
+2025-05-27,5,Mayo,Daniel Octavio,Victor,Activo,1,0,0,1,Sí
+2025-05-28,5,Mayo,Alejandro Mones,Aurelio,Activo,0,0,0,0,No
+2025-05-28,5,Mayo,Guillermo Tecuapetla,Aurelio,Activo,0,0,0,0,No
+2025-05-28,5,Mayo,Fernando García García ,Otros,Activo,0,0,0,0,No
+2025-05-29,5,Mayo,Jose Manuel Islas,Mauricio,Activo,0,0,0,0,No
+2025-05-29,5,Mayo,Kary,Victor,Activo,0,0,0,0,No
+2025-05-30,5,Mayo,Andrés Morgan,Aurelio,Activo,0,0,0,0,No
+2025-05-30,5,Mayo,María Gabriela ,Aurelio,Venta,0,0,0,0,No
+2025-05-30,5,Mayo,Alma Rosa Hernandez ,Aurelio,Activo,0,0,0,0,No
+2025-05-30,5,Mayo,Maria Luisa Castillo,Aurelio,Activo,0,0,0,0,No
+2025-05-30,5,Mayo,Jose Arturo Gomez,Mauricio,Cerrado,0,0,0,0,No
+2025-05-31,5,Mayo,Eduardo Castillo,Ricardo,Cerrado,0,0,0,0,No
+2025-05-31,5,Mayo,Jose Luis,Aurelio,Activo,0,0,0,0,No
+2025-06-01,6,Junio,Daniel Marín,Alan,Activo,1,0,0,0,Sí
+2025-06-01,6,Junio,Jesús Uría ,Pedro,Cerrado,0,0,0,0,No
+2025-06-01,6,Junio,Carlos Oscar Jímenez,Pedro,Activo,1,0,0,0,Sí
+2025-06-02,6,Junio,Ana Victoria,Aurelio,Activo,1,0,0,1,Sí
+2025-06-03,6,Junio,Fernanda Sanchez ,Mauricio,Activo,0,0,0,0,No
+2025-06-03,6,Junio,Omar Hernández Chavez ,Aurelio,Activo,1,0,0,1,Sí
+2025-06-04,6,Junio,Juan Carlos Lozada Moran ,Aurelio,Finalizado,0,0,0,0,No
+2025-06-06,6,Junio,José Limón,Pedro,Activo,0,0,0,0,No
+2025-06-05,6,Junio,Armando Rodríguez,Victor,Activo,0,0,0,0,No
+2025-06-06,6,Junio,Eduardo,Ricardo,Activo,0,0,0,0,No
+2025-06-06,6,Junio,Roberto R,Victor,Cerrado,0,0,0,0,No
+2025-06-06,6,Junio,Daniel Suarez,Mauricio,Venta,0,0,0,0,No
+2025-06-07,6,Junio,Juan Antonio Rincón,Aurelio,Activo,1,0,0,1,Sí
+2025-06-07,6,Junio,Fernando Cervantes ,Mauricio,Activo,1,0,0,0,Sí
+2025-06-07,6,Junio,Juan Manuel Diez Avila,Aurelio,Activo,1,0,0,0,Sí
+2025-06-07,6,Junio,Juan Andrés Diez Esquivel,Pedro,Activo,1,0,0,0,Sí
+2025-06-08,6,Junio,Benjamin Rosas Rosas ,Victor,Activo,1,0,0,0,Sí
+2025-06-08,6,Junio,Liz L,Victor,Activo,0,0,0,0,No
+2025-06-09,6,Junio,Emilio Ortiz ,Mauricio,Activo,0,0,0,0,No
+2025-06-11,6,Junio,Edgar Paez,Mauricio,Activo,0,0,0,0,No
+2025-06-13,6,Junio,Elías Tepox ,Victor,Activo,1,0,0,0,Sí
+2025-06-13,6,Junio,iliana Ramos,Pedro,Activo,0,0,0,0,No
+2025-06-13,6,Junio,Jose Manuel Texis,Victor,Activo,0,0,0,0,No
+2025-06-14,6,Junio,David Camarillo Moreno,Mauricio,Activo,0,0,0,0,No
+2025-06-15,6,Junio,Juana Alina Paredes,Pedro,Activo,1,0,0,0,Sí
+2025-06-16,6,Junio,Lilia Gomez Salazar,Aurelio,Activo,1,0,0,0,Sí
+2025-06-16,6,Junio,Jordan Martínez,Mauricio,Activo,1,0,0,0,Sí
+2025-06-17,6,Junio,Edmon Abdala,Mauricio,Activo,0,0,0,0,No
+2025-06-18,6,Junio,William Cruz ,Ricardo,Activo,0,0,0,0,No
+2025-06-18,6,Junio,Edgar Adan Sanchez ,Aurelio,Activo,1,0,0,0,Sí
+2025-06-19,6,Junio,Edgar Martínez ,Victor,Cerrado,0,0,0,0,No
+2025-06-19,6,Junio,Enrique Merino,Alan,Finalizado,0,0,0,0,No
+2025-06-20,6,Junio,Luis Eduardo Iturralde ,Aurelio,Activo,0,0,0,0,No
+2025-06-20,6,Junio,Fernanda Sosa ,Pedro,Activo,0,0,0,0,No
+2025-06-20,6,Junio,Santiago Tellez ,Pedro,Activo,0,0,0,0,No
+2025-06-20,6,Junio,Romulo Augusto Dominguez,Pedro,Activo,1,0,0,0,Sí
+2025-06-21,6,Junio,Karina Ramos ,Aurelio,Activo,1,0,0,0,Sí
+2025-06-22,6,Junio,Sadai Rivera,Alan,Activo,1,0,0,0,Sí
+2025-06-23,6,Junio,Xanta Jadaih Badillo Ruiz ,Mauricio,Activo,1,0,0,0,Sí
+2025-06-23,6,Junio,Iliana López ,Pedro,Finalizado,0,0,0,0,No
+2025-06-24,6,Junio,Alan González ,Alan,Activo,0,0,0,0,No
+2025-06-24,6,Junio,Grecia Esmeralda Zacaula,Victor,Activo,0,0,0,0,No
+2025-06-24,6,Junio,Martha Cardoso,Alan,Activo,1,0,0,0,Sí
+2025-06-24,6,Junio,Alicia Morales Ortega ,Pedro,Activo,0,0,0,0,No
+2025-06-25,6,Junio,Sergio Gutierrez ,Mauricio,Finalizado,0,0,0,0,No
+2025-06-25,6,Junio,Enrique Mondragón,Alan,Activo,0,0,0,0,No
+2025-06-25,6,Junio,Ismael Ramírez ,Pedro,Activo,0,0,0,0,No
+2025-06-25,6,Junio,Blanca Marina vega ,Otros,Activo,1,0,0,0,Sí
+2025-06-25,6,Junio,Hector González ,Aurelio,Activo,0,0,0,0,No
+2025-06-26,6,Junio,Joel Silvestre Cruz ,Otros,Activo,1,0,0,0,Sí
+2025-06-26,6,Junio,Ma. Dolores Alarid ,Pedro,Activo,0,0,0,0,No
+2025-06-26,6,Junio,Angelica Rosales Mendoza ,Victor,Activo,0,0,0,0,No
+2025-06-27,6,Junio,Jose Alfredo Huerta ,Mauricio,Activo,1,0,0,0,Sí
+2025-06-27,6,Junio,Teodoro ixtlapale ,Alan,Activo,1,0,0,0,Sí
+2025-06-27,6,Junio,Fabrizio Pizar Rojas ,Aurelio,Venta,1,0,0,0,Sí
+2025-06-28,6,Junio,Diego Flores Merino,Aurelio,Activo,1,0,0,0,Sí
+2025-06-28,6,Junio,Laura Patricia Esperaza ,Aurelio,Activo,0,0,0,0,No
+2025-06-29,6,Junio,Agustín Castillo ,Alan,Activo,0,0,0,0,No
+2025-06-30,6,Junio,Daniel De Miguel Camarena,Aurelio,Activo,0,0,0,0,No
+2025-07-01,7,Julio,Cristian Abdala ,Aurelio,Activo,0,0,0,0,No
+2025-07-01,7,Julio,Joaquín Martínez ,Aurelio,Activo,0,0,0,0,No
+2025-07-01,7,Julio,Santiago Patiño,Mauricio,Cerrado,0,0,0,0,No
+2025-07-02,7,Julio,David Briseño ,Alan,Cerrado,0,0,0,0,No
+2025-07-02,7,Julio,Marisol Luna,Mauricio,Cerrado,1,0,0,0,Sí
+2025-07-02,7,Julio,Miguel Lozano,Ricardo,Activo,0,0,0,0,No
+2025-07-03,7,Julio,Sr juan ,Pedro,Cerrado,0,0,0,0,No
+2025-07-03,7,Julio,Luis Fernando ,Alan,Cerrado,0,0,0,0,No
+2025-07-03,7,Julio,Liliana Carillo ,Pedro,Cerrado,0,0,0,0,No
+2025-07-03,7,Julio,Giselle Capistran,Ricardo,Cerrado,0,0,0,0,No
+2025-07-03,7,Julio,Angel Cruz ,Ricardo,Activo,0,0,0,0,No
+2025-07-04,7,Julio,Beatriz Murtano Corona,Mauricio,Activo,0,0,0,0,No
+2025-07-04,7,Julio,Luis Felipe Hermoso ,Aurelio,Activo,1,0,0,0,Sí
+2025-07-05,7,Julio,"Cindia  Olea , Arizmendi ",Pedro,Activo,1,0,0,0,Sí
+2025-07-05,7,Julio,Enrique Coatzo ,Otros,Activo,1,0,0,0,Sí
+2025-07-05,7,Julio,Alfredo Fernandez Capistrano ,Pedro,Activo,0,0,0,0,No
+2025-07-06,7,Julio,Claudia Perez ,Alan,Activo,1,0,0,0,Sí
+2025-07-06,7,Julio,Miguel Mena ,Alan,Activo,0,0,0,0,No
+2025-07-06,7,Julio,Katia Naranjo ,Aurelio,Activo,0,0,0,0,No
+2025-07-07,7,Julio,Jesus Morales ,Otros,Activo,1,1,0,0,Sí
+2025-07-07,7,Julio,Nassau Hernandez ,Otros,Activo,1,0,0,0,Sí
+2025-07-08,7,Julio,Jose Luis Blaz,Pedro,Activo,0,0,0,0,No
+2025-07-08,7,Julio,Erick Cruz ,Mauricio,Activo,0,0,0,0,No
+2025-07-09,7,Julio,David Moran ,Aurelio,Activo,0,0,0,0,No
+2025-07-10,7,Julio,Medeo Martínez Ferro ,Pedro,Activo,1,0,0,0,Sí
+2025-07-10,7,Julio,Luis Ballesteros,Otros,Activo,0,0,0,0,No
+2025-07-10,7,Julio,Movex,Aurelio,Venta,0,0,1,0,No
