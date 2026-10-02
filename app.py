@@ -33,7 +33,26 @@ def load_data():
 
     return df_bitacora, df_leads
 
+@st.cache_data
+def load_leads_detalle():
+    # Base de leads de plaza (detalle). Si no existe el archivo, devolvemos None
+    try:
+        d = pd.read_csv("base_leads_limpia.csv")
+    except FileNotFoundError:
+        return None
+
+    # Limpieza defensiva (por si el CSV cambia)
+    d["Estado"] = d["Estado"].astype(str).str.strip().str.capitalize()
+    d["Estado"] = d["Estado"].replace({"1 ventas": "Ventas", "1 venta": "Ventas",
+                                       "Nan": "Sin dato"})
+    d["Producto"] = d["Producto"].astype(str).str.strip().replace({"nan": "Sin especificar"})
+    d = d[~d["Producto"].isin(["No envian producto valido"])]
+    d["Temperatura"] = d["Temperatura"].astype(str).str.strip()
+    d["Asesor"] = d["Asesor"].astype(str).str.strip().str.title()
+    return d
+
 df_bitacora, df_leads = load_data()
+df_detalle = load_leads_detalle()
 
 # =========================================================
 # PALETA VINO TINTO / BORGONA (presentacion GAC)
@@ -75,12 +94,15 @@ vista = st.sidebar.selectbox(
     ["Extraccion de Caracteristicas",
      "Solicitudes de Credito por Asesor",
      "Visitas por Mes",
-     "Explorador de Variables"]
+     "Explorador de Variables",
+     "Leads Detalle (Plaza)"]
 )
 
 st.sidebar.markdown("---")
 st.sidebar.write("📋 Bitacora de Piso: **%d** registros" % len(df_bitacora))
 st.sidebar.write("📈 Leads Reales: **%d** meses" % len(df_leads))
+if df_detalle is not None:
+    st.sidebar.write("🏙️ Leads Plaza: **%d** registros" % len(df_detalle))
 
 # =========================================================
 # VISTA 1: EXTRACCION DE CARACTERISTICAS
@@ -443,6 +465,128 @@ elif vista == "Explorador de Variables":
                      use_container_width=True)
         st.write("Datos filtrados")
         st.dataframe(df, hide_index=True, use_container_width=True)
+
+# =========================================================
+# VISTA 5: LEADS DETALLE (PLAZA) - heatmap, pastel, area
+# =========================================================
+elif vista == "Leads Detalle (Plaza)":
+
+    if df_detalle is None:
+        st.error("No se encontro el archivo 'base_leads_limpia.csv' "
+                 "en la carpeta del proyecto.")
+        st.stop()
+
+    st.subheader("Leads captados en Plaza Angelopolis")
+
+    # ---------- KPIs ----------
+    total = len(df_detalle)
+    n_ventas = int((df_detalle["Estado"] == "Ventas").sum())
+    n_contacto = int((df_detalle["Estado"] == "Contactado").sum())
+    tasa_cierre = n_ventas / total if total else 0
+
+    K1, K2, K3, K4 = st.columns(4)
+    K1.metric("Leads captados", total)
+    K2.metric("Contactados", n_contacto)
+    K3.metric("Ventas concretadas", n_ventas)
+    K4.metric("Tasa de cierre", f"{tasa_cierre:.1%}")
+
+    # ---------- FILA 1: HEATMAP DE PRODUCTO + PASTEL DE ESTADO ----------
+    Cont_A, Cont_B = st.columns(2)
+
+    with Cont_A:
+        st.write("Heatmap")
+        Tabla_producto = df_detalle["Producto"].value_counts().reset_index()
+        Tabla_producto.columns = ["producto", "frecuencia"]
+        Matriz = Tabla_producto.set_index("producto")[["frecuencia"]].T
+        fig_hm = px.imshow(
+            Matriz, text_auto=True, aspect="auto",
+            title="Frecuencia por producto",
+            color_continuous_scale=[[0, "#FBF2F3"], [1, GAC_AZUL]]
+        )
+        fig_hm.update_layout(
+            font=ESTILO_FUENTE, height=350,
+            plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO
+        )
+        st.plotly_chart(fig_hm, use_container_width=True)
+
+    with Cont_B:
+        st.write("Grafico de Pastel")
+        Tabla_estatus = df_detalle["Estado"].value_counts().reset_index()
+        Tabla_estatus.columns = ["estatus", "frecuencia"]
+        fig_pie = px.pie(
+            data_frame=Tabla_estatus, names="estatus", values="frecuencia",
+            title="Estatus de los leads", color="estatus",
+            color_discrete_map={"Ventas": GAC_AZUL, "Contactado": GAC_AZUL_MED,
+                                "Finalizado": GAC_AZUL_CLARO, "Sin dato": GAC_PLATA}
+        )
+        fig_pie.update_traces(textinfo="percent+label")
+        fig_pie.update_layout(font=ESTILO_FUENTE, height=350,
+                              paper_bgcolor=GAC_BLANCO)
+        st.plotly_chart(fig_pie, use_container_width=True)
+
+    # ---------- FILA 2: AREA DE ESTATUS LEAD (bitacora) + SELECTOR ----------
+    st.write("Grafico de Area")
+    Tabla_area = df_bitacora["Estatus_Lead"].value_counts().reset_index()
+    Tabla_area.columns = ["estatus", "frecuencia"]
+    fig_area = px.area(
+        data_frame=Tabla_area, x="estatus", y="frecuencia",
+        title="Frecuencia por estatus de lead (bitacora de piso)",
+        color_discrete_sequence=[GAC_AZUL]
+    )
+    fig_area.update_traces(mode="lines")
+    fig_area.update_layout(
+        font=ESTILO_FUENTE, height=380,
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        xaxis_title="Estatus", yaxis_title="Frecuencia",
+        yaxis=dict(gridcolor=REJILLA)
+    )
+    st.plotly_chart(fig_area, use_container_width=True)
+
+    # ---------- SELECTOR CONECTADO ----------
+    st.subheader("Frecuencia por variable")
+    Variable_Det = st.selectbox("Variable",
+                                ["Producto", "Temperatura", "Estado", "Asesor"])
+    Tabla_det = (df_detalle[Variable_Det].fillna("Sin dato").astype(str)
+                 .value_counts().reset_index())
+    Tabla_det.columns = ["categorias", "frecuencia"]
+
+    col_b1, col_b2 = st.columns(2)
+    with col_b1:
+        fig_bar = px.bar(
+            data_frame=Tabla_det, x="categorias", y="frecuencia",
+            title=f"Frecuencia de {Variable_Det}",
+            text="frecuencia",
+            color_discrete_sequence=[GAC_AZUL]
+        )
+        fig_bar.update_traces(textposition="outside")
+        fig_bar.update_layout(
+            font=ESTILO_FUENTE, height=380,
+            plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+            xaxis=dict(tickangle=-30), showlegend=False,
+            yaxis=dict(gridcolor=REJILLA)
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
+    with col_b2:
+        fig_dona = px.pie(
+            data_frame=Tabla_det, names="categorias", values="frecuencia",
+            hole=0.4,
+            title=f"Participacion de {Variable_Det}",
+            color_discrete_sequence=[GAC_AZUL, GAC_AZUL_MED, GAC_AZUL_CLARO,
+                                     GAC_PLATA, GAC_OSCURO]
+        )
+        fig_dona.update_traces(textinfo="percent+label")
+        fig_dona.update_layout(font=ESTILO_FUENTE, height=380,
+                               paper_bgcolor=GAC_BLANCO)
+        st.plotly_chart(fig_dona, use_container_width=True)
+
+    # ---------- TABLAS ----------
+    with st.expander("Ver tablas de frecuencias"):
+        st.write("Producto")
+        st.dataframe(Tabla_producto, hide_index=True, use_container_width=True)
+        st.write("Estatus de leads")
+        st.dataframe(Tabla_estatus, hide_index=True, use_container_width=True)
+        st.write(f"Frecuencia de {Variable_Det}")
+        st.dataframe(Tabla_det, hide_index=True, use_container_width=True)
 
 st.divider()
 st.caption("Dashboard GAC | Analisis Univariado | Datos: Bitacora de Piso y Leads Reales")
