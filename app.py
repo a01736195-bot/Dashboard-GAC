@@ -120,8 +120,7 @@ vista = st.sidebar.selectbox(
      "Explorador de Variables",
      "Leads Detalle (Plaza)",
      "Analisis de Correlaciones",
-     "Regresion Objetivo vs Ventas (BCS)",
-     "Regresion Ventas ~ Leads (Resumen)",
+     "Regresion Lineal Simple",
      "Regresion Lineal Multiple (Resumen)",
      "Regresion del Embudo (FUNNEL)"]
 )
@@ -664,132 +663,102 @@ elif vista == "Analisis de Correlaciones":
             "para el modelo de regresion.")
 
 # =========================================================
-# VISTA 7: REGRESION OBJETIVO VS VENTAS (BCS)
-# Replicado de: regresion_lineal_simple.ipynb
-# X = Objetivo de ventas | Y = Ventas reales | 6 modelos GAC
+# VISTA 7: REGRESION LINEAL SIMPLE (UNIFICADA)
+# Base "BCS - 6 modelos"      -> regresion_lineal_simple.ipynb
+# Base "Base resumen mensual" -> Regresion_Simple_Resumen.ipynb
 # =========================================================
-elif vista == "Regresion Objetivo vs Ventas (BCS)":
+elif vista == "Regresion Lineal Simple":
 
-    if df_bcs is None:
-        st.error("No se encontro el archivo 'bcs_modelos.csv' "
-                 "en la carpeta del proyecto.")
+    st.subheader("Regresion lineal simple")
+    st.caption("Solo las bases de las regresiones simples del equipo · "
+               "defaults = variables originales de cada notebook")
+
+    # ---------- SELECTOR DE BASE ----------
+    Base_sel = st.selectbox(
+        "Base de datos",
+        ["BCS - 6 modelos (Balance Scorecard)",
+         "Base resumen mensual (30 meses)"])
+
+    # Variables disponibles segun la base elegida
+    if Base_sel.startswith("BCS"):
+        if df_bcs is None:
+            st.error("No se encontro el archivo 'bcs_modelos.csv' "
+                     "en la carpeta del proyecto.")
+            st.stop()
+        df_reg = df_bcs
+        opts_x = ["Objetivo"]
+        opts_y = ["Ventas_Reales"]
+        default_y = "Ventas_Reales"
+    else:
+        df_reg = df_resumen
+        opts_x = LISTA_NUM
+        opts_y = LISTA_NUM
+        default_y = "Ventas Real"
+
+    es_bcs = Base_sel.startswith("BCS")
+
+    # ---------- SELECTORES X / Y (formato separado) ----------
+    col_x, col_y = st.columns(2)
+    with col_x:
+        Variable_x = st.selectbox("Variable X (independiente)", opts_x,
+                                  index=0, key="x_simple")
+    with col_y:
+        Variable_y = st.selectbox("Variable Y (dependiente)", opts_y,
+                                  index=opts_y.index(default_y),
+                                  key="y_simple")
+
+    if Variable_x == Variable_y:
+        st.warning("Las variables X e Y deben ser diferentes.")
         st.stop()
 
-    st.subheader("Regresion lineal del objetivo y las ventas reales por modelo")
-    st.caption("Fuente: Balance Scorecard GAC (Analisis GAC Full7agosto 2026) · "
-               "6 modelos · notebook: regresion_lineal_simple.ipynb")
-
-    # Variables exactas del notebook
-    X = df_bcs[["Objetivo"]]
-    y = df_bcs["Ventas_Reales"]
-
+    # ---------- MODELO ----------
     model = LinearRegression()
-    model.fit(X, y)
-    ventas_estimadas = model.predict(X)
+    model.fit(X=df_reg[[Variable_x]], y=df_reg[Variable_y])
+    y_pred = model.predict(df_reg[[Variable_x]])
 
     intercepto = model.intercept_
     pendiente = model.coef_[0]
-    r_cuadrada = model.score(X, y)
-    correlacion = df_bcs["Objetivo"].corr(df_bcs["Ventas_Reales"])
+    r2 = model.score(df_reg[[Variable_x]], df_reg[Variable_y])
+    r = df_reg[Variable_x].corr(df_reg[Variable_y])
 
-    # Indicadores (mismos que imprime el notebook)
-    M1, M2, M3 = st.columns(3)
-    M1.metric("Intercepto", f"{intercepto:.4f}")
-    M2.metric("Pendiente", f"{pendiente:.4f}")
-    M3.metric("R²", f"{r_cuadrada:.4f}")
-    st.markdown(
-        f"**Ecuacion:** `Ventas reales = {intercepto:.4f} "
-        f"+ {pendiente:.4f} × Objetivo`  ·  **Correlacion:** {correlacion:.4f}"
-    )
-
-    # Grafica del notebook: dispersion con nombres de modelos + linea de regresion
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=df_bcs["Objetivo"], y=df_bcs["Ventas_Reales"],
-        mode="markers+text", text=df_bcs["Modelo"],
-        textposition="top center",
-        name="Ventas reales",
-        marker=dict(color=GRIS_DATOS, size=13)
-    ))
-    df_grafica = df_bcs.sort_values("Objetivo")
-    fig.add_trace(go.Scatter(
-        x=df_grafica["Objetivo"],
-        y=model.predict(df_grafica[["Objetivo"]]),
-        mode="lines", name="Linea de regresion",
-        line=dict(color=GAC_AZUL, width=3)
-    ))
-    fig.update_layout(
-        font=ESTILO_FUENTE, height=480,
-        title=dict(text="Regresion lineal del objetivo y las ventas reales",
-                   font=dict(size=16, color=GAC_AZUL)),
-        xaxis=dict(title="Objetivo de ventas"),
-        yaxis=dict(title="Ventas reales", gridcolor=REJILLA),
-        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02,
-                    xanchor="right", x=1)
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Tabla del notebook: observadas, estimadas y residuos
-    st.subheader("Ventas observadas, estimadas y residuos")
-    tabla_bcs = pd.DataFrame({
-        "Modelo": df_bcs["Modelo"],
-        "Objetivo": df_bcs["Objetivo"],
-        "Ventas_Reales": df_bcs["Ventas_Reales"],
-        "Ventas_Estimadas": np.round(ventas_estimadas, 4),
-        "Residuo": np.round(df_bcs["Ventas_Reales"] - ventas_estimadas, 4)})
-    st.dataframe(tabla_bcs, hide_index=True, use_container_width=True)
-
-# =========================================================
-# VISTA 8: REGRESION VENTAS ~ LEADS (RESUMEN)
-# Replicado de: Regresion_Simple_Resumen.ipynb
-# X = Leads | Y = Ventas Real | base_resumen_limpio.csv
-# =========================================================
-elif vista == "Regresion Ventas ~ Leads (Resumen)":
-
-    st.subheader("Regresion lineal simple · Ventas Real ~ Leads")
-    st.caption("Fuente: base_resumen_limpio.csv (30 meses) · "
-               "notebook: Regresion_Simple_Resumen.ipynb")
-
-    # Variables exactas del notebook
-    Variable_x = "Leads"
-    Variable_y = "Ventas Real"
-
-    model = LinearRegression()
-    model.fit(X=df_resumen[[Variable_x]], y=df_resumen[Variable_y])
-    y_pred = model.predict(X=df_resumen[[Variable_x]])
-
-    intercepto = model.intercept_
-    pendiente = model.coef_[0]
-    r2 = model.score(X=df_resumen[[Variable_x]], y=df_resumen[Variable_y])
-    r = np.sqrt(r2)
-
-    M1, M2, M3 = st.columns(3)
+    M1, M2, M3, M4 = st.columns(4)
     M1.metric("Intercepto (b0)", f"{intercepto:.4f}")
     M2.metric("Pendiente (b1)", f"{pendiente:.4f}")
-    M3.metric("R² (determinacion)", f"{r2:.4f}")
+    M3.metric("R²", f"{r2:.4f}")
+    M4.metric("Correlacion (r)", f"{r:.4f}")
     st.markdown(
         f"**Ecuacion:** `{Variable_y} = {intercepto:.4f} "
-        f"+ ({pendiente:.4f}) × {Variable_x}`  ·  "
-        f"**Correlacion (r):** {r:.4f}"
+        f"+ ({pendiente:.4f}) × {Variable_x}`"
     )
 
-    # Grafica del notebook: dispersion + recta de regresion
+    # ---------- GRAFICA ----------
     fig = go.Figure()
+    if es_bcs:
+        fig.add_trace(go.Scatter(
+            x=df_reg[Variable_x], y=df_reg[Variable_y],
+            mode="markers+text", text=df_reg["Modelo"],
+            textposition="top center",
+            name="Ventas reales",
+            marker=dict(color=GRIS_DATOS, size=13)
+        ))
+    else:
+        fig.add_trace(go.Scatter(
+            x=df_reg[Variable_x], y=df_reg[Variable_y],
+            mode="markers", name="Datos reales",
+            marker=dict(color=GRIS_DATOS, size=11)
+        ))
+    orden = df_reg[Variable_x].argsort()
     fig.add_trace(go.Scatter(
-        x=df_resumen[Variable_x], y=df_resumen[Variable_y],
-        mode="markers", name="Datos reales",
-        marker=dict(color=GRIS_DATOS, size=11)
-    ))
-    fig.add_trace(go.Scatter(
-        x=df_resumen[Variable_x], y=y_pred,
+        x=df_reg[Variable_x].iloc[orden],
+        y=pd.Series(y_pred).iloc[orden],
         mode="lines", name="Recta de regresion",
         line=dict(color=GAC_AZUL, width=3)
     ))
+    titulo_graf = ("Regresion lineal del objetivo y las ventas reales por modelo"
+                   if es_bcs else f"{Variable_y} ~ {Variable_x}")
     fig.update_layout(
         font=ESTILO_FUENTE, height=480,
-        title=dict(text="Modelo Lineal Simple (Ventas Real ~ Leads)",
-                   font=dict(size=16, color=GAC_AZUL)),
+        title=dict(text=titulo_graf, font=dict(size=16, color=GAC_AZUL)),
         xaxis=dict(title=Variable_x),
         yaxis=dict(title=Variable_y, gridcolor=REJILLA),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
@@ -798,14 +767,21 @@ elif vista == "Regresion Ventas ~ Leads (Resumen)":
     )
     st.plotly_chart(fig, use_container_width=True)
 
-    # Tabla del notebook: reales, predichos y residual
+    # ---------- TABLA ----------
     st.subheader("Valores reales, predichos y residuales")
-    tabla_pred = pd.DataFrame({
-        "Año": df_resumen["Año"], "Mes": df_resumen["Mes"],
-        "Real": df_resumen[Variable_y].round(2),
-        "Predicho": np.round(y_pred, 2)})
-    tabla_pred["Residual"] = (tabla_pred["Real"] - tabla_pred["Predicho"]).round(2)
-    st.dataframe(tabla_pred, hide_index=True, use_container_width=True)
+    if es_bcs:
+        tabla = pd.DataFrame({
+            "Modelo": df_reg["Modelo"],
+            Variable_x: df_reg[Variable_x],
+            "Real": df_reg[Variable_y].round(2),
+            "Predicho": np.round(y_pred, 2)})
+    else:
+        tabla = pd.DataFrame({
+            "Año": df_reg["Año"], "Mes": df_reg["Mes"],
+            "Real": df_reg[Variable_y].round(2),
+            "Predicho": np.round(y_pred, 2)})
+    tabla["Residual"] = (tabla["Real"] - tabla["Predicho"]).round(2)
+    st.dataframe(tabla, hide_index=True, use_container_width=True)
 
 # =========================================================
 # VISTA 9: REGRESION LINEAL MULTIPLE (RESUMEN)

@@ -43,10 +43,9 @@ origen (sin mezclar).
 | 4. Explorador de Variables | Barras/pastel/dona/area + KPIs + filtros | `Act1.ipynb` |
 | 5. Leads Detalle (Plaza) | Heatmap de producto, pastel de estatus, KPIs | `codigos.ipynb` |
 | 6. Analisis de Correlaciones | Heatmap de la matriz de correlacion | Etapa II (todos) |
-| 7. Regresion Objetivo vs Ventas (BCS) | 6 modelos: intercepto 3.0546, pendiente 0.5153, R² 0.4746, r 0.6889 | `regresion_lineal_simple.ipynb` |
-| 8. Regresion Ventas ~ Leads (Resumen) | 30 meses: X=Leads, Y=Ventas Real + tabla real/predicho/residual | `Regresion_Simple_Resumen.ipynb` |
-| 9. Regresion Lineal Multiple (Resumen) | Selector Y + multiselect X (default: Efectivos, PDM, SDC) | `codigos (1).ipynb` |
-| 10. Regresion del Embudo (FUNNEL) | Regresion 1 (R² 0.7053) y Regresion 2 (R² 0.7834) | `FUNNEL_REGRESION.IPYNB` |
+| 7. Regresion Lineal Simple | Selector de base (BCS 6 modelos / resumen 30 meses) + variables X e Y con defaults originales de cada notebook | `regresion_lineal_simple.ipynb` + `Regresion_Simple_Resumen.ipynb` |
+| 8. Regresion Lineal Multiple (Resumen) | Selector Y + multiselect X (default: Efectivos, PDM, SDC) | `codigos (1).ipynb` |
+| 9. Regresion del Embudo (FUNNEL) | 2 modelos con selectores (defaults: R1 R² 0.7053, R2 R² 0.7834) | `FUNNEL_REGRESION.IPYNB` |
 
 ## Como correrlo localmente
 
