@@ -27,6 +27,20 @@ corporativo GAC (azul y plata) y diseno plano.
 4. **Explorador de variables**: plantilla del curso con selector de base
    y variable categorica, filtro por periodo, metricas KPI, graficos de
    barras, pastel, dona y area, y tablas de frecuencias/datos filtrados.
+5. **Leads Detalle (Plaza)**: KPIs, heatmap de producto, pastel de estatus
+   de leads, area de estatus de la bitacora y selector de variables.
+6. **Analisis de Correlaciones** (Etapa II): heatmap de la matriz de
+   correlacion con selector de variables + ranking de correlacion con
+   Ventas Real.
+7. **Regresion Lineal Simple** (Etapa II): selectores de X e Y, dispersion
+   de datos con la recta de regresion superpuesta, R², r, ecuacion y
+   tabla real/predicho/residual.
+8. **Regresion Lineal Multiple** (Etapa II): selector de Y y multiselect
+   de X, matriz de correlacion, grafica de reales vs predichos con linea
+   ideal, R², R, R² ajustado, coeficientes y tabla de predicciones.
+9. **Regresion del Embudo (bonus)**: dos modelos sobre el embudo mensual
+   (R² = 0.7053 y R² = 0.7834) con coeficientes y comparacion de ventas
+   reales vs predichas.
 
 ## Como correrlo localmente
 

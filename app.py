@@ -1,4 +1,4 @@
-# Dashboard GAC - Analisis Univariado
+# Dashboard GAC - Analisis Univariado + Modelado Predictivo
 # Tema vino tinto / borgona (presentacion GAC) - diseno plano
 
 import os
@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from sklearn.linear_model import LinearRegression
 
 # =========================================================
 # CONFIGURACION DE PAGINA
@@ -51,8 +52,16 @@ def load_leads_detalle():
     d["Asesor"] = d["Asesor"].astype(str).str.strip().str.title()
     return d
 
+@st.cache_data
+def load_regresion_data():
+    # Bases para la Etapa II (modelado predictivo)
+    df_resumen = pd.read_csv("base_resumen_limpio.csv").bfill().ffill()
+    df_funnel = pd.read_csv("funnel_mensual.csv")
+    return df_resumen, df_funnel
+
 df_bitacora, df_leads = load_data()
 df_detalle = load_leads_detalle()
+df_resumen, df_funnel = load_regresion_data()
 
 # =========================================================
 # PALETA VINO TINTO / BORGONA (presentacion GAC)
@@ -64,17 +73,25 @@ GAC_PLATA     = "#C9747F"   # rosa medio (lineas/secundarios)
 GAC_OSCURO    = "#4A0414"   # vino oscuro (texto)
 GAC_BLANCO    = "#FFFFFF"
 REJILLA       = "#F3E4E7"   # rejilla suave rosada
+GRIS_DATOS    = "#9AA3B0"   # datos/contexto en gris (teoria de color)
 
 ESTILO_FUENTE = dict(family="Arial, sans-serif", size=13, color=GAC_OSCURO)
+ESCALA_VINO   = [[0, "#FBF2F3"], [0.5, "#DDA0A8"], [1, "#800020"]]
+
+# Variables numericas disponibles para los modelos (Etapa II)
+LISTA_NUM = ["Leads", "Efectivos", "Ventas Reportadas", "Obj Ventas",
+             "Ventas Real", "Conversion", "SDC", "Autorizadas",
+             "Formalizado", "Contado", "Credito", "PDM", "Obj PDM",
+             "Variacion", "Lead / Venta"]
 
 # =========================================================
 # ENCABEZADO
 # =========================================================
 st.markdown(
-    "<h1 style='color:" + GAC_AZUL + ";'>🚗 Analisis Univariado GAC</h1>",
+    "<h1 style='color:" + GAC_AZUL + ";'>🚗 Analisis GAC</h1>",
     unsafe_allow_html=True
 )
-st.caption("Bitacora de Piso y Leads Reales | Plaza Angelopolis")
+st.caption("Etapa I · Analisis univariado | Etapa II · Modelado predictivo | Plaza Angelopolis")
 st.divider()
 
 # =========================================================
@@ -95,7 +112,11 @@ vista = st.sidebar.selectbox(
      "Solicitudes de Credito por Asesor",
      "Visitas por Mes",
      "Explorador de Variables",
-     "Leads Detalle (Plaza)"]
+     "Leads Detalle (Plaza)",
+     "Analisis de Correlaciones",
+     "Regresion Lineal Simple",
+     "Regresion Lineal Multiple",
+     "Regresion del Embudo (bonus)"]
 )
 
 st.sidebar.markdown("---")
@@ -103,9 +124,11 @@ st.sidebar.write("📋 Bitacora de Piso: **%d** registros" % len(df_bitacora))
 st.sidebar.write("📈 Leads Reales: **%d** meses" % len(df_leads))
 if df_detalle is not None:
     st.sidebar.write("🏙️ Leads Plaza: **%d** registros" % len(df_detalle))
+st.sidebar.write("📊 Base resumen: **%d** meses" % len(df_resumen))
+st.sidebar.write("🔻 Embudo: **%d** meses" % len(df_funnel))
 
 # =========================================================
-# VISTA 1: EXTRACCION DE CARACTERISTICAS
+# VISTA 1: EXTRACCION DE CARACTERISTICAS (ETAPA I)
 # =========================================================
 if vista == "Extraccion de Caracteristicas":
 
@@ -326,7 +349,7 @@ elif vista == "Visitas por Mes":
     st.dataframe(visitas_mes[["Mes", "Visitas"]], use_container_width=True)
 
 # =========================================================
-# VISTA 4: EXPLORADOR DE VARIABLES (plantilla del curso)
+# VISTA 4: EXPLORADOR DE VARIABLES (ETAPA I)
 # =========================================================
 elif vista == "Explorador de Variables":
 
@@ -467,7 +490,7 @@ elif vista == "Explorador de Variables":
         st.dataframe(df, hide_index=True, use_container_width=True)
 
 # =========================================================
-# VISTA 5: LEADS DETALLE (PLAZA) - heatmap, pastel, area
+# VISTA 5: LEADS DETALLE (PLAZA) (ETAPA I)
 # =========================================================
 elif vista == "Leads Detalle (Plaza)":
 
@@ -501,7 +524,7 @@ elif vista == "Leads Detalle (Plaza)":
         fig_hm = px.imshow(
             Matriz, text_auto=True, aspect="auto",
             title="Frecuencia por producto",
-            color_continuous_scale=[[0, "#FBF2F3"], [1, GAC_AZUL]]
+            color_continuous_scale=ESCALA_VINO
         )
         fig_hm.update_layout(
             font=ESTILO_FUENTE, height=350,
@@ -524,7 +547,7 @@ elif vista == "Leads Detalle (Plaza)":
                               paper_bgcolor=GAC_BLANCO)
         st.plotly_chart(fig_pie, use_container_width=True)
 
-    # ---------- FILA 2: AREA DE ESTATUS LEAD (bitacora) + SELECTOR ----------
+    # ---------- FILA 2: AREA DE ESTATUS LEAD (bitacora) ----------
     st.write("Grafico de Area")
     Tabla_area = df_bitacora["Estatus_Lead"].value_counts().reset_index()
     Tabla_area.columns = ["estatus", "frecuencia"]
@@ -588,5 +611,275 @@ elif vista == "Leads Detalle (Plaza)":
         st.write(f"Frecuencia de {Variable_Det}")
         st.dataframe(Tabla_det, hide_index=True, use_container_width=True)
 
+# =========================================================
+# VISTA 6: ANALISIS DE CORRELACIONES (ETAPA II)
+# =========================================================
+elif vista == "Analisis de Correlaciones":
+
+    st.subheader("Matriz de correlaciones entre variables numericas")
+
+    sel_corr = st.multiselect("Variables a incluir en el heatmap",
+                              LISTA_NUM,
+                              default=["Leads", "Efectivos", "SDC",
+                                       "Autorizadas", "PDM", "Ventas Real"])
+    if len(sel_corr) < 2:
+        st.warning("Selecciona al menos 2 variables.")
+        st.stop()
+
+    matriz = df_resumen[sel_corr].corr().round(2)
+
+    fig_corr = px.imshow(matriz, text_auto=True, aspect="auto",
+                         title="Matriz de correlacion (Pearson)",
+                         color_continuous_scale=ESCALA_VINO,
+                         zmin=-1, zmax=1)
+    fig_corr.update_layout(font=ESTILO_FUENTE, height=560,
+                           plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
+    st.plotly_chart(fig_corr, use_container_width=True)
+
+    st.subheader("Correlacion de cada variable con Ventas Real")
+    tabla_corr = (df_resumen[LISTA_NUM].corr()["Ventas Real"]
+                  .drop("Ventas Real").sort_values(ascending=False)
+                  .reset_index())
+    tabla_corr.columns = ["Variable", "Correlacion con Ventas Real"]
+    fig_bar = px.bar(tabla_corr, x="Correlacion con Ventas Real", y="Variable",
+                     orientation="h", text="Correlacion con Ventas Real",
+                     color_discrete_sequence=[GAC_AZUL])
+    fig_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+    fig_bar.update_layout(font=ESTILO_FUENTE, height=520,
+                          plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+                          xaxis=dict(range=[-1, 1], gridcolor=REJILLA))
+    st.plotly_chart(fig_bar, use_container_width=True)
+
+    st.info("Las variables con mayor correlacion positiva con las ventas "
+            "(Autorizadas, Formalizado, SDC) son las mejores candidatas "
+            "para el modelo de regresion.")
+
+# =========================================================
+# VISTA 7: REGRESION LINEAL SIMPLE (ETAPA II)
+# =========================================================
+elif vista == "Regresion Lineal Simple":
+
+    st.subheader("Regresion lineal simple (una variable X)")
+
+    col_x, col_y = st.columns(2)
+    with col_x:
+        Variable_x = st.selectbox("Variable independiente (X)", LISTA_NUM,
+                                  index=LISTA_NUM.index("Leads"))
+    with col_y:
+        Variable_y = st.selectbox("Variable objetivo (Y)", LISTA_NUM,
+                                  index=LISTA_NUM.index("Ventas Real"))
+
+    model = LinearRegression()
+    model.fit(X=df_resumen[[Variable_x]], y=df_resumen[Variable_y])
+    y_pred = model.predict(df_resumen[[Variable_x]])
+
+    intercepto = model.intercept_
+    pendiente = model.coef_[0]
+    r2 = model.score(df_resumen[[Variable_x]], df_resumen[Variable_y])
+    r = np.sqrt(r2)
+
+    M1, M2, M3 = st.columns(3)
+    M1.metric("R² (determinacion)", f"{r2:.4f}")
+    M2.metric("r (correlacion)", f"{r:.4f}")
+    M3.metric("Pendiente (b1)", f"{pendiente:.4f}")
+    st.markdown(
+        f"**Ecuacion del modelo:** `{Variable_y} = {intercepto:.4f} "
+        f"+ ({pendiente:.4f}) × {Variable_x}`"
+    )
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df_resumen[Variable_x], y=df_resumen[Variable_y], mode="markers",
+        name="Datos reales", marker=dict(color=GRIS_DATOS, size=11)
+    ))
+    orden = df_resumen[Variable_x].argsort()
+    fig.add_trace(go.Scatter(
+        x=df_resumen[Variable_x].iloc[orden], y=pd.Series(y_pred).iloc[orden],
+        mode="lines", name="Recta de regresion",
+        line=dict(color=GAC_AZUL, width=3)
+    ))
+    fig.update_layout(
+        font=ESTILO_FUENTE, height=480,
+        title=dict(text=f"{Variable_y} ~ {Variable_x}",
+                   font=dict(size=16, color=GAC_AZUL)),
+        xaxis=dict(title=Variable_x),
+        yaxis=dict(title=Variable_y, gridcolor=REJILLA),
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02,
+                    xanchor="right", x=1)
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    with st.expander("Ver tabla de valores reales, predichos y residuales"):
+        tabla = pd.DataFrame({
+            "Año": df_resumen["Año"], "Mes": df_resumen["Mes"],
+            "Real": df_resumen[Variable_y].round(2),
+            "Predicho": np.round(y_pred, 2)})
+        tabla["Residual"] = (tabla["Real"] - tabla["Predicho"]).round(2)
+        st.dataframe(tabla, hide_index=True, use_container_width=True)
+
+# =========================================================
+# VISTA 8: REGRESION LINEAL MULTIPLE (ETAPA II)
+# =========================================================
+elif vista == "Regresion Lineal Multiple":
+
+    st.subheader("Regresion lineal multiple (varias variables X)")
+
+    col_y2, _ = st.columns(2)
+    with col_y2:
+        Variable_y = st.selectbox("Variable objetivo (Y)", LISTA_NUM,
+                                  index=LISTA_NUM.index("Ventas Real"),
+                                  key="y_multi")
+    Variables_x = st.multiselect(
+        "Variables independientes (X)",
+        [v for v in LISTA_NUM if v != Variable_y],
+        default=["Efectivos", "SDC", "Autorizadas", "PDM"])
+
+    if len(Variables_x) == 0:
+        st.warning("Selecciona al menos una variable independiente.")
+        st.stop()
+
+    model = LinearRegression()
+    model.fit(X=df_resumen[Variables_x], y=df_resumen[Variable_y])
+    y_pred = model.predict(df_resumen[Variables_x])
+
+    r2 = model.score(df_resumen[Variables_x], df_resumen[Variable_y])
+    r = np.sqrt(r2)
+    r2_adj = 1 - (1 - r2) * (len(df_resumen) - 1) / \
+        (len(df_resumen) - len(Variables_x) - 1)
+
+    ecuacion = f"{Variable_y} = {model.intercept_:.4f}"
+    for nombre, coef in zip(Variables_x, model.coef_):
+        signo = "+" if coef >= 0 else "-"
+        ecuacion += f" {signo} {abs(coef):.4f}·({nombre})"
+
+    M1, M2, M3 = st.columns(3)
+    M1.metric("R² (determinacion)", f"{r2:.4f}")
+    M2.metric("R (correlacion multiple)", f"{r:.4f}")
+    M3.metric("R² ajustado", f"{r2_adj:.4f}")
+    st.markdown(f"**Ecuacion del modelo:** `{ecuacion}`")
+
+    C1, C2 = st.columns(2)
+
+    with C1:
+        st.write("Matriz de correlacion (variables del modelo)")
+        matriz = df_resumen[Variables_x + [Variable_y]].corr().round(2)
+        fig_hm = px.imshow(matriz, text_auto=True, aspect="auto",
+                           color_continuous_scale=ESCALA_VINO,
+                           zmin=-1, zmax=1)
+        fig_hm.update_layout(font=ESTILO_FUENTE, height=420,
+                             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
+        st.plotly_chart(fig_hm, use_container_width=True)
+
+    with C2:
+        st.write("Ventas reales vs predichas")
+        minimo = min(df_resumen[Variable_y].min(), y_pred.min())
+        maximo = max(df_resumen[Variable_y].max(), y_pred.max())
+        fig_sc = go.Figure()
+        fig_sc.add_trace(go.Scatter(
+            x=df_resumen[Variable_y], y=y_pred, mode="markers",
+            name="Meses", marker=dict(color=GRIS_DATOS, size=11)
+        ))
+        fig_sc.add_trace(go.Scatter(
+            x=[minimo, maximo], y=[minimo, maximo], mode="lines",
+            name="Linea ideal (y = x)",
+            line=dict(color=GAC_AZUL, width=2, dash="dash")
+        ))
+        fig_sc.update_layout(
+            font=ESTILO_FUENTE, height=420,
+            xaxis=dict(title="Reales"),
+            yaxis=dict(title="Predichos", gridcolor=REJILLA),
+            plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+            legend=dict(orientation="h", yanchor="bottom", y=-0.25,
+                        xanchor="center", x=0.5)
+        )
+        st.plotly_chart(fig_sc, use_container_width=True)
+
+    st.subheader("Coeficientes del modelo")
+    tabla_coef = pd.DataFrame({
+        "Variable": Variables_x,
+        "Coeficiente": np.round(model.coef_, 4)})
+    tabla_coef.loc[len(tabla_coef)] = ["Intercepto", round(model.intercept_, 4)]
+    st.dataframe(tabla_coef, hide_index=True, use_container_width=True)
+
+    with st.expander("Ver tabla de valores reales vs predichos"):
+        tabla = pd.DataFrame({
+            "Año": df_resumen["Año"], "Mes": df_resumen["Mes"],
+            "Real": df_resumen[Variable_y].round(2),
+            "Predicho": np.round(y_pred, 2)})
+        tabla["Residual"] = (tabla["Real"] - tabla["Predicho"]).round(2)
+        st.dataframe(tabla, hide_index=True, use_container_width=True)
+
+# =========================================================
+# VISTA 9: REGRESION DEL EMBUDO (BONUS)
+# =========================================================
+elif vista == "Regresion del Embudo (bonus)":
+
+    st.subheader("Regresion sobre el embudo de ventas (FUNNEL)")
+    st.caption("Modelos ajustados con los 18 meses del embudo GAC Angelopolis")
+
+    st.markdown("**Modelo 1 · Ventas ~ etapas del embudo**")
+    vars_m1 = ["Cita_Efectiva", "Prueba_Manejo", "SDC_Aprobada", "Formalizado"]
+    m1 = LinearRegression().fit(df_funnel[vars_m1], df_funnel["Ventas"])
+    pred1 = m1.predict(df_funnel[vars_m1])
+    r2_m1 = m1.score(df_funnel[vars_m1], df_funnel["Ventas"])
+
+    c1, c2 = st.columns(2)
+    c1.metric("R²", f"{r2_m1:.4f}")
+    c2.metric("R (correlacion multiple)", f"{np.sqrt(r2_m1):.4f}")
+
+    tabla_m1 = pd.DataFrame({"Variable": vars_m1,
+                             "Coeficiente": np.round(m1.coef_, 4)})
+    tabla_m1.loc[len(tabla_m1)] = ["Intercepto", round(m1.intercept_, 4)]
+    st.dataframe(tabla_m1, hide_index=True, use_container_width=True)
+    st.caption("La variable con mayor peso es SDC_Aprobada: cada solicitud de "
+               "credito aprobada suma ~0.61 ventas al mes.")
+
+    st.markdown("**Modelo 2 · Ventas ~ tendencia temporal + solicitudes aprobadas**")
+    vars_m2 = ["Mes_Num", "SDC_Aprobada"]
+    m2 = LinearRegression().fit(df_funnel[vars_m2], df_funnel["Ventas"])
+    pred2 = m2.predict(df_funnel[vars_m2])
+    r2_m2 = m2.score(df_funnel[vars_m2], df_funnel["Ventas"])
+
+    c3, c4 = st.columns(2)
+    c3.metric("R²", f"{r2_m2:.4f}")
+    c4.metric("R (correlacion multiple)", f"{np.sqrt(r2_m2):.4f}")
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df_funnel["Mes"], y=df_funnel["Ventas"], mode="lines+markers",
+        name="Ventas reales", line=dict(color=GRIS_DATOS, width=2.5)
+    ))
+    fig.add_trace(go.Scatter(
+        x=df_funnel["Mes"], y=np.round(pred1, 1), mode="lines+markers",
+        name=f"Modelo 1 (R²={r2_m1:.2f})", line=dict(color=GAC_AZUL, width=2.5)
+    ))
+    fig.add_trace(go.Scatter(
+        x=df_funnel["Mes"], y=np.round(pred2, 1), mode="lines+markers",
+        name=f"Modelo 2 (R²={r2_m2:.2f})",
+        line=dict(color=GAC_AZUL_CLARO, width=2.5, dash="dash")
+    ))
+    fig.update_layout(
+        font=ESTILO_FUENTE, height=480,
+        title=dict(text="Ventas reales vs predichas por los modelos del embudo",
+                   font=dict(size=16, color=GAC_AZUL)),
+        xaxis=dict(title="Mes", tickangle=-45),
+        yaxis=dict(title="Ventas", gridcolor=REJILLA),
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02,
+                    xanchor="right", x=1)
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    with st.expander("Ver tabla real vs predicho (Modelo 2)"):
+        tabla = pd.DataFrame({
+            "Mes": df_funnel["Mes"],
+            "Ventas reales": df_funnel["Ventas"],
+            "Ventas predichas": np.round(pred2, 2)})
+        tabla["Residual"] = (tabla["Ventas reales"]
+                             - tabla["Ventas predichas"]).round(2)
+        st.dataframe(tabla, hide_index=True, use_container_width=True)
+
 st.divider()
-st.caption("Dashboard GAC | Analisis Univariado | Datos: Bitacora de Piso y Leads Reales")
+st.caption("Dashboard GAC | Etapa I: Analisis univariado · "
+           "Etapa II: Modelado predictivo | Plaza Angelopolis")
