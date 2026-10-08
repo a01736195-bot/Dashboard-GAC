@@ -906,20 +906,47 @@ elif vista == "Regresion Lineal Multiple (Resumen)":
 
 # =========================================================
 # VISTA 10: REGRESION DEL EMBUDO (FUNNEL)
-# Replicado de: FUNNEL_REGRESION.IPYNB
+# Replicado de: FUNNEL_REGRESION.IPYNB + selectores interactivos
 # =========================================================
 elif vista == "Regresion del Embudo (FUNNEL)":
 
     st.subheader("Regresiones sobre el embudo de ventas")
     st.caption("Fuente: FUNNEL.csv (18 meses, GAC Angelopolis) · "
-               "notebook: FUNNEL_REGRESION.IPYNB")
+               "notebook: FUNNEL_REGRESION.IPYNB · defaults = variables originales")
 
-    # ---------- REGRESION 1: ETAPAS DEL FUNNEL -> VENTAS ----------
-    st.markdown("**Regresion 1 · Ventas ~ etapas del embudo**")
-    vars_m1 = ["Cita_Efectiva", "Prueba_Manejo", "SDC_Aprobada", "Formalizado"]
-    m1 = LinearRegression().fit(df_funnel[vars_m1], df_funnel["Ventas"])
+    # ---------- SELECTORES (misma funcion que la vista multiple) ----------
+    LISTA_FUNNEL = ["Ventas", "Leads_Generados", "Leads_Efectivos",
+                    "Cita_Programada", "Cita_Efectiva", "Prueba_Manejo",
+                    "SDC_Generada", "SDC_Aprobada", "Formalizado", "Mes_Num"]
+    col_yf, _ = st.columns(2)
+    with col_yf:
+        Variable_y = st.selectbox("Variable objetivo (Y)", LISTA_FUNNEL,
+                                  index=LISTA_FUNNEL.index("Ventas"),
+                                  key="y_funnel")
+    opciones_x = [v for v in LISTA_FUNNEL if v != Variable_y]
+    vars_m1 = st.multiselect(
+        "Regresion 1 · Variables independientes (X)",
+        opciones_x,
+        default=[v for v in ["Cita_Efectiva", "Prueba_Manejo", "SDC_Aprobada",
+                             "Formalizado"] if v in opciones_x],
+        key="x1_funnel")
+    vars_m2 = st.multiselect(
+        "Regresion 2 · Variables independientes (X)",
+        opciones_x,
+        default=[v for v in ["Mes_Num", "SDC_Aprobada"] if v in opciones_x],
+        key="x2_funnel")
+
+    if len(vars_m1) == 0 or len(vars_m2) == 0:
+        st.warning("Cada modelo necesita al menos una variable X.")
+        st.stop()
+
+    y_real = df_funnel[Variable_y]
+
+    # ---------- REGRESION 1 ----------
+    st.markdown(f"**Regresion 1 · {Variable_y} ~ variables seleccionadas**")
+    m1 = LinearRegression().fit(df_funnel[vars_m1], y_real)
     pred1 = m1.predict(df_funnel[vars_m1])
-    r2_m1 = m1.score(df_funnel[vars_m1], df_funnel["Ventas"])
+    r2_m1 = m1.score(df_funnel[vars_m1], y_real)
 
     c1, c2 = st.columns(2)
     c1.metric("R²", f"{r2_m1:.4f}")
@@ -929,24 +956,23 @@ elif vista == "Regresion del Embudo (FUNNEL)":
                              "Coeficiente": np.round(m1.coef_, 4)})
     tabla_m1.loc[len(tabla_m1)] = ["Intercepto", round(m1.intercept_, 4)]
     st.dataframe(tabla_m1, hide_index=True, use_container_width=True)
-    st.caption("La variable con mayor peso es Solicitud_Aprobada: cada solicitud "
-               "de credito aprobada suma ~0.61 ventas al mes.")
+    mayor = tabla_m1.iloc[np.argmax(np.abs(m1.coef_))]["Variable"]
+    st.caption(f"Variable con mayor peso en el Modelo 1: {mayor}")
 
-    # ---------- REGRESION 2: MES + SOLICITUDES APROBADAS ----------
-    st.markdown("**Regresion 2 · Ventas ~ tendencia temporal + solicitudes aprobadas**")
-    vars_m2 = ["Mes_Num", "SDC_Aprobada"]
-    m2 = LinearRegression().fit(df_funnel[vars_m2], df_funnel["Ventas"])
+    # ---------- REGRESION 2 ----------
+    st.markdown(f"**Regresion 2 · {Variable_y} ~ variables seleccionadas**")
+    m2 = LinearRegression().fit(df_funnel[vars_m2], y_real)
     pred2 = m2.predict(df_funnel[vars_m2])
-    r2_m2 = m2.score(df_funnel[vars_m2], df_funnel["Ventas"])
+    r2_m2 = m2.score(df_funnel[vars_m2], y_real)
 
     c3, c4 = st.columns(2)
     c3.metric("R²", f"{r2_m2:.4f}")
     c4.metric("Correlacion multiple", f"{np.sqrt(r2_m2):.4f}")
 
     # ---------- DISPERSION: REALES VS PREDICHAS (ambos modelos) ----------
-    st.subheader("Ventas reales vs ventas predichas")
-    minimo = min(df_funnel["Ventas"].min(), pred1.min(), pred2.min())
-    maximo = max(df_funnel["Ventas"].max(), pred1.max(), pred2.max())
+    st.subheader(f"{Variable_y}: reales vs predichas")
+    minimo = min(y_real.min(), pred1.min(), pred2.min())
+    maximo = max(y_real.max(), pred1.max(), pred2.max())
 
     D1, D2 = st.columns(2)
     with D1:
@@ -964,8 +990,8 @@ elif vista == "Regresion del Embudo (FUNNEL)":
             font=ESTILO_FUENTE, height=400,
             title=dict(text=f"Regresion 1 (R² = {r2_m1:.2f})",
                        font=dict(size=15, color=GAC_AZUL)),
-            xaxis=dict(title="Ventas reales"),
-            yaxis=dict(title="Ventas predichas", gridcolor=REJILLA),
+            xaxis=dict(title=f"{Variable_y} reales"),
+            yaxis=dict(title=f"{Variable_y} predichas", gridcolor=REJILLA),
             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
             legend=dict(orientation="h", yanchor="bottom", y=-0.3,
                         xanchor="center", x=0.5)
@@ -986,8 +1012,8 @@ elif vista == "Regresion del Embudo (FUNNEL)":
             font=ESTILO_FUENTE, height=400,
             title=dict(text=f"Regresion 2 (R² = {r2_m2:.2f})",
                        font=dict(size=15, color=GAC_AZUL)),
-            xaxis=dict(title="Ventas reales"),
-            yaxis=dict(title="Ventas predichas", gridcolor=REJILLA),
+            xaxis=dict(title=f"{Variable_y} reales"),
+            yaxis=dict(title=f"{Variable_y} predichas", gridcolor=REJILLA),
             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
             legend=dict(orientation="h", yanchor="bottom", y=-0.3,
                         xanchor="center", x=0.5)
@@ -997,8 +1023,8 @@ elif vista == "Regresion del Embudo (FUNNEL)":
     # ---------- SERIE TEMPORAL ----------
     fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=df_funnel["Mes"], y=df_funnel["Ventas"], mode="lines+markers",
-        name="Ventas reales", line=dict(color=GRIS_DATOS, width=2.5)
+        x=df_funnel["Mes"], y=y_real, mode="lines+markers",
+        name=f"{Variable_y} reales", line=dict(color=GRIS_DATOS, width=2.5)
     ))
     fig.add_trace(go.Scatter(
         x=df_funnel["Mes"], y=np.round(pred1, 1), mode="lines+markers",
@@ -1025,10 +1051,10 @@ elif vista == "Regresion del Embudo (FUNNEL)":
     with st.expander("Ver tabla real vs predicho (Regresion 2)"):
         tabla = pd.DataFrame({
             "Mes": df_funnel["Mes"],
-            "Ventas reales": df_funnel["Ventas"],
-            "Ventas predichas": np.round(pred2, 2)})
-        tabla["Residual"] = (tabla["Ventas reales"]
-                             - tabla["Ventas predichas"]).round(2)
+            f"{Variable_y} reales": y_real,
+            f"{Variable_y} predichas": np.round(pred2, 2)})
+        tabla["Residual"] = (tabla[f"{Variable_y} reales"]
+                             - tabla[f"{Variable_y} predichas"]).round(2)
         st.dataframe(tabla, hide_index=True, use_container_width=True)
 
 st.divider()
