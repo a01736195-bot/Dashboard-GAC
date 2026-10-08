@@ -1,46 +1,52 @@
-# Actividad 1 - Despliegue de Analisis Univariado (GAC)
+# Dashboard GAC - Analisis Univariado + Regresion Lineal
 
-Dashboard en Streamlit con el analisis univariado de las bases de la
-concesionaria GAC (Bitacora de Piso y Leads Reales), con tema visual
-corporativo GAC (azul y plata) y diseno plano.
+Dashboard unificado de las operaciones de la concesionaria GAC (Plaza
+Angelopolis), con tema visual vino tinto / borgona y diseno plano.
 
-## Contenido del repositorio
+## Contenido
+
+**Etapa I. Modelado explicativo (Analisis comparativo)**: extraccion de
+caracteristicas, analisis univariado de las variables categoricas mas
+significativas.
+
+**Etapa II. Modelado predictivo**: analisis de correlaciones y regresion
+lineal simple y multiple, superponiendo en cada grafica la dispersion de
+los datos predichos.
+
+Cada regresion del equipo tiene su vista DEDICADA, con las mismas
+variables, indicadores, ecuacion, tabla y grafica de su notebook de
+origen (sin mezclar).
+
+## Archivos del repositorio
 
 | Archivo | Descripcion |
 |---|---|
-| `app.py` | Aplicacion principal del dashboard (Streamlit) |
+| `app.py` | Aplicacion principal del dashboard (Streamlit, 10 vistas) |
 | `DASHBOARD_GAC.ipynb` | Notebook que genera `app.py` y lo corre |
 | `Bitacora_Piso_Limpia.csv` | Base limpia de la bitacora de piso (nulos, outliers y transformaciones ya aplicadas) |
-| `Leads_Reales_Limpia.csv` | Base limpia de leads reales mensual (nulos, outliers y transformaciones ya aplicadas) |
-| `.streamlit/config.toml` | Tema vino tinto / borgona del dashboard |
-| `logo_gac.png` | Logo de GAC Motor (se muestra en el menu lateral) |
-| `requirements.txt` | Dependencias para el despliegue |
+| `Leads_Reales_Limpia.csv` | Base limpia de leads reales mensual |
+| `base_leads_limpia.csv` | Base de leads de plaza (detalle) con preprocesamiento aplicado |
+| `base_resumen_limpio.csv` | Base resumen mensual (30 meses, 26 variables) para la Etapa II |
+| `funnel_mensual.csv` | Embudo mensual limpio (18 meses) extraido del FUNNEL.csv original |
+| `bcs_modelos.csv` | 6 modelos GAC (Objetivo vs Ventas reales) del Balance Scorecard |
+| `logo_gac.png` | Logo de GAC Motor (menu lateral) |
+| `.streamlit/config.toml` | Tema vino tinto / borgona |
+| `requirements.txt` | Dependencias (incluye scikit-learn) |
 
-## Vistas del dashboard
+## Vistas del dashboard y trazabilidad con los notebooks del equipo
 
-1. **Extraccion de caracteristicas**: Pareto de visitas por asesor,
-   dona de visitas con/sin prueba de manejo (PDM) y barras de
-   efectividad de leads por mes (con cortes al 55% y 70%).
-2. **Solicitudes de credito por asesor (SDC)**: Top 5 asesores con
-   solicitudes de credito si/no.
-3. **Visitas por mes**: conteo mensual de visitas registradas.
-4. **Explorador de variables**: plantilla del curso con selector de base
-   y variable categorica, filtro por periodo, metricas KPI, graficos de
-   barras, pastel, dona y area, y tablas de frecuencias/datos filtrados.
-5. **Leads Detalle (Plaza)**: KPIs, heatmap de producto, pastel de estatus
-   de leads, area de estatus de la bitacora y selector de variables.
-6. **Analisis de Correlaciones** (Etapa II): heatmap de la matriz de
-   correlacion con selector de variables + ranking de correlacion con
-   Ventas Real.
-7. **Regresion Lineal Simple** (Etapa II): selectores de X e Y, dispersion
-   de datos con la recta de regresion superpuesta, R², r, ecuacion y
-   tabla real/predicho/residual.
-8. **Regresion Lineal Multiple** (Etapa II): selector de Y y multiselect
-   de X, matriz de correlacion, grafica de reales vs predichos con linea
-   ideal, R², R, R² ajustado, coeficientes y tabla de predicciones.
-9. **Regresion del Embudo (bonus)**: dos modelos sobre el embudo mensual
-   (R² = 0.7053 y R² = 0.7834) con coeficientes y comparacion de ventas
-   reales vs predichas.
+| Vista | Que muestra | Notebook de origen |
+|---|---|---|
+| 1. Extraccion de Caracteristicas | Pareto de asesores, dona PDM, efectividad de leads | `Analisis_GAC_Limpieza_Graficos.ipynb` |
+| 2. Solicitudes de Credito por Asesor | Top 5 asesores con SDC si/no | `DASHBOARD.IPYNB` |
+| 3. Visitas por Mes | Conteo mensual de visitas | `DASHBOARD.IPYNB` |
+| 4. Explorador de Variables | Barras/pastel/dona/area + KPIs + filtros | `Act1.ipynb` |
+| 5. Leads Detalle (Plaza) | Heatmap de producto, pastel de estatus, KPIs | `codigos.ipynb` |
+| 6. Analisis de Correlaciones | Heatmap de la matriz de correlacion | Etapa II (todos) |
+| 7. Regresion Objetivo vs Ventas (BCS) | 6 modelos: intercepto 3.0546, pendiente 0.5153, R² 0.4746, r 0.6889 | `regresion_lineal_simple.ipynb` |
+| 8. Regresion Ventas ~ Leads (Resumen) | 30 meses: X=Leads, Y=Ventas Real + tabla real/predicho/residual | `Regresion_Simple_Resumen.ipynb` |
+| 9. Regresion Lineal Multiple (Resumen) | Selector Y + multiselect X (default: Efectivos, PDM, SDC) | `codigos (1).ipynb` |
+| 10. Regresion del Embudo (FUNNEL) | Regresion 1 (R² 0.7053) y Regresion 2 (R² 0.7834) | `FUNNEL_REGRESION.IPYNB` |
 
 ## Como correrlo localmente
 
@@ -51,13 +57,7 @@ streamlit run app.py
 
 O bien abrir `DASHBOARD_GAC.ipynb` y ejecutar las celdas en orden.
 
-## Graficas
-
-Las graficas son interactivas (Plotly). Para descargar cualquier grafica
-como **PNG**: pasa el cursor sobre la grafica y usa el icono de camara
-📷 que aparece en la esquina superior derecha ("Download plot as png").
-
 ## Despliegue
 
-El dashboard esta listo para Streamlit Community Cloud: conecta este
-repositorio y usa `app.py` como archivo principal.
+Listo para Streamlit Community Cloud: conecta este repositorio y usa
+`app.py` como archivo principal.
