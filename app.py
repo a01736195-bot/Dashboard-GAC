@@ -1,14 +1,18 @@
-# Dashboard GAC - Analisis Univariado + Modelado Predictivo
+# Dashboard GAC - Analisis Univariado + Modelado Predictivo + Despliegue ANOVA
 # Tema vino tinto / borgona (presentacion GAC) - diseno plano
-# Cada regresion aparece EXACTAMENTE como en el notebook de origen
+# Etapa III: ANOVA one-way y multifactorial (scipy + statsmodels, plantilla 7_ANOVA.ipynb)
 
 import os
+import re
 import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
+from scipy import stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
 
 # =========================================================
 # CONFIGURACION DE PAGINA
@@ -70,6 +74,136 @@ df_detalle = load_leads_detalle()
 df_resumen, df_funnel, df_bcs = load_regresion_data()
 
 # =========================================================
+# CARGA DE DATOS - ETAPA III (DESPLIEGUE ANOVA)
+# =========================================================
+@st.cache_data
+def load_citas_anova():
+    # Citas Digital: seguimiento de leads del canal digital (668 registros)
+    # Preprocesamiento identico al notebook Actividad_4_ANOVA.ipynb
+    try:
+        dfc = pd.read_csv("Citas_Digital.csv")
+    except FileNotFoundError:
+        return None
+    dfc.columns = dfc.columns.str.strip()
+    dfc["Potencial"] = pd.to_numeric(
+        dfc["Potencial de compra"].astype(str)
+        .str.replace("%", "", regex=False).str.strip(), errors="coerce")
+    for col in ["PDM", "SDC", "Venta"]:
+        dfc[col] = dfc[col].astype(str).str.strip().str.upper().eq("TRUE")
+
+    def limpiar_bdc(x):
+        x = str(x).strip().lower()
+        if x.startswith("ana"): return "Ana"
+        if x.startswith("antonio/saul"): return None
+        if x.startswith("antonio"): return "Antonio"
+        if x.startswith(("ignacio", "igancio")): return "Ignacio"
+        if x.startswith("saul"): return "Saul"
+        return None
+
+    def limpiar_estatus(x):
+        x = str(x).strip().lower()
+        if x.startswith(("activo", "acitvo", "acrivo", "ativo", "activio")):
+            return "Activo"
+        if x.startswith("finalizado"): return "Finalizado"
+        if x.startswith("venta"): return "Venta"
+        return None
+
+    dfc["BDC_L"] = dfc["BDC"].apply(limpiar_bdc)
+    dfc["Estatus_L"] = dfc["Estatus de Lead"].apply(limpiar_estatus)
+    dfc = dfc[dfc["Potencial"].notna() & dfc["BDC_L"].notna()
+              & dfc["Estatus_L"].notna()].copy()
+    # Outliers por IQR en la variable de respuesta
+    q1, q3 = dfc["Potencial"].quantile([0.25, 0.75])
+    iqr = q3 - q1
+    dfc = dfc[(dfc["Potencial"] >= q1 - 1.5 * iqr)
+              & (dfc["Potencial"] <= q3 + 1.5 * iqr)].copy()
+    dfc["PDM_txt"] = dfc["PDM"].map({True: "Con PDM", False: "Sin PDM"})
+    return dfc
+
+@st.cache_data
+def load_plazas_anova():
+    # Plazas: leads de piso -> variable de respuesta = leads por semana
+    try:
+        dfp = pd.read_csv("Plazas.csv")
+    except FileNotFoundError:
+        return None
+    dfp.columns = dfp.columns.str.strip()
+    dfp["Fecha"] = pd.to_datetime(dfp["Fecha Origen"],
+                                  format="%d/%m/%Y %H:%M", errors="coerce")
+    dfp["Producto_L"] = dfp["Producto"].astype(str).str.strip().str.upper()
+    dfp["Plaza_L"] = (dfp["Origen"].astype(str).str.strip().str.upper()
+        .replace({"PLAZA ANGELOPOLIS": "Angelopolis",
+                  "GRAN PATIO TLAXCALA": "Gran Patio Tlaxcala",
+                  "GALERIAS TLAXCALA": "Galerias Tlaxcala"}))
+    dfp = dfp[dfp["Producto_L"].isin(["EMZOOM", "GS8", "EMKOO"])
+              & dfp["Fecha"].notna()
+              & dfp["Plaza_L"].isin(["Angelopolis", "Gran Patio Tlaxcala"])]
+    dfp["Semana"] = dfp["Fecha"].dt.to_period("W").astype(str)
+    sem = (dfp.groupby(["Semana", "Producto_L", "Plaza_L"])
+           .size().reset_index(name="Leads"))
+    return sem
+
+@st.cache_data
+def load_mkt_anova():
+    # Marketing: bloque "Presupuesto mensual de MKT por canal" (parser del
+    # notebook ANOVA_Marketing_GAC.ipynb) -> Canal x Mes (Leads, Ventas, Presupuesto)
+    try:
+        base = pd.read_csv("MKT_DIGITAL.csv", header=None, dtype=str,
+                           encoding="utf-8-sig")
+    except FileNotFoundError:
+        return None
+
+    def texto(x):
+        return "" if pd.isna(x) else str(x).strip()
+
+    def numero(x):
+        s = texto(x).replace("$", "").replace(",", "").replace(" ", "")
+        if s in ("", "-", "—"):
+            return np.nan
+        return pd.to_numeric(s, errors="coerce")
+
+    meses = {"enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5,
+             "junio": 6, "julio": 7, "agosto": 8, "septiembre": 9,
+             "octubre": 10, "noviembre": 11, "diciembre": 12}
+    marca = base.index[base[0].fillna("").str.strip()
+                       .eq("Presupuesto mensual de MKT por canal")]
+    if len(marca) == 0:
+        return None
+    inicio = marca[0]
+    columnas_fecha = {}
+    for col, valor in base.loc[inicio + 1].items():
+        partes = texto(valor).lower().split(",")
+        if len(partes) == 2 and partes[0].strip() in meses:
+            anio = int(partes[1].strip())
+            anio = anio + 2000 if anio < 100 else anio
+            columnas_fecha[col] = pd.Timestamp(anio, meses[partes[0].strip()], 1)
+
+    regs = []
+    for canal in ["Plaza", "Digital", "Piso"]:
+        candidatos = base.index[(base.index > inicio)
+                                & base[0].fillna("").str.strip().eq(canal)]
+        if len(candidatos) == 0:
+            continue
+        fila = candidatos[0]
+        for col, fecha in columnas_fecha.items():
+            regs.append({"Canal": canal, "Fecha": fecha,
+                         "Leads": numero(base.loc[fila + 1, col]),
+                         "Ventas": numero(base.loc[fila + 2, col]),
+                         "Presupuesto": numero(base.loc[fila, col])})
+    datos = pd.DataFrame(regs)
+    datos["Anio"] = datos["Fecha"].dt.year.astype(str)
+    completos = datos.dropna(subset=["Leads", "Ventas", "Presupuesto"])
+    fc = completos.groupby("Fecha")["Canal"].nunique()
+    fc = fc[fc.eq(3)].index
+    dfm = (completos[completos["Fecha"].isin(fc)]
+           .sort_values(["Fecha", "Canal"]).reset_index(drop=True))
+    return dfm
+
+df_citas = load_citas_anova()
+df_plazas_sem = load_plazas_anova()
+df_mkt = load_mkt_anova()
+
+# =========================================================
 # PALETA VINO TINTO / BORGONA (presentacion GAC)
 # =========================================================
 GAC_AZUL      = "#800020"   # tinto principal
@@ -91,13 +225,86 @@ LISTA_NUM = ["Leads", "Efectivos", "Ventas Reportadas", "Obj Ventas",
              "Variacion", "Lead / Venta"]
 
 # =========================================================
+# HELPERS - ETAPA III (DESPLIEGUE ANOVA)
+# =========================================================
+PALETA_ANOVA = [GAC_AZUL, GAC_PLATA, GAC_AZUL_MED, GAC_AZUL_CLARO]
+
+def formato_p(p):
+    if pd.isna(p):
+        return "—"
+    return f"{p:.1e}" if p < 0.001 else f"{p:.4f}"
+
+def tabla_anova_bonita(tabla, nombres=None):
+    nombres = nombres or {}
+    fuentes = [nombres.get(str(i), str(i)) for i in tabla.index]
+    return pd.DataFrame({
+        "Fuente": fuentes,
+        "Suma de cuadrados": tabla["sum_sq"].map(lambda v: f"{v:,.2f}"),
+        "gl": tabla["df"].map(lambda v: f"{v:.0f}"),
+        "F": tabla["F"].map(lambda v: "—" if pd.isna(v) else f"{v:.3f}"),
+        "p-valor": tabla["PR(>F)"].map(formato_p)})
+
+def fig_box(df, x, y, orden, titulo, ey):
+    fig = px.box(df, x=x, y=y, category_orders={x: orden}, color=x,
+                 color_discrete_sequence=PALETA_ANOVA, points="outliers")
+    fig.update_layout(font=ESTILO_FUENTE, height=430, showlegend=False,
+        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        xaxis=dict(title=None), yaxis=dict(title=ey, gridcolor=REJILLA))
+    return fig
+
+def fig_bar_ic95(df, x, y, orden, titulo, ey):
+    res = df.groupby(x)[y].agg(["mean", "sem"]).reindex(orden).reset_index()
+    fig = go.Figure(go.Bar(
+        x=res[x], y=res["mean"],
+        error_y=dict(type="data", array=1.96 * res["sem"], color=GAC_OSCURO),
+        marker_color=PALETA_ANOVA[:len(res)],
+        text=np.round(res["mean"], 1), textposition="outside"))
+    fig.update_layout(font=ESTILO_FUENTE, height=430, showlegend=False,
+        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        xaxis=dict(title=None),
+        yaxis=dict(title=ey, gridcolor=REJILLA,
+                   range=[0, res["mean"].max() * 1.25]))
+    return fig
+
+def fig_violin(df, x, y, orden, titulo, ey):
+    fig = px.violin(df, x=x, y=y, category_orders={x: orden}, color=x,
+                    box=True, color_discrete_sequence=PALETA_ANOVA)
+    fig.update_layout(font=ESTILO_FUENTE, height=400, showlegend=False,
+        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        xaxis=dict(title=None), yaxis=dict(title=ey, gridcolor=REJILLA))
+    return fig
+
+def fig_interaccion(df, x, linea, y, orden_x, titulo, ey):
+    piv = (df.pivot_table(index=x, columns=linea, values=y,
+                          aggfunc="mean", observed=False)
+           .reindex(orden_x))
+    fig = go.Figure()
+    for i, col in enumerate(piv.columns):
+        fig.add_trace(go.Scatter(
+            x=piv.index.astype(str), y=piv[col],
+            mode="lines+markers", name=str(col),
+            line=dict(color=PALETA_ANOVA[i % len(PALETA_ANOVA)], width=3),
+            marker=dict(size=10)))
+    fig.update_layout(font=ESTILO_FUENTE, height=420,
+        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
+        xaxis=dict(title=None), yaxis=dict(title=ey, gridcolor=REJILLA),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02,
+                    xanchor="right", x=1))
+    return fig
+
+# =========================================================
 # ENCABEZADO
 # =========================================================
 st.markdown(
     "<h1 style='color:" + GAC_AZUL + ";'>🚗 Analisis GAC</h1>",
     unsafe_allow_html=True
 )
-st.caption("Etapa I · Analisis univariado | Etapa II · Modelado predictivo | Plaza Angelopolis")
+st.caption("Etapa I · Analisis univariado | Etapa II · Modelado predictivo | "
+           "Etapa III · Despliegue ANOVA | Plaza Angelopolis")
 st.divider()
 
 # =========================================================
@@ -122,7 +329,8 @@ vista = st.sidebar.selectbox(
      "Analisis de Correlaciones",
      "Regresion Lineal Simple",
      "Regresion Lineal Multiple (Resumen)",
-     "Regresion del Embudo (FUNNEL)"]
+     "Regresion del Embudo (FUNNEL)",
+     "Despliegue ANOVA"]
 )
 
 st.sidebar.markdown("---")
@@ -134,6 +342,14 @@ st.sidebar.write("📊 Base resumen: **%d** meses" % len(df_resumen))
 st.sidebar.write("🔻 Embudo: **%d** meses" % len(df_funnel))
 if df_bcs is not None:
     st.sidebar.write("🎯 Modelos BCS: **%d**" % len(df_bcs))
+st.sidebar.markdown("---")
+st.sidebar.caption("Etapa III · ANOVA")
+if df_citas is not None:
+    st.sidebar.write("📞 Citas Digital: **%d** registros" % len(df_citas))
+if df_mkt is not None:
+    st.sidebar.write("📣 Marketing: **%d** obs." % len(df_mkt))
+if df_plazas_sem is not None:
+    st.sidebar.write("🏙️ Plazas: **%d** semanas-prod." % len(df_plazas_sem))
 
 # =========================================================
 # VISTA 1: EXTRACCION DE CARACTERISTICAS (ETAPA I)
@@ -1033,6 +1249,287 @@ elif vista == "Regresion del Embudo (FUNNEL)":
                              - tabla[f"{Variable_y} predichas"]).round(2)
         st.dataframe(tabla, hide_index=True, use_container_width=True)
 
+# =========================================================
+# VISTA 10: DESPLIEGUE ANOVA (ETAPA III)
+# Metodologia de la plantilla 7_ANOVA.ipynb:
+# scipy.stats.f_oneway + statsmodels anova_lm · alfa = 0.05
+# =========================================================
+elif vista == "Despliegue ANOVA":
+
+    st.subheader("Despliegue ANOVA - analisis de varianza")
+    st.caption("Un ANOVA one-way y uno multifactorial por base · "
+               "H0: las medias de los grupos son iguales · α = 0.05")
+
+    tab_citas, tab_mkt, tab_plazas = st.tabs(
+        ["📞 Citas Digital", "📣 Marketing por canal", "🏙️ Plazas"])
+
+    # -----------------------------------------------------
+    # TAB 1: CITAS DIGITAL (Potencial de compra)
+    # -----------------------------------------------------
+    with tab_citas:
+        if df_citas is None:
+            st.error("No se encontro el archivo 'Citas_Digital.csv' "
+                     "en la carpeta del proyecto.")
+        else:
+            ORDEN_BDC = ["Ana", "Antonio", "Ignacio", "Saul"]
+            st.markdown("#### Potencial de compra (%) segun agente BDC")
+            st.caption("668 registros crudos → 531 tras la limpieza: 57 nulos "
+                       "en la respuesta, unificacion de typos (estatus y BDC) "
+                       "y recorte de 67 outliers por IQR (rango 55–95%).")
+
+            # --- ANOVA one-way (scipy + statsmodels, como en clase) ---
+            grupos_c = [g["Potencial"].values
+                        for _, g in df_citas.groupby("BDC_L")]
+            anova_c = stats.f_oneway(*grupos_c)
+            mod_c = ols("Potencial ~ BDC_L", data=df_citas).fit()
+            tab_c = sm.stats.anova_lm(mod_c, typ=1)
+            eta2_c = tab_c["sum_sq"]["BDC_L"] / tab_c["sum_sq"].sum()
+            lev_c = stats.levene(*grupos_c)
+
+            st.markdown("**H₀:** el potencial promedio es igual entre los 4 "
+                        "agentes · **H₁:** al menos un promedio difiere")
+            K1, K2, K3, K4 = st.columns(4)
+            K1.metric("F (one-way)", f"{anova_c.statistic:.2f}")
+            K2.metric("p-valor", f"{anova_c.pvalue:.1e}")
+            K3.metric("η² (tamano del efecto)", f"{eta2_c:.3f}")
+            K4.metric("Levene (p)", f"{lev_c.pvalue:.2f}")
+
+            C1, C2 = st.columns(2)
+            with C1:
+                st.plotly_chart(fig_box(df_citas, "BDC_L", "Potencial",
+                    ORDEN_BDC, "Boxplot del potencial por agente",
+                    "Potencial (%)"), use_container_width=True)
+            with C2:
+                st.plotly_chart(fig_bar_ic95(df_citas, "BDC_L", "Potencial",
+                    ORDEN_BDC, "Media del potencial con IC 95%",
+                    "Potencial (%)"), use_container_width=True)
+            st.plotly_chart(fig_violin(df_citas, "BDC_L", "Potencial",
+                ORDEN_BDC, "Distribucion del potencial (violin)",
+                "Potencial (%)"), use_container_width=True)
+
+            st.write("**Tabla ANOVA one-way** (scipy f_oneway + anova_lm typ 1)")
+            st.dataframe(tabla_anova_bonita(tab_c,
+                {"BDC_L": "Agente BDC", "Residual": "Residual"}),
+                hide_index=True, use_container_width=True)
+            medias_bdc = df_citas.groupby("BDC_L")["Potencial"].mean()
+            st.success(
+                f"**Interpretacion:** p = {anova_c.pvalue:.1e} < 0.05 → **se "
+                f"rechaza H₀**: el agente BDC si influye en el potencial de "
+                f"compra. Saul promedia {medias_bdc['Saul']:.1f}% contra "
+                f"{medias_bdc.drop('Saul').mean():.1f}% del resto. "
+                f"η² = {eta2_c:.3f}: el agente explica ~{eta2_c*100:.1f}% de "
+                f"la variabilidad (efecto chico pero real). Levene p = "
+                f"{lev_c.pvalue:.2f} > 0.05 → varianzas homogeneas, el ANOVA "
+                f"es valido.")
+
+            st.divider()
+            st.markdown("#### ANOVA multifactorial: agente BDC × prueba de manejo")
+            mod_c2 = ols("Potencial ~ BDC_L + PDM_txt + BDC_L:PDM_txt",
+                         data=df_citas).fit()
+            tab_c2 = sm.stats.anova_lm(mod_c2, typ=1)
+            st.dataframe(tabla_anova_bonita(tab_c2,
+                {"BDC_L": "Agente BDC", "PDM_txt": "Prueba de manejo",
+                 "BDC_L:PDM_txt": "BDC × PDM", "Residual": "Residual"}),
+                hide_index=True, use_container_width=True)
+
+            C3, C4 = st.columns([3, 2])
+            with C3:
+                st.plotly_chart(fig_interaccion(df_citas, "BDC_L", "PDM_txt",
+                    "Potencial", ORDEN_BDC, "Grafica de interaccion BDC × PDM",
+                    "Potencial promedio"), use_container_width=True)
+            with C4:
+                st.write("Potencial promedio por celda")
+                st.dataframe(df_citas.pivot_table(
+                    index="BDC_L", columns="PDM_txt", values="Potencial",
+                    aggfunc="mean").reindex(ORDEN_BDC).round(1))
+            p_bdc = tab_c2.loc["BDC_L", "PR(>F)"]
+            p_pdm = tab_c2.loc["PDM_txt", "PR(>F)"]
+            p_int = tab_c2.loc["BDC_L:PDM_txt", "PR(>F)"]
+            st.info(
+                f"**Interpretacion:** agente BDC (p = {formato_p(p_bdc)}) y "
+                f"prueba de manejo (p = {formato_p(p_pdm)}) son efectos "
+                f"principales significativos; la **interaccion no es "
+                f"significativa** (p = {formato_p(p_int)}): las lineas son "
+                f"casi paralelas → la prueba de manejo suma potencial por "
+                f"igual sin importar el agente (efectos aditivos).")
+            st.caption("Robustez: con los 67 outliers incluidos el one-way da "
+                       "F = 16.18 (p < 0.001) — la conclusion no depende del "
+                       "recorte. Limitacion declarada: Ignacio queda con "
+                       "n = 15 tras el recorte.")
+
+    # -----------------------------------------------------
+    # TAB 2: MARKETING POR CANAL (Leads y Presupuesto)
+    # -----------------------------------------------------
+    with tab_mkt:
+        if df_mkt is None:
+            st.error("No se encontro el archivo 'MKT_DIGITAL.csv' "
+                     "en la carpeta del proyecto.")
+        else:
+            from statsmodels.stats.oneway import anova_oneway
+            ORDEN_CANAL = ["Digital", "Plaza", "Piso"]
+            st.markdown("#### Leads mensuales segun canal de marketing")
+            st.caption(f"Bloque 'Presupuesto mensual de MKT por canal' del "
+                       f"archivo maestro → {len(df_mkt)} observaciones "
+                       f"(3 canales × {df_mkt['Fecha'].nunique()} meses, "
+                       f"{df_mkt['Fecha'].min():%b-%Y} a "
+                       f"{df_mkt['Fecha'].max():%b-%Y}).")
+
+            # --- ANOVA one-way: Leads ~ Canal ---
+            grupos_m = [g["Leads"].values
+                        for _, g in df_mkt.groupby("Canal")]
+            anova_m = stats.f_oneway(*grupos_m)
+            mod_m = ols("Leads ~ C(Canal)", data=df_mkt).fit()
+            tab_m = sm.stats.anova_lm(mod_m, typ=2)
+            eta2_m = tab_m["sum_sq"]["C(Canal)"] / tab_m["sum_sq"].sum()
+            lev_m = stats.levene(*grupos_m)
+            welch_m = anova_oneway(grupos_m, use_var="unequal")
+
+            st.markdown("**H₀:** los leads mensuales promedio son iguales en "
+                        "los 3 canales · **H₁:** al menos un canal difiere")
+            K1, K2, K3, K4 = st.columns(4)
+            K1.metric("F (one-way)", f"{anova_m.statistic:.2f}")
+            K2.metric("p-valor", f"{anova_m.pvalue:.1e}")
+            K3.metric("η² (tamano del efecto)", f"{eta2_m:.3f}")
+            K4.metric("Levene (p)", f"{lev_m.pvalue:.4f}")
+
+            C1, C2 = st.columns(2)
+            with C1:
+                st.plotly_chart(fig_box(df_mkt, "Canal", "Leads",
+                    ORDEN_CANAL, "Boxplot de leads por canal",
+                    "Leads mensuales"), use_container_width=True)
+            with C2:
+                st.plotly_chart(fig_bar_ic95(df_mkt, "Canal", "Leads",
+                    ORDEN_CANAL, "Media de leads con IC 95%",
+                    "Leads mensuales"), use_container_width=True)
+
+            st.write("**Tabla ANOVA one-way** (anova_lm typ 2)")
+            st.dataframe(tabla_anova_bonita(tab_m,
+                {"C(Canal)": "Canal", "Residual": "Residual"}),
+                hide_index=True, use_container_width=True)
+            medias_canal = df_mkt.groupby("Canal")["Leads"].mean()
+            st.success(
+                f"**Interpretacion:** p = {anova_m.pvalue:.1e} < 0.05 → **se "
+                f"rechaza H₀**: el canal determina los leads mensuales. "
+                f"Digital genera {medias_canal['Digital']:.0f} leads/mes "
+                f"contra {medias_canal['Plaza']:.0f} de Plaza y "
+                f"{medias_canal['Piso']:.0f} de Piso. η² = {eta2_m:.2f}: el "
+                f"canal explica ~{eta2_m*100:.0f}% de la variabilidad — es "
+                f"el efecto mas grande de los tres analisis.")
+            st.warning(
+                f"**Supuestos:** Levene p = {lev_m.pvalue:.4f} < 0.05 → las "
+                f"varianzas no son homogeneas (a mayor media, mayor "
+                f"dispersion). Como robustez se corre el ANOVA de Welch: "
+                f"F = {welch_m.statistic:.1f}, p = {welch_m.pvalue:.1e} → "
+                f"la conclusion se mantiene.")
+
+            st.divider()
+            st.markdown("#### ANOVA multifactorial: presupuesto ~ canal × año")
+            mod_p = ols("Presupuesto ~ C(Canal, Sum) * C(Anio, Sum)",
+                        data=df_mkt).fit()
+            tab_p = sm.stats.anova_lm(mod_p, typ=3)
+            st.dataframe(tabla_anova_bonita(tab_p,
+                {"Intercept": "Intercept", "C(Canal, Sum)": "Canal",
+                 "C(Anio, Sum)": "Año",
+                 "C(Canal, Sum):C(Anio, Sum)": "Canal × Año",
+                 "Residual": "Residual"}),
+                hide_index=True, use_container_width=True)
+            st.plotly_chart(fig_interaccion(df_mkt, "Anio", "Canal",
+                "Presupuesto", ["2025", "2026"],
+                "Grafica de interaccion canal × año (presupuesto)",
+                "Presupuesto promedio ($)"), use_container_width=True)
+            p_can = tab_p.loc["C(Canal, Sum)", "PR(>F)"]
+            p_anio = tab_p.loc["C(Anio, Sum)", "PR(>F)"]
+            p_intm = tab_p.loc["C(Canal, Sum):C(Anio, Sum)", "PR(>F)"]
+            pres_canal = df_mkt.groupby("Canal")["Presupuesto"].mean()
+            st.info(
+                f"**Interpretacion:** el presupuesto difiere por canal "
+                f"(F = {tab_p.loc['C(Canal, Sum)', 'F']:.2f}, p = "
+                f"{formato_p(p_can)}): Piso invierte "
+                f"${pres_canal['Piso']:,.0f}/mes, Plaza "
+                f"${pres_canal['Plaza']:,.0f} y Digital "
+                f"${pres_canal['Digital']:,.0f}. El año (p = "
+                f"{formato_p(p_anio)}) y la interaccion (p = "
+                f"{formato_p(p_intm)}) **no son significativos**: la "
+                f"asignacion por canal fue estable entre 2025 y 2026.")
+
+    # -----------------------------------------------------
+    # TAB 3: PLAZAS (Leads captados por semana)
+    # -----------------------------------------------------
+    with tab_plazas:
+        if df_plazas_sem is None:
+            st.error("No se encontro el archivo 'Plazas.csv' "
+                     "en la carpeta del proyecto.")
+        else:
+            ORDEN_PROD = ["EMZOOM", "GS8", "EMKOO"]
+            st.markdown("#### Leads captados por semana segun producto y plaza")
+            st.caption("303 leads de piso → variable de respuesta construida: "
+                       f"leads por semana ({len(df_plazas_sem)} celdas "
+                       "semana × producto × plaza).")
+
+            # --- ANOVA one-way: Leads ~ Producto ---
+            grupos_p = [g["Leads"].values
+                        for _, g in df_plazas_sem.groupby("Producto_L")]
+            anova_p = stats.f_oneway(*grupos_p)
+            mod_pl = ols("Leads ~ Producto_L", data=df_plazas_sem).fit()
+            tab_pl = sm.stats.anova_lm(mod_pl, typ=1)
+
+            st.markdown("**H₀:** los leads semanales promedio son iguales "
+                        "entre productos · **H₁:** al menos un producto difiere")
+            K1, K2, K3 = st.columns(3)
+            K1.metric("F (one-way)", f"{anova_p.statistic:.2f}")
+            K2.metric("p-valor", formato_p(anova_p.pvalue))
+            K3.metric("gl", f"{int(tab_pl['df']['Producto_L'])} / "
+                             f"{int(tab_pl['df']['Residual'])}")
+
+            C1, C2 = st.columns(2)
+            with C1:
+                st.plotly_chart(fig_box(df_plazas_sem, "Producto_L", "Leads",
+                    ORDEN_PROD, "Boxplot de leads semanales por producto",
+                    "Leads por semana"), use_container_width=True)
+            with C2:
+                st.plotly_chart(fig_bar_ic95(df_plazas_sem, "Producto_L",
+                    "Leads", ORDEN_PROD, "Media de leads con IC 95%",
+                    "Leads por semana"), use_container_width=True)
+
+            st.write("**Tabla ANOVA one-way**")
+            st.dataframe(tabla_anova_bonita(tab_pl,
+                {"Producto_L": "Producto", "Residual": "Residual"}),
+                hide_index=True, use_container_width=True)
+            medias_prod = df_plazas_sem.groupby("Producto_L")["Leads"].mean()
+            st.success(
+                f"**Interpretacion:** p = {formato_p(anova_p.pvalue)} < 0.05 "
+                f"→ **se rechaza H₀**: el producto influye en los leads "
+                f"semanales. GS8 capta {medias_prod['GS8']:.1f} leads/semana "
+                f"contra {medias_prod['EMKOO']:.1f} de EMKOO y "
+                f"{medias_prod['EMZOOM']:.1f} de EMZOOM.")
+
+            st.divider()
+            st.markdown("#### ANOVA multifactorial: leads ~ producto × plaza")
+            mod_pl2 = ols("Leads ~ Producto_L + Plaza_L + Producto_L:Plaza_L",
+                          data=df_plazas_sem).fit()
+            tab_pl2 = sm.stats.anova_lm(mod_pl2, typ=1)
+            st.dataframe(tabla_anova_bonita(tab_pl2,
+                {"Producto_L": "Producto", "Plaza_L": "Plaza",
+                 "Producto_L:Plaza_L": "Producto × Plaza",
+                 "Residual": "Residual"}),
+                hide_index=True, use_container_width=True)
+            st.plotly_chart(fig_interaccion(df_plazas_sem, "Producto_L",
+                "Plaza_L", "Leads", ORDEN_PROD,
+                "Grafica de interaccion producto × plaza",
+                "Leads semanales promedio"), use_container_width=True)
+            p_prod = tab_pl2.loc["Producto_L", "PR(>F)"]
+            p_plaza = tab_pl2.loc["Plaza_L", "PR(>F)"]
+            p_intp = tab_pl2.loc["Producto_L:Plaza_L", "PR(>F)"]
+            st.info(
+                f"**Interpretacion:** producto significativo (p = "
+                f"{formato_p(p_prod)}); plaza sola no (p = "
+                f"{formato_p(p_plaza)}), pero la **interaccion producto × "
+                f"plaza si es significativa** (p = {formato_p(p_intp)}): la "
+                f"mezcla de productos que jala leads cambia segun la "
+                f"ubicacion — lo que se vende en Angelopolis no se comporta "
+                f"igual en Tlaxcala.")
+
 st.divider()
 st.caption("Dashboard GAC | Etapa I: Analisis univariado · "
-           "Etapa II: Modelado predictivo | Plaza Angelopolis")
+           "Etapa II: Modelado predictivo · Etapa III: Despliegue ANOVA | "
+           "Plaza Angelopolis")

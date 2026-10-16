@@ -1,0 +1,670 @@
+BDC,Fecha,Nombre Cliente,Telefono,Estatus de Lead,Potencial de compra,PDM,SDC,Venta,Asesor Asignado,¿Por que no ha visitado la agencia?,¿Por que no hay solicitud de credito?,¿Por que no hubo prueba de manejo ?,¿Por que no hubo proceso wow?,¿Por que se asigno antes de vistar piso?
+Saul ,,Guillermo ,,Finalizado ,90%,TRUE,False,False,Nancy,"Ya visito la Agencia  el dia jueves 17, interesado en GN8 PHEV ","Pide arrendamiento, unicamente se esta en espera de contacto con el contador, posibilidad de compra 90%","Si, hizo prueba de manejo ","Si recibio procesos wow, estuvo en la agencia mas de 3hrs ","No, se espero a que visitara la agencia para ser asignado "
+Saul ,,Roberto ,,Finalizado ,40%,FALSE,False,False,Victor ,Ya visito la Agencia  el dia 3 de abril ,Por que primero queria manejar las unidad ,No habia unidad GS8 HEV para prueba de manejo ,"Si recibio procesos wow, sin embargo no quizo nada de lo que se le ofrecio como amenidad ",Se asigno hasta que visitara Piso 
+Saul ,,Irving ,,Finalizado ,85%,FALSE,False,False,Alan ,Ya visito la agencia el dia 21 de abril ,"Firmo solicitud, sin embargo despues comento que seria contado solo que venta su auto, ya esta en proceso de venta ",Por que no habia unidad para prueba de manejo ,"Si se realizo el proceso wow, los clientes se quedaron hasta las 9:00 PM",Se asigno hasta que visitara Piso 
+Saul ,,Oswaldo ,,Venta ,90%,FALSE,False,True,Mauricio ,El cliente vive en Tabasco Villahermosa,Sera compra de contado,"Ya la manejo en Villahermosa, sin embargo por promocion y disponibilidad la comprara con nosotros","Las veces que se le ha marcado, agradece mucho la atencion por BDC y por el seguimiento continuo","Necesitabamos sacar el apartado, por eso se asigno antes, quedo de depositar el 23 de abril "
+Saul ,,Rodrigo ,,Finalizado ,90%,TRUE,False,False,Mauricio ,"Visito la agencia el mes pasado, y nos visita nuevamente el 23 de abril ",Hoy visita nuevamente la agencia y se firma solicitud ,"La primera vez que nos visito, realizo PDM",Si recibio el proceso wow la primera vez que nos visito ,"Se asigno hasta que visitara Piso  la primera vez, y se da nuevamnete el seguimiento con ese asesor "
+Saul ,,Antonio,,Activo ,85%,TRUE,True,False,Mauricio ,Visito la agencia el dia 13 de abril,Si hubo solicitud de credito ,Si realizo prueba de manejo ,"Lo resivio por parte del asesor, ya que el dia domingo la Hosstes descansa ",Se asigno hasta que visitara Piso 
+Saul ,,Juan Carlos,,Finalizado ,20%,FALSE,False,False,Ricardo ,"Se programo la visita dos dias, pero nunca asistio ",Comento que firmaba en cuando visitara la agencia ,No visito la agencia ,El el proceso de BDC siempre hubo la atencion adecuada y seguimiento ,Se asgino antes por recomendacion de Gerencia de ventas 
+Saul ,,Jose Alfredo ,,Finalizado ,50%,TRUE,False,False,Mauricio ,Visito la agencia el dia 13 de abril,Se le compartio cotizacion de arrendamiento sin embargo comenta que saldria del estado y posteriormente se comunicaria ,Se realizo PDM en EMkOO HEV,Si hubo por parte del asesor,Se asigno hasta que visitara Piso 
+Saul ,,Jacinto ,,Finalizado ,80%,FALSE,False,False,Nancy,No ha visitado la agencia por temas de trabajo ,"Se esta trabajando en ello, sin embargo el cliente tarda en responder",Por que no ha visitado la agencia ,Por parte de BDC siempre se es cortes y amable ,Se asgino antes por recomendacion de Gerencia de ventas 
+Saul ,,Felipe ,,Finalizado ,80%,TRUE,False,False,Alan ,Se le complicaba asitir sin embargo se le llevo la unidad a su casa,Por que comenta que lo esta platicando con su esposa y da respuesta esta semana ,Si hubo prueba de manejo a domicilio ,"Si lo hubo por parte dell asesor, quedo muy contento ",Se asgino antes por recomendacion de Gerencia de ventas
+Saul ,,Luz Mercedes,,Venta ,100%,TRUE,True,True,Mauricio ,Si visito la agencia ,Si hubo solicitud de credito ,Si realizo prueba de manejo ,Si  recibio el proceso wow,Se asigno hasta que visitara Piso 
+Antonio,,Enrique,,Finalizado ,80%,TRUE,True,False,Alan ,Cita efectiva,capacidad de pago,Si realizo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Saul ,,Esteban ,,Finalizado ,60%,FALSE,False,False,Aurelio ,No ha visitado la agencia por que primero queria saber estatus de su credito ,"El cliente esta en toda la disposicion de  compartir papeles, pero se asigno a asesor y el lead dejo de dar respuesta ",No concreto cita efectiva el vendedor ,Por parte de BDC siempre se es cortes y amable ,Se asgino antes por recomendacion de Gerencia de ventas
+Saul ,,Ramon ,,Finalizado ,90%,TRUE,True,False,Eduardo ,Ya la visito anteriormente sin embargo este mes aun no ,Hay credito autorizado ,"Ya hizo prueba de manejo, en mes anterior ",El cliente esta muy satisfecho con la atencion por parte de BDC y APV,Se asigno hasta visita en Plaza angelopolis 
+Saul ,,Jose de Jesus ,,Finalizado ,60%,TRUE,False,False,Alan ,Ya visito la agencia,El apv comenta que no tiene forma de demostrat ingresos ,No quizo realizar su prueba de manejo ,Se realizo el proceso wow por parte del asesor ,Se asigno hasta que visitara Piso 
+Saul ,,Mugdel Janer Morales,,Venta ,80%,FALSE,True,False,Victor ,Ya  visito la agencia,Esta en analisis,"No tenia tiempo, comenta tener prisa",Recibio la atencion,Se asigna en la visita
+Antonio,,Carlos Alberto Rios,,Activo ,80%,FALSE,True,False,Mauricio ,Ya visito la agencia,Ingresan por Mstar,No trajo licencia,Recibio la atencion,Se asigna en la visita
+Antonio,,Vicente Cortes  ,,Finalizado ,60%,TRUE,False,False,Alan ,Ya visito la agencia,Comento mandar papeles y dejo de contestar,,,
+Antonio,,Angel  ,,Venta ,100%,TRUE,True,True,pedro,ya visito la agencia,compro de contado,Si realizo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Jorge Luis Nunez ,,Activo ,80%,TRUE,False,False,Mauricio ,Ya visito la agencia,Primero quiere que la vea su esposa,Si realizo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Mercy,,Finalizado ,20%,TRUE,False,False,pedro,ya visito la agencia,"No quizo, solo queria boletos del cine",Si realizo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Antonio Rodriguez,,Activo ,80%,TRUE,False,False,Alan ,ya visito la agencia,"ya ingreso, le faltan mas estados de cuenta",Si realizo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Juan Colotl  ,,Activo ,70%,FALSE,True,False,Laura,ya visito la agencia,Ya se ingreso esta en analisis,Se le ofrecio pero no quizo,Recibio la atencion,Se asigna en la visita
+Antonio,,Samuel Salamanca,,Acitvo ,80%,FALSE,False,False,pedro,ya visito la agencia,Quizo conocer primero la unidad,Si realizo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Christoph Vega,,Activo ,80%,FALSE,False,False,Mauricio ,ya visito la agencia,"solo vio la unidad, su bb estubo desinquieta decidieron retirarse",su bb estubo desinquieta decidieron retirarse,Recibio la atencion,Se asigna en la visita
+Saul ,,Jose Campos ,,Activo ,70%,FALSE,True,False,Ricardo ,Ya visito la agencia el dia 24 de abril ,"Es arrendamiento, y esta solo en decidir la unidad ","La unidad no estaba en la agencia, y no habia GS4 habilitada para PDM",Si recibio la atencion ,Por indicaciones de gerencia de ventas
+Saul ,,Roberto Luis Pacheco,,Activo ,40%,FALSE,False,False,Pedro,"Ya visito la agencia, llego desde Oaxaca ",Comenta que la unidad ,Le gusto la unidad pero comenta que no es para el ,Recibio la atencion ,Se asigno hasta que visitara Piso 
+Antonio,,Carlos  Texis  Rodriguez  ,,Venta ,100%,TRUE,True,True,Alan ,Ya visito la agencia,Ya se ingreso solicitud,Ya se realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Javier Pazos,,Acitvo ,70%,TRUE,True,False,Eduardo ,Ya visito la agencia,Ya se ingreso solicitud,Ya se realizo prueba de manejo,Recibio la atencion,
+Antonio,,Roberto Portilla,,Activo ,70%,FALSE,False,False,Victor ,Ya visito la agencia,,,,Se asigna en la visita
+Antonio ,,Julian marin castillo,,Activo ,80%,TRUE,False,False,Aurelio ,Ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,,
+Saul ,,13,Toño,11,Ventas ,9,,,,,,,,
+Antonio,,Edgar Becerril,,Venta,80%,TRUE,True,True,Ricardo ,Ya visito la agencia,"No tenia tiempo, quedo de mandar la informacion",Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Quetzalli Fernanda,,Acitvo ,80%,TRUE,True,False,Ricardo ,Ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,Recibio la atencion,
+Saul ,,Antonio ,,Finalizado,90%,TRUE,False,,Mauricio ,Visito la Agencia el dia 1 de Mayo ,Por que primero quiere vender su sentra,Realizo PDM en Emkoo,Si hubo por parte del asesor,Se asigna en la visita
+Saul ,,Estela Hernandez,,Finalizado ,70%,TRUE,True,False,Mauricio ,Visito Custom 2 veces para ver emzoom ,Ya lleno la solicitud de credito ,Ya se realizo prueba de manejo en Apizaco ,Recibio la atencion ,Ocupa asesoria tecnica y visita en tlaxcala 
+Saul ,,Arturo Sanchez ,,Finalizado ,90%,TRUE,True,False,Referido Pablo,Nos visita el dia de hoy ,lleno papeles para credito ,Si hubo prueba de manejo ,Recibio la atencion ,Lead referido pero tratado en Digital
+Antonio,,Anselmo Villarreal Rodas,,Finalizado,70%,TRUE,True,False,Eduardo ,Ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Andres Fernandez Martinez ,,Finalizado,90%,TRUE,False,False,Eduardo ,Lo visitamos en su casa,Ya se ingreso solicitud,Espera GS8 H,,
+Saul ,,Ulises Alejo ,,Finalizado ,80%,TRUE,False,False,Nancy,Ya visito la agencia el dia domingo 11,Ya se paso a precalificar ,Si hizo prueba de manejo y le encanto la unidad ,Recibio la atencion ,Se asigno hasta el momento de la visita 
+Saul ,,Jose alberto ,,Finalizado ,70%,FALSE,False,False,Aurelio ,Ya nos visito el dia 12 de mayo ,No quizo dejar INE pero asegura que compra ,Si realizo prueba de manejo ,Recibio la atencion,Se asigno hasta el momento de la visita 
+Saul ,,Adilene Ruiz,,Venta,90%,TRUE,True,True,Mauricio ,Ya nos visito el dia 13 de mayo,Ya hay solicitud aprobada por Mstart ,Si realizo prueba de manejo ,Recibio la atencion,Se asgino hasta la visita en piso 
+Saul ,,Gerardo garcia ,,Finalizado,60%,TRUE,False,,Eduardo ,Ya nos visito el dia 13 de mayo ,Pide que su mensualidad no exceda los 6mil ,Si hubo prueba de manejo,"recibio la atencion, se fue muy contento ",Se asigno hasta el momento de la visita 
+Saul ,,Erick Calderón,,Finalizado ,80%,TRUE,False,False,Ricardo ,Ya nos visito el dia  14 de mayo,Es arrendamiento y se esta en espera de contacto,No habia unidad GS8 disponible en la agencia ,Recibio la atencion ,Se asgino hasta la visita en piso 
+Saul ,,Jose Luis,,Venta,95%,TRUE,True,True,Victor ,Ya nos visito el dia 17 de mayo,No quiso dejar solicitud firmada,Si hubo prueba de manejo ,Si recibio la atencion ,Se asigna hasta la visita a piso
+Saul ,,Cesar  Aguilar,,Venta,80%,TRUE,True,True,Victor ,El cliente es de Veracruz ,Ya hay credito aprobado,El cliente es de Verazruz,ha recibido la atencion correcta ,Para seguimiento a distancia por el Apv
+Saul ,,Christian ,,Venta,80%,TRUE,False,False,Aurelio ,"Ya nos visito, y comenta que nos visitara nuevamnete el dia sabado 24 de mayo",Sera compra de contado ,Se le incistio pero no quizo ,Si recibio la atencion ,Se asigna hasta la visita a piso
+Antonio,,Diego Cabrejiz,,Activo,80%,TRUE,False,True,Nancy,Ya visito la agencia,Sera compra de contado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Sergio Osorno,,Acitvo ,80%,TRUE,True,False,Pedro,Ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Jossmarr Csm Gil,,Activo,70%,TRUE,True,False,Pedro/Eduardo,Ya visito la agencia,Quiere que vea la unidad su esposa,Ya realizo prueba de manejo,recibio la atencion,Se asigna en la visita
+Saul ,,Pedro Bello,,Venta,80%,TRUE,True,True,CASA ,"Visito la agencia y no habia asesor lo atiende pablo, lead del mes de abril ",ya hay solicitud aprobada,Si realizo prueba de manejo ,Recibio la atencion ,Se asigna en la visita
+Antonio,,Herrera Erick/Maria del Carmen,,Venta,75%,TRUE,True,True,Pedro,ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,David,,Acrivo,90%,TRUE,True,False,Aurelio ,Nos visito el dia 27 de Mayo,Ya dejo todo para solicitud ,Realizo PDM en Emkoo,Recibio la atencion,Se asigna en la visita
+Antonio,,Lia Vera,,Venta,85%,TRUE,True,True,Victor ,Ya visito la agencia,ya tiene credito autorizado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Francisco Mier,,Activo,70%,TRUE,False,False,Victor ,Ya visito la agencia,,Ya realizo prueba de manejo,recibio la atencion,Se asigna en la visita
+Antonio,,Ricardo Pedraza Perez  ,,Activo,90%,TRUE,True,True,Aurelio ,Ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,recibio la atencion,Se asigna en la visita
+Antonio/Saul ,,Clementina ,,Venta,85%,TRUE,True,True,Ricardo ,Lead de base de datos ,Ya ingreso y se autorizo,Si hubo PDM ,recibio la atencion ,Lead de base de datos 
+Saul ,,Aldo Segura ,,Finalizado ,80%,TRUE,True,False,Ricardo ,Nos visito el dia 03 de Mayo,Si hubo solicitud sin embargo salio rechazada,Si hay prueba de manejo ,Recibio la atenciao,Se asigna en la visita
+Antonio,,Vladimir,,activo,70%,TRUE,False,False,Pedro,Ya visito la agencia,En proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio ,,Daniel,,Acitvo ,80%,TRUE,False,False,Sergio Raymundo,Ya visito la agencia Custom,En proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul,,Francisco Santander ,,Finalizado,90%,TRUE,False,False,Alan,Nos visito el dia 08 de junio ,Pretende compra de contado ,Realizo prueba de manejo ,Recibio la atencion ,Se asigna en la visita
+Saul ,,Dulce Elizabeth ,,Activo ,90%,TRUE,True,True,Pedro,Nos visito el dia viernes 13 de junio ,Ya esta en analisis ,Si hubo prueba de manejo,Recibio la atencion ,Se asgino hasta la visita en piso 
+Saul ,,Fernando ,,Venta ,90%,TRUE,True,True,Alan ,"Nos visito en plaza, ya deposito apartado ",Ya se esta trabajando ,En proceso,Recibio la atenciao,Se asigna por seguimiento
+Antonio,,Sergio Figueroa,,Venta ,85%,TRUE,True,True,Sergio Raymundo,Ya visito la agencia,ya esta aprobada,Ya realizo prueba de manejo,Recibio la atencion,Se reasigno por seguimiento
+Antonio,,Osvaldo Peña ,,Acitvo ,75%,TRUE,True,False,Ricardo ,Ya visito la agencia,Ya se ingreso solicitud,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Aldo Perz ,,Activo ,80%,FALSE,False,False,Mauricio ,Ya nos visito el dia sabado 14 de junio ,Ya tiene credito aprobado en dorada ,Ya realizo prueba de manejo,Recibio la atencios ,Se asigna en la visita
+Saul ,,David ,,Venta ,90%,TRUE,False,True,Pedro ,Ya nnos visito su esposa el dia 17 ,El esposo viene el viernes y nos deja papeles ,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Saul ,,Manuel Portillo,,Finalizado ,70%,FALSE,False,False,Gerencia ,Nos visito el dia 16 de junio,Ya hay solicitud de credito ,Si hubo prueba de manejo,Recibio la atenciao,Se asgino hasta la visita en piso 
+Antonio,,Jaime Juarez,,Acitvo ,5%,TRUE,True,False,Mauricio ,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Pedro Jesus  Pestana Castillo ,,Acitvo ,70%,TRUE,True,False,Victor ,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Maximo Fernandez/Fabiana,,Venta ,90%,TRUE,True,True,Pedro ,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Anabell,,Venta,90%,TRUE,True,True,Pedro,Lead de mes atras ,Ya esta en proceso,Ya se realizo prueba de manejo,Recibio la atenciao,Se asigna por que se conocio en plaza 
+Antonio,,Benjamin/ Element empresa,,Venta ,90%,TRUE,True,True,Alan,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Luis Carlos Gomez ,,Activo,50%,TRUE,True,False,Marcos Coca,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Jesus Morales,,Venta ,70%,TRUE,True,True,Victor,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Rossana ,,Finalizado ,80%,TRUE,True,False,Miguel,Ya nos visito el dia 23 de Junio ,Ya esta pre-aprobado ,Ya realizo PDM,Recibio la atencion,Se asigna en la visita 
+Antonio ,,Parmenides Ortiz,,Acitvo ,70%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Miguel Angel,,Acitvo ,70%,TRUE,True,False,Mauricio ,Ya visito la agencia,Ya esta pre aprobado,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul,,Jose Miguel,,Activo,70%,TRUE,False,False,Mauricio,Ya nos visito el dia 27 de junio,En proceso,Ya realizo la prueba de manejo ,Si recibio la atencion ,se asigno hasta la visita de piso 
+Antonio,,Olivia rascon sosa,,Acitvo ,60%,TRUE,True,True,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Mireya Eugenia Ceron,,Acitvo ,60%,TRUE,True,True,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Arturo Alcantar,,Acitvo ,70%,TRUE,True,False,Aurelio ,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Hugo,,Activo ,60%,FALSE,False,False,Alan ,Ya nos visito el dia 30 de junio ,Ya esta en proceso ,Ya se realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita 
+,,Julio,,,,FALSE,False,False,,,,,,
+Saul ,,Hugo Martines ,,Activo ,60%,TRUE,True,,Alan,Ya nos visito el dia 01 de Juio,Esta en proceso por ensueño,Si realizo la prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Heriberto Solis Perez,,Activo,60%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Julio Jimenez,,Activo,70%,TRUE,True,True,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Edgar Corte ,,Activo,70%,FALSE,False,False,Carlos Texis,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Grabiel Zamora ,,Activo ,90%,TRUE,True,False,Mauricio ,Ya nos visito el dia 05/julio,Esta en proceso,Esta en proceso,Esta en proceso,Se  asigna en visita
+Saul ,,Ivan ,,Activo,80%,FALSE,False,False,Nos vista lunes 7,,,,,
+Saul,,Anthony,,Activo,80%,TRUE,True,False,Nos visita el sabado 5,Ya nos visito ,Ya esta la solicitud ,Ya realizo la prueba de manejo ,Esta en proceso,
+Antonio,,Ernesto Vega,,Activo,80%,TRUE,True,True,Alan Gonzalez,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Hector Cortes ,,Activo ,85%,TRUE,False,False,Alan Gonzalez,Ya nos visito,Esta en proceso, Ya realizo la prueba de manejo ,Recibio la atencios ,Se asigna en la visita 
+Antonio,,Gabriel,,Activo,80%,TRUE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Fausto,,Activo ,80%,TRUE,True,False,Ricardo ,Ya nos visito el dia 11 de Julio ,Ya esta en proceso ,Ya realizo la prueba de manejo ,Recibio la atencios ,Se asigno en la visita 
+Antonio,,Javer Moreno,,Activo,80%,FALSE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Llego al cierre del dia,Recibio la atencion,Se asigna en la visita
+Saul,,Roberto Paz Rojano ,,Activo,80%,FALSE,False,False,Aurelio ,Ya nos visito el dia 15 Julio ,Ya esta en proceso ,El cliente comenta que no queria manejar la unidad ,Recibio la atencion ,Se asigna en la visita
+Saul ,,Alfonso ,,Activo,80%,FALSE,False,False,Pedro Antonio ,Ya nos visito el dia 16 de julio ,Ya esta en proceso ,Si hubo prueba de manejo ,Recibio la atencion,Se asigna en la visita
+Antonio,,Antonio/Talia,,Acitvo ,80%,FALSE,True,True,Pedro Antonio ,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Marisol Luna,,Acitvo ,80%,TRUE,True,False,Aurelio ,Ya visito la agencia,Autorizada,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Erick ,,Finalizado ,70%,TRUE,True,False,Aurelio ,Ya visito la agencia ,El credito fue rachazado ,realizo prueba de manejo ,Recibio la atencion ,Se asigna en la visita 
+Saul,,Karla ,,Activo ,,FALSE,False,False,Ignacio ,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita 
+Antonio,,Jose Hermenegildo ,,Activo,80%,TRUE,True,False,Pedro Antonio ,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Jossmarr  Csm Gil ,,Activo,90%,TRUE,True,True,Marcos coca,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Guillermina ,,Activo ,90%,TRUE,True,False,Victor ,Ya visito la agencia,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Lorenzo Coyotl ,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Patricia Rios,,Activo,60%,TRUE,False,False,Pedro Antonio ,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Armando Alvarez Morales,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Juan Manuel Infante,,Activo,85%,TRUE,True,False,Marcos coca,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul,,Gustavo Rojas Garcia,,Activo ,80%,TRUE,True,False,Victor ,Ya visito la agencia,Si hay solicitud de credito ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul,,Mauricio Garcia,,Activo ,80%%,TRUE,True,False,,,,,,
+Antonio,,Susana Morales Gutierrez,,Activo,80%,TRUE,False,False,Alan Gonzalez,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Valerio Figueroa,,Activo ,80%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Sr Martinez,,Activo,80%,TRUE,False,False,Marcos coca,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,German Hernandez,,Activo,60%,TRUE,False,False,Ignacio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Saul ,,Oscar,,Activo,80%,FALSE,True,False,Daniel ,Ya visito la agencia,Ya esta en proceso,No habia Unidad Demo,Recibio la atencion ,Se asigna en la visita
+Antonio,,Alvaro Vega Tobón,,Activo,80%,TRUE,True,True,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Manolin Marin  ,,Activo,80%,TRUE,False,False,Mercedes,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana ,,Abraham Fernandez ,,Activo,70%,FALSE,False,False,Mercedes,Ya visito la agencia ,,,,
+Antonio,,Karina Madrid,,Activo,80%,TRUE,False,False,Mercedes,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Iram Sanchez,,Activo,80%,TRUE,False,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Gilberto,,Activo,80%,TRUE,False,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Marta Gomez,,Activo,60%,TRUE,False,False,Alan/Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana,,Norma Cruz,,Activo,70%,TRUE,False,False,Ricardo,Ya visito la agencia,,,,
+Ana,,Ryan Pacheco ,,Activo,90%,TRUE,True,True,Pedro,Ya visito la agencia ,,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita 
+Antonio,,Miguel Edgar Ayllon,,Activo,75%,TRUE,True,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Jesus Ramirez,,Activo,70%,TRUE,False,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana ,,Jose Frein Romero Vega ,,Activo,70%,FALSE,False,False,Alan,Ya visito la agencia ,,,,
+Ana,,Javier Garcia ,,Activo,70%,TRUE,False,False,Mauricio ,Ya visito la agencia ,,,,
+Antonio,,Angelica Tejeda,,Activo,80%,TRUE,False,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Ariel Macbeth Fierro Lima,,Activo,75%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Robert Lopez,,Activo,75%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Eduardo Solis,,Activo,80%,TRUE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana,,Margarita Rodriguez,,Finalizado,50%,FALSE,False,False,Alan,Ya visito la agencia ,,,,
+Ana,,Jhonny Frost ,,Activo,70%,TRUE,True,False,Alan,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,
+Ana ,,Obed Garcia ,,Activo,70%,TRUE,False,False,Alan,Ya visito la agencia,,,,
+Ana ,,Nazario Garcia,,Activo,70%,TRUE,False,False,Aurelio,Ya visito la agencia ,,,,
+Ana,,Edson Jair,,Activo,60%,FALSE,False,False,Victor,Ya visito la agencia ,,,,
+Ana,,Oscar Daniel Cuautli,,Activo,70%,FALSE,False,False,Victor,Ya visito la agencia ,,,,
+Ana,,Ruben Quiroz ,,Activo,70%,TRUE,True,False,Mauricio,Ya visito la agencia ,Ya este en proceso ,,,
+Antonio,,Hipolito Leandro Funes ,,Activo,80%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Ruben Rafael Lozada ,,Activo,80%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana,,Fabi?n Zaldivar Arres ,,Activo ,80%,TRUE,False,False,Maurico,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,
+Antonio,,Alejandro Sosa,,Activo,50%,FALSE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Evangelina Rojas Juarez ,,Activo,80%,TRUE,True,False,Mercedes,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Curro,,Activo,80%,TRUE,False,False,Maurico,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,
+Ana,,Gabino Arrieta ,,Activo,60%,TRUE,False,False,Victor,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,
+Ana,,Aldo Anzures Martinez,,Activo,80%,TRUE,False,False,Ricardo,Ya visito la agencia ,,Ya realizo prueba de manejo,,
+Ana ,,antonio pavon garcia,,Activo,50%,FALSE,False,False,Marcos,Ya visito la agencia ,,,,
+Ana ,,Andres Felipe ,,Activo,60%,FALSE,False,False,Marcos,Ya visito la agencia ,,,,
+Antonio,,Elizabeth  Toledo ,,Activo,80%,TRUE,False,False,Marcos,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,JUAN ANTONIO CASTELAN SANTIAGO,,Activo,80%,TRUE,False,False,VICTOR,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Luis Angel Ramos,,Activo,60%,TRUE,False,False,Jeamy Custom,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana ,,Julia María Navarrete Carreño,,Activo ,80%,TRUE,False,False,Marcos,Ya visito  la agencia ,,Ya realizo prueba de manejo ,Recibio la atencion,
+Antonio,,Ozair Viveros,,Activo,80%,TRUE,False,False,VICTOR,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana,,Yaimy  Guiterrez ,,Activo,50%,FALSE,False,False,VICTOR,Ya visito la agencia ,,,,
+Antonio,,Orlando Delgado ,,Activo,50%,TRUE,False,False,Maurico,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,Rodrigo.e.jim,,Activo,50%,FALSE,False,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,"Gabriel  Franco , Vazquez",,Activo,60%,FALSE,False,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Antonio,,Marisol Luna  Angeles,,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Antonio,,"Marcos Benjamin Oviedo, Moreno",,Activo,60%,TRUE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,Fernando Pacheco ,,Activo,60%,FALSE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Antonio,,Johann Arevalo Zaragoza,,Activo,60%,TRUE,True,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,Alejandro Valentin,,Activo,60%,FALSE,False,False,Alan,Ya visito la agencia ,,,,
+Ana,,"Maria  Dolores , Rueda ",,Activo,60%,FALSE,False,False,Ignacio,Videollamada,,,,
+Ana,,Nahum Montiel,,Activo,50%,FALSE,False,False,Alan,Videollamada,,,,
+Antonio,,Juan,,Activo,60%,TRUE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Antonio,,Comercializadora   Y Distribuidora,,Activo,80%,TRUE,True,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,Juan Aguilar Moreno ,,Activo,60%,FALSE,False,False,Mercedes,Ya visito la agencia ,Ya esta en proceso,,,
+Ana,,Jorge Luis,,Activo,70%,FALSE,False,False,Mercedes,Videollamada,Ya esta en proceso,,,
+Ana ,,Ricardo,,Activo,60%,FALSE,False,False,Mercedes,Ya visita la agencia,,,,
+Antonio,,Miguel Angel Cuenca Perez,,Activo,80%,TRUE,True,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,Eloy Perez Gracia,,Activo,80%,TRUE,False,False,Alan,Ya visito la agencia,,,,
+Antonio,,Oscar Campech,,Activo,60%,TRUE,False,False,Julio Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita
+Ana,,Levy Carrillo,,Activo,80%,TRUE,False,False,Julio Cesar,Ya visito la agencia,,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita3
+Antonio,,Monserrat Vivar Garcia,,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia,,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana,,Erwin Castaneda  ,,Activo,70%,TRUE,False,False,Pedro Antonio,Ya visito la agencia ,,,,
+Ana ,,Adriel Zenteno,,Activo,70%,FALSE,False,False,,,,,,
+Antonio,,Mary Luz Carrillo Eliosa,,,70%,TRUE,False,False,Marcos,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Sergio   Contreras ,,Activo,60%,FALSE,False,False,Maurico,Videollamada,Ya esta en proceso ,,,
+Antonio,,Alejandro Huerta Fuentes,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Felipe Sanchez/sigmundo,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Salvador Flores,,Activo,80%,TRUE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Antonio,,Marco Antonio  Altamirano Conde ,,Activo,80%,TRUE,False,False,Victor,Ya visito la agencia,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana ,,Josue  Heron  Lopez,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion ,Se asigno en la visita 
+Ana,,Yoni Maravilla,,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Antonio,,German Leon Sanchez,,Activo,80%,FALSE,False,False,Alan,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana ,,Eddie Fb ,,Activo,80%,FALSE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,ISACHIFT117,,Activo,70%,FALSE,True,False,Marcos,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Gaviota Alvarez,,Activo,80%,FALSE,True,False,Marcos,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Carlos Leonel  Bautista  ,,Activo,80%,FALSE,True,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,Marcos  Maldonado ,,Activo,60%,FALSE,True,False,Julio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,"Edmon   Abdala ,  ",,Activo,80%,FALSE,False,False,Pedro,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana ,,Antelmo Flores Guevara,,Activo,80%,FALSE,False,False,Ignacio,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,Jose Eduardo Alonso ,,Activo,60%,FALSE,True,False,Aurelio ,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Antonio,,Omar Aguilar Teyssier,,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana ,,Sarai Ruiz,,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,,Recibio la atencion,Se asigno en la visita 
+Ana ,,Jesus Colorado,,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana ,,"Juan Manuel Mendoza, Hernandez",,Activo,80%,FALSE,True,False,Julio,Ya visito la agencia ,Ya esta en proceso ,,Recibio la atencion,Se asigno en la visita 
+Antonio,,Martha Fernanda Garcia,,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Clau,,Activo,50%,FALSE,False,False,Mauricio,Ya visito la agencia ,,,,
+Antonio,,Javier Garcia Amaya,,Activo,60%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana,,"Joaquin Rodrigo Arias, Rios",,Activo,50%,TRUE,False,False,Julio,Ya visito la agencia ,,Ya realizo prueba de manejo,Recibio la atencion,Se asigna en la visita
+Ana ,,Jesus Monreal,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita 
+Ana,,Carlos Rodriguez Perez Rodr?guez P?rez ,,Activo,70%,TRUE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita 
+Ana ,,Julio Cesar Vega ,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso ,,Recibio la atencion ,Se asigna en la visita 
+Ana,,Ivan Garcia,,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion ,Se asigna en la visita 
+Antonio,,Jose De Jesus  Perez,,Activo,80%,FALSE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Ricardo  Arenas,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,"Miguel  Irigoyen, ",,Activo,70%,FALSE,False,False,Mauricio ,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Rene Angel Bellizzi ,,Activo,80%,FALSE,True,False,Victor,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,Laura Ivonne Martinez ,,Activo,80%,FALSE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,Alejandro Olivares,,Activo,60%,FALSE,True,False,Mercedes,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Antonio,,Felipe  Tepale,,Activo,80%,FALSE,True,False,Ignacio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Juan Carlos Miguel ,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia ,Ya esta en proceso ,,Recibio la atencion,Se asigno en la visita 
+Ana,,Jesus Manuel  Rios,,Activo,60%,FALSE,True,False,Mauricio ,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Nicolas Contreras,,Activo,80%,FALSE,False,False,Pedro,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+ana,,"Jose De Jesus  Perez , ",,Activo,80%,TRUE,False,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Antonio,,"Jose Miguel  Cosme, Martinez",,Activo,80%,FALSE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Juan Aguilar Moreno ,,Activo,80%,FALSE,True,False,Mercedes,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,Adriel Zenteno ,,Activo,80%,FALSE,False,False,Ana,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Antonio,,Jose Eduardo Toriz Bustos ,,Activo,80%,TRUE,False,False,Alan,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,VANNESSA LIZETTE PEREZ CARRANZA,,Activo,70%,FALSE,True,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Juan  Lopez Cruz ,,Activo,80%,FALSE,False,False,Ricardo,Ya visito la agencia ,Ya esta en proceso ,,Recibio la atencion,Se asigno en la visita 
+Antonio,,NADIA LOPEZ GABRIEL,,Activo,80%,FALSE,False,True,Mauricio,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana ,,"Sixto Tito  Guzman, Varela",,Activo,80%,TRUE,True,False,Jhosslan,Ya visit la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rogelio Hernandez,,Activo,95%,TRUE,True,True,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Juan Francisco Olvera Alarcon,,Ativo,70%,FALSE,True,False,Ignacio,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,Gonzalo Chavez,,Activo,80%,FALSE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Ana,,Jesus Gilbert  Cano ,,Activo,60%,FALSE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita 
+Antonio,,Eliseo Huerta,,Activo,70%,TRUE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Javier  Reyes,,Activo,80%,FALSE,True,False,Jhosslan,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Joaquin Moreno,,Activo,80%,FALSE,True,False,Alan,Ya visito la agencia ,Ya esta en proceso ,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana ,,Jose  Luis   Salazar  ,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia ,,,,
+Antonio,,Jose Luis Pelcastre,,Activo,75%,TRUE,True,False,Ignacio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Jennifer,,Activo,60%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Enrique  Enrique  Herrera,,Activo,70%,FALSE,False,False,Julio,Ya visito la agencia ,,,,
+Ana ,,Ivan Emilio,,Activo,85%,FALSE,True,False,Antonio,Ya visito la agencia ,Ya esta en proceso ,,,
+Ana,,Jose Abraham Zamora Arenas,,Activo,80%,FALSE,True,False,Ricardo,,,,,
+Antonio,,Gustavo Rojas Garcia,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana ,,Carmen  Ortega ,,Activo,80%,FALSE,True,False,Victor,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,
+Ana,,Raul Delgado,,Activo,70%,TRUE,True,False,Alan,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,
+Antonio,,Adan Fuentes ,,Activo,85%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Jose Reyes,,Activo,70%,FALSE,False,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo ,,
+Antonio,,Humberto Maldonado Garcia,,Activo,65%,TRUE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Antonio,,Miguel Vasquez San Pablo ,,Activo,70%,FALSE,False,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita 
+Ana,,Carolina Ortega,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Alejandro Vivas,,Activo,80%,FALSE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Jose Manuel Martinez Rodriguez,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso ,,,
+Antonio,,Juan mercado González,,Activo,80%,FALSE,True,False,Omar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Martin Magdaleno  Rodriguez ,,Activo,80%,FALSE,True,False,Omar,Ya visito la agencia,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita
+Ana,,Christian Capetillo,,Activo,80%,FALSE,True,True,Omar,Ya visito la agencia,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita
+Ana,,Jose Manuel Morales Gomez,,Activo,80%,FALSE,True,False,Omar,Ya visito la agencia ,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita
+Ana ,,Orlando  Cuahutle,,Activo,80%,FALSE,True,False,Julio,Ya visito la agencia,Ya esta en proceso,,Recibio la atencion,Se asigno en la visita
+Ana,,Joselin Ramirez  Escobar,,Activo,70%,FALSE,True,False,Alan,,,,,
+Antonio,,Rafael Davila,,Activo,65%,TRUE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Felix Luna Baleon,,Activo,80%,FALSE,True,False,Jhoslan,Ya visito la agencia,Ya esta en proceso,,Recibio la atencion,
+Ana,,Luis Munoz ,,Activo ,80%,FALSE,True,False,Mauricio,Ya visito la agencia,,,,
+Antonio,,Monserrat Torres,,Activo,60%,FALSE,True,False,Omar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Alberto Acocal ,,Activo,80%,TRUE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Diego Martinez,,Activo,90%,FALSE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Cesar Cabrera Ortega ,,Activo,70%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Diana  Hernandez ,,Activo,80%,FALSE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Francisco  Mier ,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Margarita Diaz Garcia ,,Activo,80%,TRUE,True,True,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Teresa Guadalupe  Guillen Venegas,,Activo,75%,FALSE,True,True,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Adair Lopez,,Activo,60%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jairo Samuel  Pineda Velasquez,,Activo,70%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,"Miriam Lizbeth Ruiz, Zamudio",,Activo,85%,FALSE,True,False,Nancy,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Imelda  Valencia  Sanchez,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Luis  Jorge , ",,Activo,80%,FALSE,True,False,Ignacio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Waldo Pichon ,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Taide Cordoba, Sandoval",,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Sandi  Hernandez , ",,Activo,85%,FALSE,True,False,Ignacio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Adriana  Zarate, Apolinar",,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Victor  Lorenzana ,,Activo,65%,TRUE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Antonio Ojeda  , ",,Activo,70%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Mario Alberto Medrano Mayo,,Activo,80%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Antonio De Jesus Lima Hernandez,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,"Antonio  Lopez, ",,Activo,80%,FALSE,True,True,Marcos,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Todoro Lopez, ",,Activo,70%,TRUE,True,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Martin Vazquez  , ",,Activo,65%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Israel Chavez  , ",,Activo,80%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rocio Lopez Mesa,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Alexis  Palestina ,,Activo,80%,FALSE,True,False,Omar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,Vanessa  Maza ,,Activo,80%,TRUE,True,False,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,"Hugo Jorge  , ",,Activo,70%,TRUE,True,True,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,"David  Torres , Ramirez ",,Activo,80%,FALSE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,Yasmin Galindo ,,Activo,80%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,Ricardo  Martinez Tepox ,,Activo,80%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,Ari  Valero ,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion ,Se asigno en la visita 
+Ana,,Guadalupe Hernandez ,,Activo,80%,TRUE,True,False,Pedro Antonio,Ya visito la agencia,,,,
+Ana,,Humberto Calixto,,Activo ,80%,TRUE,True,False,Aurelio,Ya visito la agencia ,,,,
+Antonio,,Isidro Ramos,,Activo,60%,TRUE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Jose Alberto ,,Activo,60%,TRUE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Andrea Hernandez Reyes,,Activo,70%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Manuel Rodriguez ,,Activo,80%,TRUE,False,False,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,José Iván Sánchez Pérez,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Octavio Arvea,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Mario Negrete Juarez ,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Juan Gonzales ,,Activo,70%,FALSE,True,False,Alan,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Marcial   Sanchez   ,,Activo,80%,FALSE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Jesus Ivan Ibarra Robles,,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Juan Antonio  Cid  Reynoso  ,,Activo,70%,FALSE,True,False,Victor,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Cesar Cabrera Ortega ,,Activo,70%,FALSE,True,False,Victor,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Jose De Jesus  Franco Saldana ,,Activo,70%,FALSE,False,False,Ricardo ,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Jose C Tecnom ,,Activo,80%,FALSE,True,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Rene Beguerisse Torres,,Activo,70%,FALSE,False,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,,
+Antonio,,Jose Ramon Marquez,,Activo,70%,FALSE,False,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Ramsey Tecnom,,Activo,60%,FALSE,False,False,Mauricio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jorge Ariza,,Activo,90%,TRUE,True,False,Victor,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Manuel  Vinaz, ",,Activo,90%,TRUE,True,False,Omar,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Efrain Zamudio ,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rivera Castillo,,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Alan Quintero Munive,,Activo,70%,FALSE,True,False,Pedro,Ya visito la agencia ,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Omar Garcia Vazquez,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia ,,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Victor Arrroyo Tecnom,,Activo ,70%,TRUE,False,False,Pedro,Ya visito la agencia ,,,,
+Ana,,Hugo Jirge Regalado Castaneda,,Activo,60%,FALSE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Arizbeck  Ortiz, ",,Activo,70%,TRUE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"David  Torres , Ramirez ",,Activo,80%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Vanessa  Maza ,,Activo,80%,FALSE,False,True,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Hugo Jirge Regalado  Castaneda ,,Activo,70%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Jean  Simoni, ",,Activo,70%,FALSE,True,False,Omar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Gustavo Rojas ,,Activo,70%,FALSE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Rafael  Chocolatl, Cervantes",,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Dionisio Arce, Martinez",,Activo,80%,FALSE,False,False,Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Mauel  Ramirez ,,Activo ,70%,FALSE,True,False,Julio Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Roberto Carlos Parra, Castelan",,Activo,70%,TRUE,True,False,Julio Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jose Luis Martinez,,Activo,70%,FALSE,True,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Oscar  Arroyo, ",,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Hector Alejandro Gonzalez Tapia  , ",,Activo,70%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Cristian Ocampo ,,Activo,70%,TRUE,True,False,Ignacio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Gloria Elena  Benavides, ",,Activo,80%,FALSE,True,False,Nancy,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Efrain Zamudio ,,Activo,80%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Carolina  Ortega ,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,"Hector Miguel  Fernandez , ",,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Sr. Elvis fb,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Magdaleno,,Activo,80%,FALSE,True,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Cerezo Honorato,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Laura Garcia,,Activo,70%,TRUE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Sr. Francisco Cianca,,Activo,70%,FALSE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Jose De Jesus Perez Hernandez,,Activo,80%,FALSE,False,False,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita,
+Ana,,Jose Abraham,,Activo,80%,TRUE,False,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jose Luis Rojas Aguilar,,Activo,80%,TRUE,False,False,Ignacio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,"Sr. Roberto Loeza
+",,Activo,60%,FALSE,True,False,Nancy,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Ale Arellano,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Eugenio De Las Heras B,,Activo,80%,FALSE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Francisco/Maria del Sol,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Filiberto González Guarneros,,Activo,80%,FALSE,True,False,Omar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Jose Alberto,,Activo,60%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Luciano Valdès,,Activo,80%,TRUE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Agustin,,Activo,70%,TRUE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,, MIGUEL SANTAMARIA MORALES,,Activo,90%,TRUE,False,False,Cesar ,Ya visito la agencia,,,,
+Ana,,Jose Luis Guevara,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia,,,,
+Ana,,Dario Castillo,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia,,,,
+Ana,,Sixto Tito,,Activo,80%,FALSE,False,False,Victor,,,,,
+Antonio,,Antonio Sanchez,,Activo,80%,TRUE,False,False,Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Marco Antonio,,Activo,8'%,FALSE,False,False,Julio,,,,,
+Antonio,,Andy,,Activo,80%,TRUE,False,False,Nancy,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Hugo,,Activo,80%,TRUE,False,False,Nancy,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Vicente Acosta,,Activo,80%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Luis Lopez,,Activo,70%,FALSE,False,False,Pedro,Ya visito la agencia,,,,
+Ana,,Lalo Diaz,,Activo,90%,TRUE,True,False,Victor,Ya visito la agencia                              ,,,,
+Ana,,Julián García,,Activo,80%,TRUE,False,False,Mauricio,Ya visito la agencia ,,,,
+Antonio,,Rigoberto Salazar,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rodriguez Perslta,,Activo,70%,FALSE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Diana Paola Cervantes Márquez,,Activo,70%,FALSE,True,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Mahe Aguilar,,Activo,60%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana ,,Eliut t,,Activo,80%,TRUE,False,False,Julio,Ya visito la agencia,,,,
+Ana,,Edward T,,Activo,70%,FALSE,True,False,Julio,Ya visito la agencia ,,,,
+Ana ,,Mtro Milton,,Activo,70%,FALSE,False,False,Cesar,Ya visito la agencia,,,,
+Ana,,"Maria Elena  Sanchez , Perez ",,Activo,80%,TRUE,True,False,Pedro,Ya visito la agencia,,,,
+Antonio,,Oscar Bautista,,Activo,60%,FALSE,False,False,,,,,,
+Ana,,Adrian Paadilla,,Activo,70%,TRUE,False,False,Ricardo,Ya visito la agencia,,,,
+Ana ,,Gregorio Roldan Garcia,,Activo,70%,FALSE,False,False,Aurelio,,,,,
+Antonio,,Manuel Baltazar,,Activo,70%,FALSE,True,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Carlos Mungia,,Activo,80%,FALSE,False,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Edith Gonzalez,,Activo,70%,FALSE,False,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Guillermo Canto,,Activo,70%,FALSE,False,False,Ricardo,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Gabriel Meza,,Activo,70%,FALSE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Jose Miguel,,Activo,70%,FALSE,False,False,Cesar Pestaña,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Carlos Ignacio,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Carlos,,Activo,80%,FALSE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Miguel Ramirez,,Activo,70%,FALSE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Marcela Ramírez,,Activo,70%,FALSE,False,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rafael Lopez,,Activo,70%,FALSE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Irma Juarez,,Activo,70%,FALSE,False,False,Elizabeth,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jimmy T,,Activo,70%,FALSE,False,False,Mauricio,,,,,
+Ana,,Misael  Rodriguez ,,Activo,70%,FALSE,False,False,Ignacio,,,,,
+Ana,,"Cesar  C ,  ",,Activo,90%,TRUE,True,True,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Mireya,,Activo,90%,TRUE,True,True,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Liliana Alvarez,,Activo,80%,FALSE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rodrigo P,,Activo,90%,FALSE,False,False,Carlos Mejia/ pachuca,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Alfonso Ibañez Olmos,,Activo,80%,FALSE,False,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Guillermo Hernandez,,Activo,80%,FALSE,False,False,Nanacy,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Roman Aguilar,,Activo,60%,FALSE,False,False,Mauricio,Ya visito la agencia,,,,
+Ana,,NATANAEL OLVERA San Pablo,,Activo,70%,TRUE,True,False,Victor,Ya visito la agencia,,,,
+Ana,,Lau T,,Activo,70%,FALSE,False,False,Mauricio,Ya visito la agencia,,,,
+Ana,,Jose Luis Dominguez,,Activo,80%,FALSE,False,False,Aurelio,Ya visito la agencia,,,,
+Antonio,,Juan FLores,,Activo,70%,FALSE,False,False,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Omar  Cuautle,,Activo,60%,FALSE,False,False,Julio Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Luis Angel l Rojas Lecona,,Activo,70%,FALSE,False,False,Cesar,Ya visito la agencia,,,,
+Ana,,Joe Carrera,,Activo,80%,FALSE,False,False,Julio Cesar,,,,,
+Ana,,ana CAROLINA CAMPO,,Activo,80%,TRUE,True,False,Ricardo,,,,,
+Ana,,Sadrac  Acostha ,,Activo,80%,FALSE,False,False,Pedro,,,,,
+Ana,,Ricardo,,Activo,70%,FALSE,False,False,Julio,,,,,
+Antonio,,Alejandra Martinez,,Activo,90%,FALSE,False,False,Alan,FORANEA VERACRUZ,Ya esta en proceso,FORANEA VERACRUZ,FORANEA VERACRUZ,Se asigno por SC
+Antonio,,Ericka Huerta Viveros,,Activo,70%,FALSE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,FORANEA VERACRUZ,Se asigno por SC
+Antonio,,EDGAR ARCOS,,Activo,70%,FALSE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,FORANEA VERACRUZ,Se asigno por SC
+Antonio,,Julio Guzmán,,Activo,60%,FALSE,True,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,FORANEA VERACRUZ,Se asigno por SC
+Ana,,Sadrac Acosta,,Activo,60%,FALSE,False,False,Pedro,Ya visito la agencia,,,,
+Ana,,Darth V,,Activo,60%,FALSE,True,False,Pedro,Ya visito la agencia,,,,
+Ana,,JUAN VALDEZ,,Activo,70%,TRUE,False,False,Alan,Ya visito la agencia ,,,,
+Ana,,Lidio Sandoval Vazquez,,Activo,60%,FALSE,False,False,,Ya visito la agencia,,,,
+Antonio,,Julio Cesar,,Activo,80%,FALSE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,FORANEA VERACRUZ,Se asigno por SC
+Ana,,Luis Aldana,,Activo,80%,TRUE,False,False,Carlos Mejia,,,,,
+Ana,,CARLOS ERNESTO PAREDES,,Activo,80%,TRUE,False,False,Julio,,,,,
+Ana,,Demetrio  Zamara,,Activo,80%,TRUE,True,False,Mauricio,Ya visito la agencua,,,,
+Ana,,Roberto De Jesus Lopez,,Activo,70%,FALSE,False,False,Alan,,,,,
+Antonio,,Sergio Cebada,,Activo,80%,TRUE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Orlando Peralta,,Activo,80%,TRUE,False,False,Pedro Antonio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,jose angel varela,,Activo,80%,TRUE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,ANA MARIA NIETO,,Activo,80%,FALSE,True,False,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Nitzel Zempoaltecatl,,Activo,90%,FALSE,False,False,Cesar Pestaña,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Sergio ortega,,Activo,90%,TRUE,True,True,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Ramón Antonio,,Activo,60%,TRUE,True,True,Pedro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Cuautemoc Paramo Prado,,Activo,60%,TRUE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Josafat Cuapio,,Activo,70%,FALSE,True,False,,Ya visito la agencia,,,,
+Ana,,Gilberto Fr,,Activo,60%,FALSE,False,False,Carlos Hernandez,Ya visito la agencia,,,,
+Ana,,Sergio Gonzalez,,Activo,80%,FALSE,False,False,Carlos Mejia,Ya visito la agencia,,,,
+Ana,,Adolfo Aguilar,,Activo,70%,FALSE,False,False,Victor,Ya visito la agencia,,,,
+Ana,,Antonio De Jesús Lima Hernández,,Activo,60%,FALSE,True,False,Mauricio,Ya visito la agencia,,,,
+Antonio,,Cesar M,,Activo,70%,TRUE,False,False,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Martín Vázquez,,,,FALSE,False,False,Victor,Ya visito la agencia,,,,
+Ana,,Pimentel Eleuterio,,,,FALSE,False,False,Cesar Pestaña,Ya visito la agencia,,,,
+Antonio,,Frida T,,Activo,90%,TRUE,True,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Alicia Avila,,Activo,80%,FALSE,False,False,Julio,Ya visito la agencia,,,,
+Ana,,Carlos Lozano Ramos,,Activo,70%,TRUE,False,False,Julio ,Ya visito la agencia ,,,,
+Ana,,MA ELENA ISABEL LEAN BURGOS-,,Activo ,100%,TRUE,True,False,AURELIO,Ya visito la agencia,,,,
+Antonio,,Miguel Galindo Aburto,,Activo,80%,FALSE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Omar Reyes,,Activo,75%,TRUE,False,False,Julio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Fernando Tellez,,Activo,60%,FALSE,False,False,Carlos Hdz,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rey Hernandez,,Antonio,70%,FALSE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Bety Herrera,,Activo,70%,FALSE,False,False,Carlos Hdz,,,,,
+Ana,,Miguel Grande,,Activo,60%,TRUE,False,False,,,,,,
+Ana,,Israel Hernández Pérez,,Activo ,60%,FALSE,False,False,,,,,,
+Ana,,JOSE LUIS LOYA,,Activo,70%,TRUE,False,False,Victor,,,,,
+Ana,,Brian Michel Villegas,,Activo,70%,TRUE,False,False,Alan,,,,,
+Ana,,Hugo Velazquez,,Activo,70%,FALSE,False,False,Mauricio,Videollamada,,,,
+Antonio,,Karen,,Activo,60%,TRUE,False,False,Carlos Hdz,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Rene Osorno,,Activo,60%,TRUE,False,False,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Jose Carlos Hernandez,,Activo,80%,TRUE,False,False,Victor,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Oscar Ezpinoza,,Activo ,60%,TRUE,False,False,Pedro Gonzalez,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Cesar Chavez,,Activo,80%,TRUE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Miguel Angel Ramirez Avalos,,Activo,70%,TRUE,False,False,Aurelio,Ya visito la agencia ,,,,
+Antonio,,Ana Paola,,Activo ,80%,TRUE,True,True,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jack Joaquín Sabina Zárate Juárez,,Activo,70%,TRUE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ana,,Adrian Cristobal,,Activo ,70%,FALSE,True,False,,,,,,
+Antonio,,PRE HOGAR,,Activo,70%,TRUE,False,True,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Maura Gonzalez,,Activo ,60%,TRUE,False,False,Alan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Carlos Nava,,Activo ,70%,TRUE,False,False,Julio Cesar,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Luis arturo chora lara,,Activo ,70%,TRUE,False,False,Julio Cesar,,,,,
+Ana,,Jose Isidro,,Activo ,70%,TRUE,False,False,Julio Cesar,,,,,
+Antonio,,Sergio,,Activio,80%,FALSE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Athalia,,Activo ,90%,FALSE,False,True,Cesar Pestaña,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Alfonso Ramirez,,Activo,80%,TRUE,False,False,Pedro Gonzalez,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Carlos León,,Activo ,70%,FALSE,False,False,Pedro Gonzalez,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Jesus P,,Activo,80%,FALSE,False,False,Carlos Mejia,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,JUAN DE DIOS NAVARRETE MENDEZ,,Activo,70%,FALSE,True,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,,
+Ana,,Anyvia Jazmín Cruz Mendoza,,Activo,70%,FALSE,False,False,Carlos Mejia,,,,,
+Antonio,,Christofer,,Activo,65%,FALSE,False,False,Mauricio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Simon Vega Aquiahuatl,,Activo,70%,FALSE,True,False,Vanny,Ya visito la agencia ,,,,
+Ana,,HECTOR JIMÉNEZ ALDAY,,Activo,70%,TRUE,False,False,Mauricio,Ya visito la agencia ,,,,
+Ana,,Jhonathan Bravo,,Activo,80%,TRUE,False,False,Maurico,Ya visito la agencia ,,,,
+Ana,,Cristobal,,Activo,70%,TRUE,False,False,Mauricio,Ya visito la agencia ,,,,
+Antonio,,MARÍA DEL CARMEN GRADOS,,Activo,60%,FALSE,False,False,Aurelio,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Alejandro Cruz Adabache,,Activo,,FALSE,False,False,Alvaro,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Juan José castellon,,Activo,80%,FALSE,False,False,Ivan,Ya visito la agencia,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Antonio,,Dianarely Marquez,,Activo,60%,FALSE,False,False,Mauricio,SC,Ya esta en proceso,Ya realizo prueba de manejo,Recibio la atencion,Se asigno en la visita
+Ana,,Dr Julio Cesar,,Activo,70%,FALSE,False,False,Vanny,Ya visito la agencia,,,,
+Ana,,David Omar Damián González,,Activo,80%%,FALSE,False,False,Victor,Ya visito la agencia ,,,,
+Ana,,Arturo Delgado García,,Activo,50%,FALSE,False,False,Victor,Ya visito la agencia,,,,
+Ana ,,Mario Moreno,,Activo,80%,FALSE,False,False,Pedro,Ya visito la agencia,,,,
+Ana,,Victor Luciano Huerta Acosta Huerta,,Activo,80%,FALSE,False,False,Pedro,Ya visito la agencia ,,,,
+Ana,,Roberto Aguilar,,Activo,70%,FALSE,False,False,Julio ,Ya visito la agencia ,,,,
+Ana,,Rulo Vera,,Activo,70%,TRUE,False,False,Nayeli,Ya visito la agencia,,,,
+Ana,,Rafael Cázares,,Activo,80%,FALSE,False,False,Julio,Ya visito la agencia,,,,
+Ignacio ,,Antonio Escalona ,,Activo ,50%,TRUE,True,False,Pedro Gonzalez ,Ya visito la agencia,,,,
+Ignacio ,,Martin Ortuño ,,Activo ,70%,FALSE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ignacio ,,Salvador Jasso ,,Activo ,30%,TRUE,False,False,Mauricio ,Ya visito la agencia,depende del padres ,,,
+Ignacio ,,Luis Pelcastre ,,Activo,30%,FALSE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ignacio ,,Santa Garcia ,,Activo,50%,TRUE,True,False,Carlos Hernandez ,Ya visito la agencia,,,,
+Ignacio ,,Gamaliel Vega ,,Activo,50%,TRUE,True,True,Pedro ,Ya visito la agencia,,,,
+Ana,,Victor Hugo Narvaez,,Activo,70%,FALSE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ana,,EDGAR SILES,,Activo,80%,FALSE,False,False,Julio,Ya visito la agencia,,,,
+Ana,,JAIRO ROJAS,,Activo,70%,FALSE,False,False,Pedro ,Ya visito la agencia,,,,
+Ana,,Carlos Perez,,Activo,80%,FALSE,False,False,Pedro,Ya visito la agencia,,,,
+Ana,,Arnold perales,,Activo,70%,FALSE,False,False,Carlos Mejia,Ya visito la agencia,,,,
+Ana ,,Said Azpeitia Blanco,,Activo-,70%,FALSE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ignacio ,,Ricardo Gutierrez,,Activo-,80%,TRUE,False,True,Mauricio ,Ya visito la agencia,,,,
+Ignacio ,,Jorge de gante,,Activo-,,TRUE,True,False,Pedro ,Ya visito la agencia,,,,
+Ignacio ,,Javier Aguilar ,,Activo-,,FALSE,False,False,Pedro ,Ya visito la agencia,,,,
+Ignacio ,,Marco Antonio Valencia ,,Activo-,70%,TRUE,True,False,Mauricio ,Ya visito la agencia,,,,
+Igancio ,,Rocio Cortes ,,Activo-,50%,TRUE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ana ,,Armando Uribe Torres,,Activo,80%,TRUE,False,False,Carlos Mejia,Ya visito la agencia,,,,
+Ignacio ,,Elias Dias Salgado ,,Activo ,50%,TRUE,True,False,Mauricio ,Ya visito la agencia,,,,
+Ana,,andres Domínguez,,Activo,60%,TRUE,False,False,Fatima,Ya visito la agencia,,,,
+Ana,,Rafael Sanchez,,Activo,70%,TRUE,False,False,Mauricio,Ya visito la agencia,,,,
+Ana ,,Carlos Herrera,,Activo,70%,FALSE,False,False,Mauricio,Ya visito la agencia,,,,
+Ana,,Daniel Morales Hernández,,Activo,70%,TRUE,False,False,Julio Cesar,Ya visito la agencia,,,,
+Ana,,Jehu Rodriguez,,Activo,70%,TRUE,False,False,Mauricio,Ya visto la agencia,,,,
+Ignacio ,,Juan Pablo Castellanos ,,Activo,70%,FALSE,False,False,Victor Sanchez ,Ya visto la agencia,,,,
+Ana,,Pablo Archundia López,,Activo,70%,TRUE,False,False,Mauricio,Ya visito la agencia,,,,
+,,JOSE LUIS,,Activo,70%,FALSE,False,False,Mauricio,,,,,
+,,Alejandro Tapia Rueda,,Activo,70%,FALSE,False,False,Carlos,,,,,
+,,Angel Perez,,Activo,80%,FALSE,False,False,Vanny,,,,,
+,,Julio Lopez,,Activo,50%,TRUE,False,False,Pedro Gonzalez,,,,,
+,,Miguel Antonio Fernandez,,Activo,70%,FALSE,False,False,Nayeli,,,,,
+,,Alejandro Sanchez,,Activo,30%,FALSE,False,False,Julio Cesar,,,,,
+,,Cesar Palafox,,Activo,30%,FALSE,False,False,Vanny,,,,,
+,,HUGO BADILLO,,Activo,50%,FALSE,False,False,Alvaro,,,,,
+Ignacio ,,Alan Guerrero ,,Activo,,TRUE,False,False,Mauricio ,Ya visito la agencia,,,,
+Ignacio ,,Larrisa Oidor ,,,,FALSE,True,False,Mauricio ,,,,,
+Ignacio ,,Jorge Duran ,,Activo ,,FALSE,False,False,Pedro ,Ya visito la agencia,,,,
+Ignacio ,,Hector Reyes ,,,,TRUE,True,False,Pedro ,Ya visito la agencia,,,,
+Ana ,,Leo Rodríguez,,Activo,,FALSE,False,False,Mauricio,Ya visito la agencia,,,,
+Ana,,Neftali Lima Sanchez,,Activo,,FALSE,False,False,Julio,Ya visito la agencia,,,,
+Igancio ,,Alhdair Bonifacio Ramos ,,Activo ,,FALSE,False,False,Victor ,Ya visito la agencia,,,,
+Igancio ,,Gary Hernandez ,,Activo ,,FALSE,False,False,Vanny ,Ya visito la agencia,,,,
+Ana,,Edgar Alejandro,,Activo,,FALSE,True,False,Aurelio,Ya visito la agencia,,,,
+Ana,,Celestino Olivares Flores,,Activo,,TRUE,True,False,Pedro,,,,,
+Ana,,Margarita Martìnez Mirand,,Activo,,FALSE,True,False,Mauricio,Ya visito la agencia ,,,,
+Ana,,Armando Uribe Torres-,,Activo,,FALSE,False,False,Fatima,,,,,
+Ana,,Jose F,,Activo,,TRUE,False,False,Julio,,,,,
+Ana,,Jesus Flores sanchez,,Activo,,TRUE,False,False,Pedrp,,,,,
+Ana,,JOSE IGNACIO,,Activo,,TRUE,False,False,Aurelio,,,,,
+Ignacio ,,Fernando Duran ,,Activo,,FALSE,False,False,Pedro ,,,,,
+Ignacio ,,Guillermo Benavides ,,activo,,TRUE,True,False,Pedro ,,,,,
+Ignacio ,,Hugo Franco ,,activo,,TRUE,False,False,Aurelio,,,,,
+Ignacio ,,Luis Enrique Palomares ,,Activo,,FALSE,False,False,Aurelio ,,,,,
+Ana ,,Edgar Alejandro,,Activo,,TRUE,True,False,Aurelio,,,,,
+Ana,,Eduardo Apodaca Espinosa,,Activo,,FALSE,True,False,Aurelio,,,,,
+Ana,,Marco xs,,Activo,,TRUE,False,False,Julio,,,,,
+Ana,,JOSE SANCHEZ,,Activo,,FALSE,True,False,Aurelio,,,,,
+Ana ,,Roberto Garcia ,,Activo,,FALSE,True,False,Pedro,,,,,
+Ana,,Gustavo Melendez,,Activo,,FALSE,True,False,Aurelio,,,,,
+Ignacio ,,Ruben Lopez ,,Activo,,TRUE,True,False,Mario ,,,,,
+Ignacio ,,Jaime trejo ,,Activo ,70%,TRUE,True,False,Pedro ,,,,,
+Igancio ,,Alma Sanchez ,,Activo ,,FALSE,False,False,Pedro ,,,,,
+Ignacio ,,Carlos Cervantes ,,Activo ,,FALSE,False,False,Mauricio ,,,,,
+Ignacio ,,Santa Garcia ,,Activo ,100%,TRUE,True,True,Carlos ,,,,,
+Ignacio ,,Raul Miranda ,,Activo ,100%,FALSE,True,True,Mauricio ,,,,,
+Ana ,,Juan Manuel Hernández,,Activo,,TRUE,False,False,Fatima,,,,,
+Ana,,Ramon Castro Vite,,Activo,,TRUE,True,False,Fatima,,,,,
+Ana,,Ernesto Pachuca,,Activo,,FALSE,True,False,Carlos Mejia,,,,,
+Ana,,Adalyn montiel morales,,Activo,,TRUE,False,False,Pedro,,,,,
+Ana,,EVERT VALVERDE JIMENEZ,,Activo,,TRUE,False,False,Mario,,,,,
+Ana,,Benjamin Sanchez,,Activo,,TRUE,True,False,Aurelio,,,,,
+Ana,,Quiroz Daniel,,Activo,,TRUE,False,False,Mauricio,,,,,
+Ignacio ,,Armando Briones ,,Activo ,50%,FALSE,True,False,Pedro ,,,,,
+Ana,,Salomon Sanchyez,,,,FALSE,False,False,Vanny,,,,,
+Ana,,Adriana F,,Activo,,TRUE,False,False,Carlos Mejia,,,,,
+Ana,,Angel Romo,,,,TRUE,False,False,Vanny,,,,,
+Ignacio ,,Juan Carlos Carreto ,,,50%,FALSE,True,False,pedro ,,,,,
+Ignacio ,,Alberto SR,,,50%,FALSE,True,False,Pedro ,,,,,
+Ana,,Sebastian F,,,,TRUE,False,False,Pedro,,,,,
+Ana,,Jorge G,,,,TRUE,True,False,Victor,,,,,
+Ignacio ,,Fernando Zárate ,,Activo ,70%,TRUE,True,False,Victor ,,,,,
+Igancio ,,Karla Marquez ,,Activo ,70%,FALSE,False,False,Pedro ,,,,,
+Ana,,ansony f,,Activo,70%,TRUE,False,False,Aurelio,,,,,
+Ana,,Jorge A Quiroz,,Activo,70%,TRUE,False,False,Pedro,,,,,
+Ignacio ,,Michel Taja ,,Activo ,50%,FALSE,False,False,Aurelio ,,,,,
+Ignacio ,,Jairo Rodriguez ,,Activo ,50%,FALSE,False,False,Victro ,,,,,
+Ignacio ,,Arturo Lopez ,,Activo ,50%,FALSE,False,False,Pedro,,,,,
+Ignacio ,,Yolanda Castellanos ,,Activo ,100%,FALSE,True,True,Victor ,,,,,
+Ana ,,Juan Roque,,Activo ,100%,TRUE,True,False,Aurelio,,,,,
+Igancio ,,Maria guadalupe Serrano ,,Activo ,100%,FALSE,False,True,Victor ,,,,,
+Ana,,MARCO ANTONIO CHARTUNI,,Activo,80%,FALSE,True,False,Aurelio,,,,,
+Ana,,Alexey ,,Activo ,100%,TRUE,True,False,Ana,,,,,
+Ana,,Brenda Lucero,,Activo ,100%,TRUE,True,False,VICTOR,,,,,
+Ignacio ,06/01/2026,Francisco Cacho ,,Activo ,50%,FALSE,False,False,Mario ,,,,,
+Ignacio ,06/01/2026,Guillermo Hernandez ,,Activo ,50%,TRUE,False,False,Pedro Antonio ,,,,,
+Ignacio ,06/02/2026,Roberto Quintana ,,Activo ,50%,FALSE,False,False,Nayeli ,,,,,
+Ignacio ,06/03/2026,Karla Marquez ,,Activo ,100%,FALSE,False,True,Pedro,,,,,
+Ana ,06/01/2026,Javier Juarez Solano,,Activo,70%,TRUE,False,False,Vanny,,,,,
+Ana,06/03/2026,Ommar Herrera,,Activo,80%,TRUE,False,False,Carlos mejia,,,,,
+Ana,06/04/2026,Andres Cuevas,,Activo,60%,FALSE,False,False,Carlos Mejia ,,,,,
+Ana,06/05/2026,Fernanda Lopez,,Activo,80%,TRUE,True,False,Ignacio ,,,,,
+Ana,06/02/2026,Jose,,Activo,,FALSE,False,False,Llamada,,,,,
+Ignacio,06/06/2026,Gregorio Tlapanco ,,Activo ,,FALSE,False,False,Mario Varela,,,,,
+Ignacio ,06/12/2026,Ivan Bravo ,,Activo ,50%,TRUE,True,True,Mario Varela ,,,,,
+Ignacio ,06/12/2026,Angelica Briones ,,Activo ,50%,FALSE,False,False,Julio Cesar ,,,,,
+Ignacio ,06/12/2026,Juan Alberto Vargas ,,Activo ,50%,TRUE,False,False,Mario Varela ,,,,,
+Ana,6/17/2026,Moises ,,Activo,70%,TRUE,False,False,Aurelio,,,,,
+Ana,06/10/2026,LUIS CASTILLO,,Activo,50%,FALSE,False,False,Fer,,,,,
+Ana,06/12/2026,Eder Hernandez,,Activo,70%,FALSE,False,False,Fatima,,,,,
+Ana,6/13/2026,Alberto Madrigal,,Activo,60%,FALSE,False,False,Pedro Antonio,,,,,
+Ana,06/06/2026,Jesus Adelfo Hernandez Montiel,,Activo,80%,FALSE,False,False,Julio Cesar,,,,,
+Ana,6/16/2026,Eduardo Delón Páez,,Activo,80%,TRUE,False,False,Nayeli,,,,,
+Ana,06/10/2026,LUIS FERNANDO SANCHEZ QUIROZ,,Activo,70%,TRUE,False,False,Mario,,,,,
+Ana,06/05/2026,Ommar Herrera,,Activo,70%,TRUE,False,False,Carlos Mejia,,,,,
+Ana,06/06/2026,Jaime Davila Baez,,Activo,70%,TRUE,False,False,Pedro,,,,,
+Ana,6/19/2026,Jan cx,,Activo,70%,FALSE,False,False,Carlos Mejia ,,,,,
+Ana,6/16/2026,BERNARDO ALCARAZ MORALES,,Activo,80%,TRUE,False,False,Nayeli,,,,,
+Ana,06/07/2026,Juan Carlos García Hernández,,Activo,70%,TRUE,False,False,Carlos Mejia,,,,,
+Ana,6/15/2026,Benjamin Mendez,,Activo ,70%,TRUE,False,False,Vanny,,,,,
+Ana,06/06/2026,Jesus F,,Activo,60%,FALSE,False,False,Fer F,,,,,
+Ana,6/28/2026,Sergio Flores,,Activo,70%,FALSE,False,False,Fatima,,,,,
+Ana,6/28/2026,Sofia polo,,Activo,80%,FALSE,False,False,Vanny,,,,,
+Ignacio ,6/29/2026,Jorge Canche ,,Activo ,50%,FALSE,False,False,Ignacio ,,,,,
+Igancio ,6/28/2026,Octavio Perez ,,Activo ,70%,FALSE,True,False,Pedro Antonio ,,,,,
+Ignacio ,6/28/2026,Adelina Khalikova ,,Activo ,70%,TRUE,False,False,Pedro Antonio ,,,,,
+Ignacio ,6/27/2026,Roberto Luna Rosas ,,Activo ,50%,TRUE,False,True,Pedro Antonio ,,,,,
+Ignacio ,6/19/2026,Miguel Martinez ,,Activo ,50%,TRUE,False,False,Nayeli ,,,,,
+Ignacio ,6/20/2026,Humberto Valencia ,,Activo ,50%,FALSE,False,False,Aurelio ,,,,,
+Ignacio ,6/19/2026,Propescto Orizaba ,,Activo ,50%,FALSE,False,False,Nayeli ,,,,,
+Ana ,6/24/2026,Paul Kehrli,,Activo,60%,FALSE,False,False,Pedro Antonio,,,,,
+Ana ,6/15/2026,Benjamin Mendez,,Activo ,70%,FALSE,False,False,Vanny,,,,,
+Ana,06/06/2026,Reynaldo Cobos ,,Activo,80%,TRUE,False,False,Ulises,,,,,
+Ana,6/20/2026,Arturo Moreno ,,Activo,50%,FALSE,False,False,Nayeli,,,,,
+Ana,6/17/2026,Moises Hdez,,Activo,70%,FALSE,False,False,Aurelio,,,,,
+Ignacio ,06/04/2026,Arquimedes Rugerio ,,Activo ,60%,TRUE,False,False,Nayeli ,,,,,
+Ignacio ,06/04/2026,Victor Manuel Diaz Ortiz ,,Activo ,60%,TRUE,False,False,Cesar Pestaña,,,,,
+Ana,06/02/2026,Margarita Romero Castillo,,Activo ,100%,TRUE,True,False,Pedro Antonio,,,,,
+Ana,07/07/2026,Eder Chavez,,Activo ,70%,TRUE,False,False,Fatima,,,,,
+Ana,07/07/2026,Alejandro VELAZQUEZ,,Activo ,80%,TRUE,True,False,Nayeli,,,,,
+Ana,07/11/2026,Miguel irigoyen,,Activo ,80%,FALSE,False,False,Julio,,,,,
+Ana,07/08/2026,Jose Hernandez Gonzalez,,Activo ,80%,TRUE,True,False,Pedro ,,,,,
+Ignacio ,07/09/2026,Oswaldo Rueda ,,Activo ,,TRUE,True,False,Pedro ,,,,,
+Ignacio ,07/10/2026,Arturo Mendez ,,Activo ,,TRUE,False,False,Mauricio ,,,,,
+Ana,07/08/2026,Ruben Vargas,,Acrivo,80%,TRUE,True,False,Julio,,,,,
+Ana ,07/04/2026,Edgar Herrera,,Activo,80%,TRUE,False,False,Fatima,,,,,
+Igancio ,7/14/2026,luis Hernandez,,Activo ,50%,TRUE,False,False,Nayeli ,,,,,
+Ignacio ,7/14/2026,Omar Garcia ,,Activo ,50%,TRUE,False,False,Nayeli ,,,,,
+Ignacio ,7/13/2026,Rosaura Mendez Quechol ,,Activo ,100%,FALSE,False,True,Mauricio ,,,,,
+Ana,7/14/2026,Alfonso f,,Activo,70%,TRUE,False,False,Nayeli,,,,,
+Ana,07/10/2026,Lizbeth Garcia,,Activo,70%,TRUE,False,False,Julio,,,,,
+Ana ,07/11/2026,Mike Mora,,Activo,90%,FALSE,True,False,Alfredo,,,,,
+Ana,7/14/2026,Azucena de Jesus machorro arreola,,Activo,100%,TRUE,True,False,Nayeli,,,,,
+Ana,7/13/2026,Jose F,,Activo,80%,FALSE,False,False,,,,,,
+Ana,7/16/2026,Daniel Padilla,,Activo,90%,TRUE,True,False,Fernanda,,,,,
+Ana,7/16/2025,Juan Carazo Juan Carazo,,Activo,80%,FALSE,False,False,Pedro,,,,,
+Ana,7/16/2026,MARIBEL BARRON,,Activo,90%,TRUE,False,False,Mario,,,,,
+Igancio ,7/17/2026,Bernardo Ayuso ,,,,FALSE,False,False,Nayeli ,,,,,
+Ignacio ,7/16/2026,Victor Garcai ,,,,FALSE,False,False,Alfredo ,,,,,
+Ignacio ,7/18/2026,Johancarlo Islas ,,Activo ,50%,FALSE,False,False,Julio Cesar ,,,,,
+Ana,7/16/2026,Margaret Silva Serrano,,Activo,80%,TRUE,False,False,Nayeli,,,,,
+Ignacio ,7/21/2026,Carlos Balderrama ,,Activo ,50%,TRUE,True,True,Mario Varela ,,,,,
+Ignacio ,7/21/2026,Andrés Netzahuatl ,,Activo ,50%,FALSE,False,False,Mauricio ,,,,,
+Ana,7/22/2026,Arat Israel,,Activo,80&,TRUE,True,False,Aurelio,,,,,
+Ana,7/22/2026,Maira Escalante,,Activo ,80%,TRUE,True,False,Pedro Antonio,,,,,
+Ignacio ,7/22/2026,Zaira Macip ,,Activo ,50%,FALSE,False,False,Aurelio ,,,,,
+Ignacio ,7/27/2026,Julio Hernandez ,,Activo ,50%,TRUE,False,False,Victor ,,,,,
+Ignacio ,7/24/2026,Xhunaxhi Vicente ,,Activo ,100%,TRUE,True,True,Ignacio,,,,,
+Ignacio ,7/29/2026,DR Jairo Rodriguez Farias ,,Activo ,100%,TRUE,True,True,Victor ,,,,,
+Ana,7/17/2026,Angel Padilla,,Activo,90%,TRUE,False,False,Julio,,,,,
+Ana,7/24/2026,Teresa Andrade,,Activo,90%,TRUE,True,False,Julio,,,,,
+Ana,7/16/2026,Alejandro ,,Activo,90%,TRUE,False,False,Nayeli,,,,,
+Ana,7/26/2026,Arturo Sanchez,,Activo,90%,TRUE,False,False,Julio,,,,,
+Ana,7/27/2026,GONZALO RAMIRES SILVA ,,Activo,90%,TRUE,False,False,Julio,,,,,
+Ana,7/23/2026,Ruben Dario ,,Activo ,90%,TRUE,True,False,Pedro Antonio,,,,,
+Ignacio,7/30/2026,Jesus Torres ,,Activo ,70%,TRUE,True,False,Nayeli ,,,,,
+Ignacio ,9/29/2026,Arquimedes Rugerio ,,Activo ,,FALSE,True,False,Nayeli ,,,,,
+Ana,7/30/2026,Jorge Hernandez ,,Activo,50%,FALSE,False,False,Carlos,,,,,
+Ignacio ,7/28/2026,Zabdiel Medrano ,,Activo,80%,TRUE,True,False,,,,,,
+Ignacio ,08/03/2026,Rosbin Lezama/ Maria ,,Activo ,80%,FALSE,True,False,Julio Cesar ,,,,,
+Ignacio ,08/03/2026,Josefina Rosete ,,Activo ,90%,TRUE,False,False,Victor ,,,,,
+Ignacio ,08/03/2026,Alejandra Lezama ,,Activo ,50%,FALSE,False,False,Mauricio ,,,,,
