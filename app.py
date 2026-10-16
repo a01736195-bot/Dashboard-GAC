@@ -9,7 +9,15 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+try:
+    from imblearn.over_sampling import SMOTE
+    SMOTE_OK = True
+except ImportError:
+    SMOTE_OK = False
 from scipy import stats
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
@@ -319,19 +327,28 @@ else:
     )
 st.sidebar.markdown("---")
 
-vista = st.sidebar.selectbox(
-    "Selecciona una vista:",
-    ["Extraccion de Caracteristicas",
-     "Solicitudes de Credito por Asesor",
-     "Visitas por Mes",
-     "Explorador de Variables",
-     "Leads Detalle (Plaza)",
-     "Analisis de Correlaciones",
-     "Regresion Lineal Simple",
-     "Regresion Lineal Multiple (Resumen)",
-     "Regresion del Embudo (FUNNEL)",
-     "Despliegue ANOVA"]
-)
+NAV_ETAPAS = {
+    "🏠 Inicio": [],
+    "Etapa I · Analisis univariado": ["Extraccion de Caracteristicas",
+                                       "Solicitudes de Credito por Asesor",
+                                       "Visitas por Mes",
+                                       "Explorador de Variables",
+                                       "Leads Detalle (Plaza)"],
+    "Etapa II · Modelado predictivo": ["Analisis de Correlaciones",
+                                       "Regresion Lineal Simple",
+                                       "Regresion Lineal Multiple (Resumen)",
+                                       "Regresion del Embudo (FUNNEL)",
+                                       "Regresion Logistica (PDM)"],
+    "Etapa III · Despliegue ANOVA": ["Despliegue ANOVA"],
+}
+etapa = st.sidebar.radio("Seccion:", list(NAV_ETAPAS.keys()), key="nav_etapa")
+if etapa == "🏠 Inicio":
+    vista = "Inicio"
+elif len(NAV_ETAPAS[etapa]) == 1:
+    vista = NAV_ETAPAS[etapa][0]
+    st.sidebar.caption("Esta etapa tiene una sola vista.")
+else:
+    vista = st.sidebar.radio("Vista:", NAV_ETAPAS[etapa], key="nav_vista")
 
 st.sidebar.markdown("---")
 st.sidebar.write("📋 Bitacora de Piso: **%d** registros" % len(df_bitacora))
@@ -351,10 +368,93 @@ if df_mkt is not None:
 if df_plazas_sem is not None:
     st.sidebar.write("🏙️ Plazas: **%d** semanas-prod." % len(df_plazas_sem))
 
+# Migaja de navegacion (breadcrumb)
+if vista == "Inicio":
+    st.caption("📍 Estas en: **Inicio**")
+else:
+    st.caption("📍 Estas en: **" + etapa + "**  →  " + vista)
+
+# =========================================================
+# VISTA 0: INICIO (PORTADA)
+# =========================================================
+if vista == "Inicio":
+
+    st.subheader("Bienvenido al dashboard de analitica GAC")
+    st.markdown("""
+    Aqui concentramos **todo el analisis de la bitacora de piso y los leads del socio formador**:
+    desde la exploracion univariada hasta el modelado predictivo y el despliegue ANOVA.
+    Usa el menu de la izquierda: primero elige una **etapa** y despues la **vista** que quieras ver.
+    """)
+
+    st.markdown("### Panorama de datos")
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Bitacora de piso", f"{len(df_bitacora)}", "registros de visitas", delta_color="off")
+    k2.metric("Leads reales", f"{len(df_leads)}", "meses de historia", delta_color="off")
+    k3.metric("Embudo mensual", f"{len(df_funnel)}", "meses con etapas", delta_color="off")
+    k4.metric("Pruebas de manejo", f"{int(df_bitacora['PDM'].sum())}",
+              f"{df_bitacora['PDM'].mean()*100:.1f}% de las visitas", delta_color="off")
+
+    st.markdown("### ¿Que hay en cada etapa?")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown("**Etapa I · Analisis univariado**")
+        st.markdown("""
+        - Extraccion de caracteristicas de la bitacora
+        - Solicitudes de credito por asesor
+        - Visitas por mes
+        - Explorador de variables (histogramas y barras)
+        - Leads detalle por plaza
+        """)
+    with c2:
+        st.markdown("**Etapa II · Modelado predictivo**")
+        st.markdown("""
+        - Analisis de correlaciones
+        - Regresion lineal simple
+        - Regresion lineal multiple (resumen)
+        - Regresion del embudo (FUNNEL)
+        - **Regresion logistica (PDM)** ← nueva
+        """)
+    with c3:
+        st.markdown("**Etapa III · Despliegue ANOVA**")
+        st.markdown("""
+        - Citas digitales por base de datos
+        - Marketing por canal
+        - Plazas por producto (multifactorial)
+        """)
+
+    st.markdown("### Hallazgos rapidos (ANOVA, Etapa III)")
+    h1, h2, h3 = st.columns(3)
+    if df_citas is not None:
+        m_h1 = ols("Potencial ~ BDC_L", data=df_citas).fit()
+        t_h1 = sm.stats.anova_lm(m_h1, typ=2)
+        h1.metric("Citas digital: base de datos", "F = %.2f" % t_h1.loc["BDC_L", "F"],
+                  "p = " + formato_p(t_h1.loc["BDC_L", "PR(>F)"]), delta_color="off")
+    if df_mkt is not None:
+        m_h2 = ols("Leads ~ Canal", data=df_mkt).fit()
+        t_h2 = sm.stats.anova_lm(m_h2, typ=2)
+        h2.metric("Marketing: canal", "F = %.2f" % t_h2.loc["Canal", "F"],
+                  "p = " + formato_p(t_h2.loc["Canal", "PR(>F)"]), delta_color="off")
+    if df_plazas_sem is not None:
+        m_h3 = ols("Leads ~ Producto_L", data=df_plazas_sem).fit()
+        t_h3 = sm.stats.anova_lm(m_h3, typ=2)
+        h3.metric("Plazas: producto", "F = %.2f" % t_h3.loc["Producto_L", "F"],
+                  "p = " + formato_p(t_h3.loc["Producto_L", "PR(>F)"]), delta_color="off")
+    st.caption("F y p del ANOVA one-way correspondiente; el detalle (supuestos, graficas) esta en la Etapa III.")
+
+    with st.expander("Como navegar el dashboard"):
+        st.markdown("""
+        1. En la barra lateral, elige la **etapa** (Inicio, I, II o III).
+        2. Si la etapa tiene varias vistas, aparece un segundo menu para elegir la **vista**.
+        3. La **migaja** (📍) bajo el titulo siempre te dice donde estas parado.
+
+        Nada se quito: son las mismas vistas de siempre, ahora agrupadas por etapa,
+        mas esta portada y la nueva **Regresion logistica (PDM)** de la Etapa II.
+        """)
+
 # =========================================================
 # VISTA 1: EXTRACCION DE CARACTERISTICAS (ETAPA I)
 # =========================================================
-if vista == "Extraccion de Caracteristicas":
+elif vista == "Extraccion de Caracteristicas":
 
     col1, col2 = st.columns(2)
 
@@ -1250,7 +1350,129 @@ elif vista == "Regresion del Embudo (FUNNEL)":
         st.dataframe(tabla, hide_index=True, use_container_width=True)
 
 # =========================================================
-# VISTA 10: DESPLIEGUE ANOVA (ETAPA III)
+# VISTA 11: REGRESION LOGISTICA (PDM) - ETAPA II
+# Replica el flujo del notebook reglog_e5.ipynb: split 70/30, StandardScaler,
+# LogisticRegression, metricas con pos_label=1 y oversampling SMOTE (imblearn).
+# =========================================================
+elif vista == "Regresion Logistica (PDM)":
+
+    st.subheader("Regresion logistica - ¿que anticipa una prueba de manejo?")
+    st.markdown("""
+    Modelo de **clasificacion binaria** que estima si una visita termina en **prueba de manejo
+    (PDM = 1)** a partir de cuatro senales de la bitacora de piso: **SDC** (solicitud de credito),
+    **intervencion de gerente**, **estatus del lead** (1 = activo) y **venta**.
+    Se replica el flujo del notebook de la Etapa II: division 70/30, escalado estandar,
+    modelo base y **SMOTE** (oversampling de la clase minoritaria) para comparar.
+    """)
+
+    if not SMOTE_OK:
+        st.error("Falta la libreria imbalanced-learn: agrega imbalanced-learn a requirements.txt y dale **Reboot** a la app.")
+    else:
+        df_log = df_bitacora.copy()
+        df_log["Estatus_bin"] = (df_log["Estatus_Lead"].astype(str).str.strip() == "Activo").astype(int)
+        X_log = df_log[["SDC", "Inter_Gerente", "Estatus_bin", "Venta"]].astype(int)
+        y_log = df_log["PDM"].astype(int)
+
+        SEMILLA = 21
+        X_ent, X_pru, y_ent, y_pru = train_test_split(X_log, y_log, test_size=0.3, random_state=SEMILLA)
+
+        m1, m2, m3 = st.columns(3)
+        m1.metric("Entrenamiento", f"{len(X_ent)}", "70% de la bitacora", delta_color="off")
+        m2.metric("Prueba", f"{len(X_pru)}", "30% de la bitacora", delta_color="off")
+        m3.metric("PDM = 1 en prueba", f"{int(y_pru.sum())}", "de %d registros" % len(y_pru), delta_color="off")
+
+        def _metricas_log(y_real, y_pred):
+            return {
+                "Exactitud": accuracy_score(y_real, y_pred),
+                "Precision": precision_score(y_real, y_pred, pos_label=1, zero_division=0),
+                "Sensibilidad": recall_score(y_real, y_pred, pos_label=1),
+                "F1": f1_score(y_real, y_pred, pos_label=1),
+            }
+
+        def _fig_matriz(cm, titulo):
+            fig = px.imshow(cm, text_auto=True, color_continuous_scale=ESCALA_VINO,
+                            x=["Predicho: No", "Predicho: Si"], y=["Real: No", "Real: Si"],
+                            title=titulo, aspect="auto")
+            fig.update_layout(font=ESTILO_FUENTE, height=380, coloraxis_showscale=False,
+                              title_font=dict(size=15, color=GAC_AZUL),
+                              plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
+            fig.update_traces(textfont_size=16)
+            return fig
+
+        # --- Modelo base (sin balanceo) ---
+        esc = StandardScaler()
+        X_ent_e = esc.fit_transform(X_ent)
+        X_pru_e = esc.transform(X_pru)
+        mod_base = LogisticRegression(random_state=SEMILLA)
+        mod_base.fit(X_ent_e, y_ent)
+        pred_base = mod_base.predict(X_pru_e)
+        met_base = _metricas_log(y_pru, pred_base)
+        cm_base = confusion_matrix(y_pru, pred_base)
+
+        # --- Modelo con SMOTE (oversampling de PDM=1 solo en entrenamiento) ---
+        smote = SMOTE(random_state=SEMILLA)
+        X_over, y_over = smote.fit_resample(X_ent, y_ent)
+        esc2 = StandardScaler()
+        X_over_e = esc2.fit_transform(X_over)
+        X_pru_e2 = esc2.transform(X_pru)
+        mod_over = LogisticRegression(random_state=SEMILLA)
+        mod_over.fit(X_over_e, y_over)
+        pred_over = mod_over.predict(X_pru_e2)
+        met_over = _metricas_log(y_pru, pred_over)
+        cm_over = confusion_matrix(y_pru, pred_over)
+
+        tab_base, tab_over, tab_comp = st.tabs(["Sin balanceo", "Oversampling (SMOTE)", "Comparacion"])
+
+        with tab_base:
+            b1, b2, b3, b4 = st.columns(4)
+            b1.metric("Exactitud", f"{met_base['Exactitud']:.3f}")
+            b2.metric("Precision (PDM=1)", f"{met_base['Precision']:.3f}")
+            b3.metric("Sensibilidad (recall)", f"{met_base['Sensibilidad']:.3f}")
+            b4.metric("F1", f"{met_base['F1']:.3f}")
+            st.plotly_chart(_fig_matriz(cm_base, "Matriz de confusion - modelo base"), use_container_width=True)
+            st.caption(f"El modelo base acierta {met_base['Exactitud']*100:.0f}% de las veces, pero solo detecta "
+                       f"{int(cm_base[1,1])} de {int(cm_base[1].sum())} pruebas de manejo reales "
+                       f"(sensibilidad {met_base['Sensibilidad']*100:.0f}%): como PDM=1 es la clase minoritaria, "
+                       "el modelo tiende a predecir 'No'.")
+
+        with tab_over:
+            s1, s2, s3, s4 = st.columns(4)
+            s1.metric("Exactitud", f"{met_over['Exactitud']:.3f}")
+            s2.metric("Precision (PDM=1)", f"{met_over['Precision']:.3f}")
+            s3.metric("Sensibilidad (recall)", f"{met_over['Sensibilidad']:.3f}")
+            s4.metric("F1", f"{met_over['F1']:.3f}")
+            st.plotly_chart(_fig_matriz(cm_over, "Matriz de confusion - con SMOTE"), use_container_width=True)
+            st.caption(f"SMOTE crea ejemplos sinteticos de PDM=1 en el entrenamiento "
+                       f"(de {len(X_ent)} a {len(X_over)} registros, con las clases parejas). "
+                       f"La sensibilidad salta a {met_over['Sensibilidad']*100:.0f}% "
+                       f"(detecta {int(cm_over[1,1])} de {int(cm_over[1].sum())} casos reales), pero la exactitud "
+                       f"baja a {met_over['Exactitud']*100:.0f}%: marca {int(cm_over[0,1])} falsos positivos.")
+
+        with tab_comp:
+            tabla_log = pd.DataFrame({"Sin balanceo": met_base, "Con SMOTE": met_over}).round(3)
+            st.dataframe(tabla_log, use_container_width=True)
+            st.markdown(f"""
+            **¿Cual conviene para GAC?** Depende del objetivo:
+
+            - Si lo que importa es **no dejar ir prospectos** con potencial de prueba de manejo,
+              el modelo **con SMOTE** es la mejor alarma: atrapa casi todos los casos reales
+              (sensibilidad {met_over['Sensibilidad']*100:.0f}%), a costa de revisar mas falsos positivos.
+            - Si lo que importa es **certeza al predecir**, el modelo base es mas exacto
+              ({met_base['Exactitud']*100:.0f}%), pero deja pasar la mayoria de las pruebas reales.
+            - Las senales con mas peso son el **estatus activo del lead**, la **intervencion de gerente**
+              y la **SDC** (coeficientes positivos en ambos modelos); la variable **Venta** practicamente
+              no aporta, porque quien ya compro ya paso por la prueba.
+            """)
+
+        st.caption("Nota de reproducibilidad: el notebook original usaba division aleatoria sin semilla "
+                   "(random_state=None), por lo que sus cifras exactas cambiaban en cada corrida; aqui se fija "
+                   f"semilla = {SEMILLA} para que el tablero siempre muestre lo mismo. La base es "
+                   f"Bitacora_Piso_Limpia.csv ({len(df_log)} registros ya limpios); con una muestra chica "
+                   "las cifras pueden variar ligeramente segun la division, pero el patron "
+                   "(SMOTE sube la sensibilidad a costa de exactitud) se mantiene.")
+
+# =========================================================
+# VISTA 12: DESPLIEGUE ANOVA (ETAPA III)
 # Metodologia de la plantilla 7_ANOVA.ipynb:
 # scipy.stats.f_oneway + statsmodels anova_lm · alfa = 0.05
 # =========================================================
