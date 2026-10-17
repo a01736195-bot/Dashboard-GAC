@@ -1,51 +1,45 @@
-# Dashboard GAC - Analisis Univariado + Regresion Lineal
+# Dashboard GAC - Insights de Negocio
 
-Dashboard unificado de las operaciones de la concesionaria GAC (Plaza
-Angelopolis), con tema visual vino tinto / borgona y diseno plano.
+Dashboard de la concesionaria GAC (Plaza Angelopolis) con tema vino tinto /
+borgona y diseno plano. Reestructurado en octubre 2026 para enfocarse en
+**insights de negocio**: cada vista responde una pregunta concreta en lugar de
+replicar las tecnicas estadisticas de los notebooks de origen.
 
-## Contenido
+## Las 4 vistas de negocio
 
-**Etapa I. Modelado explicativo (Analisis comparativo)**: extraccion de
-caracteristicas, analisis univariado de las variables categoricas mas
-significativas.
+| Vista | Pregunta que responde | Contenido |
+|---|---|---|
+| 1. Panorama Ejecutivo | ¿Como va la plaza? | KPIs (ventas, cumplimiento, leads/venta, efectividad), tendencia vs objetivo a 30 meses, meses criticos y 6 tarjetas de insight redactadas en lenguaje de negocio |
+| 2. Embudo de Ventas | ¿Donde se fuga la venta? | Embudo mensual promedio, tasa de transicion por etapa vs benchmark (cuellos en rojo), conversion lead→venta y efectividad de leads en el tiempo |
+| 3. Desempeno | ¿Quien y que rinde? | Asesores de piso, ejecutivos BDC (digital), marketing por canal (costo/venta) y productos (cumplimiento BCS) |
+| 4. Laboratorio (evidencia) | ¿Donde quedo el proceso? | Indice de la evidencia estadistica archivada y nota de conciliacion entre fuentes |
 
-**Etapa II. Modelado predictivo**: analisis de correlaciones y regresion
-lineal simple y multiple, superponiendo en cada grafica la dispersion de
-los datos predichos.
+## Evidencia del proceso (no se perdio nada)
 
-Cada regresion del equipo tiene su vista DEDICADA, con las mismas
-variables, indicadores, ecuacion, tabla y grafica de su notebook de
-origen (sin mezclar).
+Las 13 vistas originales (Etapas I-III: analisis univariado, correlaciones,
+regresiones lineales y logisticas, despliegue ANOVA) se conservan intactas:
 
-## Archivos del repositorio
+- `archivo/app_etapas_original.py` - dashboard completo original, listo para
+  correr con `streamlit run archivo/app_etapas_original.py`
+- `DASHBOARD_GAC.ipynb` - notebook que generaba y ejecutaba esa version
+- Historial de git (`git log`) - todos los commits del proceso, incluido el
+  commit previo a esta reestructuracion
+
+## Archivos de datos
 
 | Archivo | Descripcion |
 |---|---|
-| `app.py` | Aplicacion principal del dashboard (Streamlit, 10 vistas) |
-| `DASHBOARD_GAC.ipynb` | Notebook que genera `app.py` y lo corre |
-| `Bitacora_Piso_Limpia.csv` | Base limpia de la bitacora de piso (nulos, outliers y transformaciones ya aplicadas) |
+| `Bitacora_Piso_Limpia.csv` | Base limpia de la bitacora de piso |
 | `Leads_Reales_Limpia.csv` | Base limpia de leads reales mensual |
-| `base_leads_limpia.csv` | Base de leads de plaza (detalle) con preprocesamiento aplicado |
-| `base_resumen_limpio.csv` | Base resumen mensual (30 meses, 26 variables) para la Etapa II |
-| `funnel_mensual.csv` | Embudo mensual limpio (18 meses) extraido del FUNNEL.csv original |
+| `base_leads_limpia.csv` | Base de leads de plaza (detalle) |
+| `base_resumen_limpio.csv` | Base resumen mensual (30 meses, 26 variables) |
+| `funnel_mensual.csv` | Embudo mensual limpio (18 meses) |
+| `MKT_DIGITAL.csv` | Marketing mensual por canal (presupuesto, leads, ventas) |
+| `Citas_Digital.csv` | Seguimiento de leads del canal digital |
+| `Plazas.csv` | Leads de piso por plaza y producto |
 | `bcs_modelos.csv` | 6 modelos GAC (Objetivo vs Ventas reales) del Balance Scorecard |
 | `logo_gac.png` | Logo de GAC Motor (menu lateral) |
 | `.streamlit/config.toml` | Tema vino tinto / borgona |
-| `requirements.txt` | Dependencias (incluye scikit-learn) |
-
-## Vistas del dashboard y trazabilidad con los notebooks del equipo
-
-| Vista | Que muestra | Notebook de origen |
-|---|---|---|
-| 1. Extraccion de Caracteristicas | Pareto de asesores, dona PDM, efectividad de leads | `Analisis_GAC_Limpieza_Graficos.ipynb` |
-| 2. Solicitudes de Credito por Asesor | Top 5 asesores con SDC si/no | `DASHBOARD.IPYNB` |
-| 3. Visitas por Mes | Conteo mensual de visitas | `DASHBOARD.IPYNB` |
-| 4. Explorador de Variables | Barras/pastel/dona/area + KPIs + filtros | `Act1.ipynb` |
-| 5. Leads Detalle (Plaza) | Heatmap de producto, pastel de estatus, KPIs | `codigos.ipynb` |
-| 6. Analisis de Correlaciones | Heatmap de la matriz de correlacion | Etapa II (todos) |
-| 7. Regresion Lineal Simple | Selector de base (BCS 6 modelos / resumen 30 meses) + variables X e Y con defaults originales de cada notebook | `regresion_lineal_simple.ipynb` + `Regresion_Simple_Resumen.ipynb` |
-| 8. Regresion Lineal Multiple (Resumen) | Selector Y + multiselect X (default: Efectivos, PDM, SDC) | `codigos (1).ipynb` |
-| 9. Regresion del Embudo (FUNNEL) | 2 modelos con selectores (defaults: R1 R² 0.7053, R2 R² 0.7834) | `FUNNEL_REGRESION.IPYNB` |
 
 ## Como correrlo localmente
 
@@ -53,8 +47,6 @@ origen (sin mezclar).
 pip install -r requirements.txt
 streamlit run app.py
 ```
-
-O bien abrir `DASHBOARD_GAC.ipynb` y ejecutar las celdas en orden.
 
 ## Despliegue
 
