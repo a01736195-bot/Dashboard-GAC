@@ -338,7 +338,8 @@ NAV_ETAPAS = {
                                        "Regresion Lineal Simple",
                                        "Regresion Lineal Multiple (Resumen)",
                                        "Regresion del Embudo (FUNNEL)",
-                                       "Regresion Logistica (PDM)"],
+                                       "Regresion Logistica (PDM)",
+                                       "Regresion Logistica (Ventas)"],
     "Etapa III · Despliegue ANOVA": ["Despliegue ANOVA"],
 }
 etapa = st.sidebar.radio("Seccion:", list(NAV_ETAPAS.keys()), key="nav_etapa")
@@ -413,6 +414,7 @@ if vista == "Inicio":
         - Regresion lineal multiple (resumen)
         - Regresion del embudo (FUNNEL)
         - **Regresion logistica (PDM)** ← nueva
+        - **Regresion logistica (Ventas)** ← nueva
         """)
     with c3:
         st.markdown("**Etapa III · Despliegue ANOVA**")
@@ -448,7 +450,7 @@ if vista == "Inicio":
         3. La **migaja** (📍) bajo el titulo siempre te dice donde estas parado.
 
         Nada se quito: son las mismas vistas de siempre, ahora agrupadas por etapa,
-        mas esta portada y la nueva **Regresion logistica (PDM)** de la Etapa II.
+        mas esta portada y las nuevas **regresiones logisticas (PDM y Ventas)** de la Etapa II.
         """)
 
 # =========================================================
@@ -1472,7 +1474,144 @@ elif vista == "Regresion Logistica (PDM)":
                    "(SMOTE sube la sensibilidad a costa de exactitud) se mantiene.")
 
 # =========================================================
-# VISTA 12: DESPLIEGUE ANOVA (ETAPA III)
+# VISTA 12: REGRESION LOGISTICA (VENTAS) - ETAPA II
+# Replica Regresion_Logistica_Binaria_Resumen.ipynb: Ventas Real dicotomizada
+# (bajas/altas) con corte a la mitad del rango; split 70/30 con semilla 42 y
+# stratify; StandardScaler; LogisticRegression; balanceo por reponderacion
+# (class_weight='balanced') y por SMOTE.
+# =========================================================
+elif vista == "Regresion Logistica (Ventas)":
+
+    st.subheader("Regresion logistica - ¿que anticipa un mes de ventas bajas?")
+    st.markdown("""
+    Modelo de **clasificacion binaria** sobre la **base resumen mensual**: la variable objetivo es
+    **Ventas_Cat** (mes de **ventas bajas** vs **ventas altas**, cortando `Ventas Real` a la mitad de
+    su rango). Se replican los dos modelos del notebook: uno **multivariable** (Leads, Efectivos, PDM
+    y Periodo) y otro con **solo Leads**, probado sin balanceo, con **reponderacion de clases**
+    y con **SMOTE**.
+    """)
+
+    if not SMOTE_OK:
+        st.error("Falta la libreria imbalanced-learn: agrega imbalanced-learn a requirements.txt y dale **Reboot** a la app.")
+    else:
+        df_rv = df_resumen.copy()
+        df_rv["Periodo"] = df_rv["Año"].astype(str).replace(["2025", "2026"], "2025-2026")
+        df_rv["Periodo_num"] = np.where(df_rv["Periodo"] == "2025-2026", 1, 0)
+        vmin, vmax = df_rv["Ventas Real"].min(), df_rv["Ventas Real"].max()
+        df_rv["Ventas_Cat"] = pd.cut(df_rv["Ventas Real"],
+                                     bins=np.linspace(vmin - 0.1, vmax + 0.1, 3),
+                                     labels=["Ventas bajas", "Ventas altas"])
+        y_rv = df_rv["Ventas_Cat"]
+
+        conteo = y_rv.value_counts()
+        corte = (vmin + vmax) / 2
+        p1, p2, p3 = st.columns(3)
+        p1.metric("Meses en la base", f"{len(df_rv)}", "corte en %.1f ventas" % corte, delta_color="off")
+        p2.metric("Ventas bajas", f"{int(conteo.get('Ventas bajas', 0))}", "clase minoritaria", delta_color="off")
+        p3.metric("Ventas altas", f"{int(conteo.get('Ventas altas', 0))}", "clase mayoritaria", delta_color="off")
+
+        def _metricas_rv(y_real, y_pred):
+            return {
+                "Exactitud": accuracy_score(y_real, y_pred),
+                "Precision": precision_score(y_real, y_pred, pos_label="Ventas bajas", zero_division=0),
+                "Sensibilidad": recall_score(y_real, y_pred, pos_label="Ventas bajas"),
+                "F1": f1_score(y_real, y_pred, pos_label="Ventas bajas"),
+            }
+
+        def _fig_matriz_rv(cm, titulo):
+            fig = px.imshow(cm, text_auto=True, color_continuous_scale=ESCALA_VINO,
+                            x=["Predicho: Altas", "Predicho: Bajas"],
+                            y=["Real: Altas", "Real: Bajas"],
+                            title=titulo, aspect="auto")
+            fig.update_layout(font=ESTILO_FUENTE, height=380, coloraxis_showscale=False,
+                              title_font=dict(size=15, color=GAC_AZUL),
+                              plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
+            fig.update_traces(textfont_size=16)
+            return fig
+
+        def _entrena_rv(X, y, ponderar=False, con_smote=False):
+            X_e, X_p, y_e, y_p = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+            esc_rv = StandardScaler()
+            X_e = esc_rv.fit_transform(X_e)
+            X_p = esc_rv.transform(X_p)
+            if con_smote:
+                X_e, y_e = SMOTE(random_state=42).fit_resample(X_e, y_e)
+            mod_rv = LogisticRegression(class_weight="balanced" if ponderar else None)
+            mod_rv.fit(X_e, y_e)
+            return mod_rv, y_p, mod_rv.predict(X_p)
+
+        # --- Modelo 1: multivariable ---
+        vars_m1 = ["Leads", "Efectivos", "PDM", "Periodo_num"]
+        mod_m1, y_p1, pred_m1 = _entrena_rv(df_rv[vars_m1], y_rv)
+        met_m1 = _metricas_rv(y_p1, pred_m1)
+
+        st.markdown("#### Modelo 1 · multivariable (Leads + Efectivos + PDM + Periodo)")
+        a1, a2, a3, a4 = st.columns(4)
+        a1.metric("Exactitud", f"{met_m1['Exactitud']:.3f}")
+        a2.metric("Precision (bajas)", f"{met_m1['Precision']:.3f}")
+        a3.metric("Sensibilidad (recall)", f"{met_m1['Sensibilidad']:.3f}")
+        a4.metric("F1", f"{met_m1['F1']:.3f}")
+        g1, g2 = st.columns(2)
+        with g1:
+            st.plotly_chart(_fig_matriz_rv(confusion_matrix(y_p1, pred_m1),
+                                           "Matriz de confusion - multivariable"),
+                            use_container_width=True)
+        with g2:
+            coefs = pd.DataFrame({"Variable": ["Leads", "Efectivos", "PDM", "Periodo 2025-2026"],
+                                  "Coeficiente": np.round(mod_m1.coef_[0], 3)})
+            st.dataframe(coefs, hide_index=True, use_container_width=True)
+            st.caption("Coeficiente negativo = empuja hacia ventas ALTAS. El Periodo 2025-2026 es la "
+                       "senal mas fuerte: en esos anios los meses de ventas bajas se vuelven mucho "
+                       "menos probables.")
+        st.caption("Ojo: la clasificacion sale perfecta, pero la prueba tiene solo 9 meses (30 registros, "
+                   "70/30). Con una muestra tan chica el modelo puede estar memorizando: tomalo como "
+                   "exploratorio, no como predictor confiable.")
+
+        # --- Modelo 2: solo Leads, con y sin balanceo ---
+        st.markdown("#### Modelo 2 · solo Leads, con y sin balanceo")
+        _, y_p2, pred_l = _entrena_rv(df_rv[["Leads"]], y_rv)
+        _, _, pred_p = _entrena_rv(df_rv[["Leads"]], y_rv, ponderar=True)
+        _, _, pred_s = _entrena_rv(df_rv[["Leads"]], y_rv, con_smote=True)
+        met_l = _metricas_rv(y_p2, pred_l)
+        met_p = _metricas_rv(y_p2, pred_p)
+        met_s = _metricas_rv(y_p2, pred_s)
+
+        t1, t2, t3 = st.tabs(["Sin balanceo", "Reponderacion (class_weight)", "Oversampling (SMOTE)"])
+        for tab_rv, met_rv, pred_rv, leyenda in [
+            (t1, met_l, pred_l,
+             "Leads por si solos NO separan: el modelo predice 'Ventas altas' para todo y no detecta "
+             "ningun mes bajo (sensibilidad 0)."),
+            (t2, met_p, pred_p,
+             "La reponderacion obliga al modelo a cuidar la clase minoritaria: ahora detecta TODOS los "
+             "meses bajos (sensibilidad 1.00), a costa de algunas falsas alarmas."),
+            (t3, met_s, pred_s,
+             "SMOTE llega al mismo resultado que la reponderacion: sensibilidad 1.00 y exactitud 0.78. "
+             "Dos caminos distintos, mismo equilibrio."),
+        ]:
+            with tab_rv:
+                b1, b2, b3, b4 = st.columns(4)
+                b1.metric("Exactitud", f"{met_rv['Exactitud']:.3f}")
+                b2.metric("Precision (bajas)", f"{met_rv['Precision']:.3f}")
+                b3.metric("Sensibilidad (recall)", f"{met_rv['Sensibilidad']:.3f}")
+                b4.metric("F1", f"{met_rv['F1']:.3f}")
+                st.plotly_chart(_fig_matriz_rv(confusion_matrix(y_p2, pred_rv), "Matriz de confusion"),
+                                use_container_width=True)
+                st.caption(leyenda)
+
+        tabla_rv = pd.DataFrame({"Sin balanceo": met_l, "Reponderacion": met_p, "SMOTE": met_s}).round(3)
+        st.dataframe(tabla_rv, use_container_width=True)
+        st.markdown(f"""
+        **Lectura para GAC:** con los leads como unica senal, el modelo sin balanceo no sirve de alarma
+        (sensibilidad {met_l['Sensibilidad']:.2f}). Al balancear —por reponderacion o por SMOTE— la
+        sensibilidad sube a {met_p['Sensibilidad']:.2f}: atrapa todos los meses de ventas bajas, a costa
+        de marcar algunas falsas alarmas (precision {met_p['Precision']:.2f}). Para anticipar meses flojos
+        y reaccionar a tiempo (promociones, empuje de piso de ventas), esa compensacion conviene.
+        """)
+        st.caption("Division 70/30 con semilla 42 y stratify, igual que el notebook; la prueba son 9 meses "
+                   "(6 de ventas altas, 3 de bajas). Con n = 30 los resultados son orientativos.")
+
+# =========================================================
+# VISTA 13: DESPLIEGUE ANOVA (ETAPA III)
 # Metodologia de la plantilla 7_ANOVA.ipynb:
 # scipy.stats.f_oneway + statsmodels anova_lm · alfa = 0.05
 # =========================================================
