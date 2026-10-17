@@ -188,7 +188,7 @@ ROJO_ALERTA    = "#FF5468"
 RAMPA_VINO     = ["#F0B9C7", "#E89AAA", "#C9747F", "#D6335F",
                   "#A8284C", "#7E1330", "#5C0A1E"]
 
-ESTILO_FUENTE = dict(family="Arial, sans-serif", size=14, color=GAC_OSCURO)
+ESTILO_FUENTE = dict(family="Arial, sans-serif", size=16, color=GAC_OSCURO)
 
 # CSS global: tipografia mas grande, KPIs y desplegables legibles, y
 # graficas enmarcadas como tarjetas (estilo dashboard oscuro de referencia)
@@ -203,7 +203,7 @@ st.markdown("""
   [data-testid="stExpander"] summary p { font-size: 1.12rem !important; font-weight: 600; }
   [data-testid="stPlotlyChart"] {
       background: #221119; border: 1px solid #40222F; border-radius: 14px;
-      padding: 14px 14px 6px 14px; box-shadow: 0 4px 16px rgba(0,0,0,.35); }
+      padding: 10px 10px 4px 10px; box-shadow: 0 4px 16px rgba(0,0,0,.30); }
   [data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
   [data-testid="stSidebar"] > div:first-child { background: #1C0C15; }
   [data-testid="stSidebar"] p { font-size: 1.04rem !important; }
@@ -212,13 +212,30 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-def estilo_fig(fig, titulo, alto=420):
+def estilo_fig(fig, titulo, alto=430):
     fig.update_layout(
         font=ESTILO_FUENTE, height=alto,
-        title=dict(text=titulo, font=dict(size=17, color=GAC_AZUL)),
+        title=dict(text=titulo, font=dict(size=18, color=GAC_AZUL),
+                   x=0.02, xanchor="left", pad=dict(l=6)),
+        margin=dict(l=70, r=40, t=70, b=60),
+        hoverlabel=dict(bgcolor=PANEL, bordercolor=GAC_AZUL,
+                        font=dict(color=GAC_OSCURO, size=15, family="Arial")),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         yaxis=dict(gridcolor=REJILLA))
+    fig.update_xaxes(tickfont=dict(size=15))
+    fig.update_yaxes(tickfont=dict(size=15))
     return fig
+
+# Publicacion de graficas: ticks grandes, hover estilizado y modo interactivo
+# (zoom con rueda, barra de herramientas siempre disponible, sin logo)
+CONFIG_GRAFICA = dict(displaylogo=False, displayModeBar=True, scrollZoom=True,
+                      modeBarButtonsToRemove=["select2d", "lasso2d"])
+def grafica(fig, **kw):
+    fig.update_layout(hoverlabel=dict(bgcolor=PANEL, bordercolor=GAC_AZUL,
+                                      font=dict(color=GAC_OSCURO, size=15, family="Arial")))
+    fig.update_xaxes(tickfont=dict(size=15))
+    fig.update_yaxes(tickfont=dict(size=15))
+    st.plotly_chart(fig, config=CONFIG_GRAFICA, **kw)
 
 def tarjeta_insight(titulo, dato, detalle, color=GAC_AZUL):
     st.markdown(
@@ -240,15 +257,15 @@ DEGRADADOS_KPI = [
 
 def tarjeta_kpi(etiqueta, valor, subtexto="", variante=0):
     g = DEGRADADOS_KPI[variante % len(DEGRADADOS_KPI)]
-    sub = ("<div style='font-size:14px; color:rgba(255,255,255,.82); "
+    sub = ("<div style='font-size:13.5px; color:rgba(255,255,255,.82); "
            "margin-top:6px;'>" + subtexto + "</div>") if subtexto else ""
     st.markdown(
-        "<div style='background:" + g + "; border-radius:16px; padding:18px 20px; "
-        "box-shadow:0 6px 18px rgba(0,0,0,.45); min-height:128px;'>"
-        "<div style='font-size:13.5px; font-weight:600; letter-spacing:.5px; "
-        "text-transform:uppercase; color:rgba(255,255,255,.88);'>" + etiqueta + "</div>"
-        "<div style='font-size:42px; font-weight:800; color:#FFFFFF; "
-        "line-height:1.1; margin-top:4px;'>" + valor + "</div>" + sub +
+        "<div style='background:" + g + "; border-radius:16px; padding:16px 12px; "
+        "min-height:132px; text-align:center;'>"
+        "<div style='font-size:13px; font-weight:600; letter-spacing:.6px; "
+        "text-transform:uppercase; color:rgba(255,255,255,.90);'>" + etiqueta + "</div>"
+        "<div style='font-size:40px; font-weight:800; color:#FFFFFF; "
+        "line-height:1.15; margin-top:12px;'>" + valor + "</div>" + sub +
         "</div>", unsafe_allow_html=True)
 
 # =========================================================
@@ -417,14 +434,14 @@ if vista == VISTAS[0]:
     fig.add_trace(go.Scatter(x=r["Periodo"], y=r["Obj Ventas"], name="Objetivo",
                              mode="lines", line=dict(color=GAC_AZUL_CLARO, width=2, dash="dash")))
     fig.update_layout(font=ESTILO_FUENTE, height=440,
-        title=dict(text="Ventas reales vs objetivo (linea) y % de cumplimiento (barras)",
+        title=dict(text="Ventas vs objetivo · % cumplimiento",
                    font=dict(size=15, color=GAC_AZUL)),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         yaxis=dict(title="Ventas", gridcolor=REJILLA),
         yaxis2=dict(title="% cumplimiento", overlaying="y", side="right",
                     range=[0, 160], showgrid=False),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
-    st.plotly_chart(fig, width="stretch")
+    grafica(fig, width="stretch")
 
     anomalias = r[r["% CAL Ventas"] < 0.6][["Periodo", "Leads", "Ventas Real",
                                             "Obj Ventas", "% CAL Ventas"]].copy()
@@ -513,10 +530,10 @@ elif vista == VISTAS[1]:
             textinfo="value+percent previous",
             marker_color=RAMPA_VINO + ["#3E0717"]))
         fig_fun.update_layout(font=ESTILO_FUENTE, height=480,
-            title=dict(text="Embudo promedio por mes", font=dict(size=15, color=GAC_AZUL)),
+            title=dict(text="Embudo promedio por mes", font=dict(size=18, color=GAC_AZUL)),
             paper_bgcolor=GAC_BLANCO,
             margin=dict(l=10, r=10, t=60, b=10))
-        st.plotly_chart(fig_fun, width="stretch")
+        grafica(fig_fun, width="stretch")
         st.caption("Nota: 'Ventas' incluye compras de contado sin solicitud de "
                    "credito, por eso puede ser mayor que las SDC aprobadas.")
 
@@ -533,12 +550,12 @@ elif vista == VISTAS[1]:
                 lambda r: f"{r['Desde']} → siguiente<br>Benchmark: {r['Benchmark %']:.0f}%",
                 axis=1), hoverinfo="text")
         fig_tr.update_layout(font=ESTILO_FUENTE, height=480,
-            title=dict(text="Tasa de transicion por etapa (benchmark en hover)",
+            title=dict(text="Transicion por etapa vs benchmark",
                        font=dict(size=15, color=GAC_AZUL)),
             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
             xaxis=dict(title="%", gridcolor=REJILLA, range=[0, 105]),
             yaxis=dict(autorange="reversed"), showlegend=False)
-        st.plotly_chart(fig_tr, width="stretch")
+        grafica(fig_tr, width="stretch")
 
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -547,9 +564,9 @@ elif vista == VISTAS[1]:
             mode="lines+markers", line=dict(color=GAC_AZUL, width=3),
             marker=dict(size=8), fill="tozeroy",
             fillcolor="rgba(214,51,95,0.15)"))
-        estilo_fig(fig_c, "Conversion lead → venta por mes (%)")
+        estilo_fig(fig_c, "Conversion lead → venta (%)")
         fig_c.update_yaxes(gridcolor=REJILLA)
-        st.plotly_chart(fig_c, width="stretch")
+        grafica(fig_c, width="stretch")
     with c2:
         fig_e = go.Figure(go.Scatter(
             x=df_leads["Periodo"], y=df_leads["Efectividad_Leads"],
@@ -558,16 +575,16 @@ elif vista == VISTAS[1]:
         fig_e.add_hline(y=df_leads["Efectividad_Leads"].mean(),
                         line_dash="dash", line_color=GAC_PLATA,
                         annotation_text="promedio")
-        estilo_fig(fig_e, "Efectividad de leads por mes (%)")
+        estilo_fig(fig_e, "Efectividad de leads (%)")
         fig_e.update_yaxes(gridcolor=REJILLA)
-        st.plotly_chart(fig_e, width="stretch")
+        grafica(fig_e, width="stretch")
     with c3:
         fig_v = go.Figure(go.Bar(
             x=visitas_mes["Periodo"], y=visitas_mes["Visitas"],
             marker_color=GAC_AZUL_MED))
-        estilo_fig(fig_v, "Visitas registradas por mes (bitacora)")
+        estilo_fig(fig_v, "Visitas registradas por mes")
         fig_v.update_xaxes(tickangle=-45)
-        st.plotly_chart(fig_v, width="stretch")
+        grafica(fig_v, width="stretch")
 
     st.markdown("**Detalle mensual del embudo**")
     tabla_f = df_funnel[["Mes"] + ETAPAS + ["Conv_Lead_Venta"]].copy()
@@ -628,10 +645,10 @@ elif vista == VISTAS[2]:
             fig_a = px.bar(g_asesor.sort_values("Ventas"), x="Ventas", y="Asesor",
                            orientation="h", text="Ventas",
                            color_discrete_sequence=[GAC_AZUL])
-            estilo_fig(fig_a, "Ventas cerradas por asesor (bitacora de piso)")
+            estilo_fig(fig_a, "Ventas cerradas por asesor")
             fig_a.update_traces(textposition="outside")
             fig_a.update_xaxes(gridcolor=REJILLA)
-            st.plotly_chart(fig_a, width="stretch")
+            grafica(fig_a, width="stretch")
 
         st.markdown("### Hallazgos · asesores de piso")
         sin_ventas = g_asesor[g_asesor["Ventas"] == 0]
@@ -670,10 +687,10 @@ elif vista == VISTAS[2]:
                 fig_b = px.bar(g_bdc.sort_values("% Venta"), x="% Venta", y="BDC_L",
                                orientation="h", text="% Venta",
                                color_discrete_sequence=[GAC_AZUL_MED])
-                estilo_fig(fig_b, "% de conversion a venta por ejecutivo BDC")
+                estilo_fig(fig_b, "Conversion a venta por ejecutivo BDC")
                 fig_b.update_traces(textposition="outside")
                 fig_b.update_xaxes(gridcolor=REJILLA)
-                st.plotly_chart(fig_b, width="stretch")
+                grafica(fig_b, width="stretch")
 
             st.markdown("### Hallazgos · ejecutivos BDC")
             mejor_b = g_bdc.iloc[0]; peor_b = g_bdc.sort_values("Registros", ascending=False).iloc[0]
@@ -718,10 +735,10 @@ elif vista == VISTAS[2]:
             with col2:
                 fig_m = px.bar(g_mkt, x="Canal", y="Costo / venta", text="Costo / venta",
                                color_discrete_sequence=[GAC_AZUL])
-                estilo_fig(fig_m, "Costo de marketing por venta cerrada (menor = mejor)")
+                estilo_fig(fig_m, "Costo por venta por canal")
                 fig_m.update_traces(texttemplate="$%{text:,.0f}", textposition="outside")
                 fig_m.update_yaxes(gridcolor=REJILLA)
-                st.plotly_chart(fig_m, width="stretch")
+                grafica(fig_m, width="stretch")
 
             st.markdown("### Hallazgos · marketing por canal")
             eficiente = g_mkt.sort_values("Costo / venta").iloc[0]
@@ -767,9 +784,9 @@ elif vista == VISTAS[2]:
                 fig_p.update_traces(marker_color=colores_m, texttemplate="%{text:.0f}%",
                                     textposition="outside")
                 fig_p.add_vline(x=100, line_dash="dash", line_color=GAC_OSCURO)
-                estilo_fig(fig_p, "Cumplimiento % del objetivo por modelo (linea = 100%)")
+                estilo_fig(fig_p, "Cumplimiento del objetivo por modelo")
                 fig_p.update_xaxes(gridcolor=REJILLA, range=[0, max(260, float(df_bcs["Cumplimiento %"].max()) * 1.15)])
-                st.plotly_chart(fig_p, width="stretch")
+                grafica(fig_p, width="stretch")
 
             st.markdown("### Hallazgos · productos (BCS)")
             mod_bajo = df_bcs.loc[df_bcs["Cumplimiento %"].idxmin()]
@@ -815,10 +832,10 @@ elif vista == VISTAS[2]:
                 tab_prod_freq.columns = ["Producto", "Leads"]
                 fig_lp = px.bar(tab_prod_freq.head(10), x="Producto", y="Leads",
                                 text="Leads", color_discrete_sequence=[GAC_AZUL])
-                estilo_fig(fig_lp, "Leads captados por producto (plaza)")
+                estilo_fig(fig_lp, "Leads captados por producto")
                 fig_lp.update_traces(textposition="outside")
                 fig_lp.update_xaxes(tickangle=-30)
-                st.plotly_chart(fig_lp, width="stretch")
+                grafica(fig_lp, width="stretch")
             with c2:
                 tab_est = df_detalle["Estado"].value_counts().reset_index()
                 tab_est.columns = ["Estatus", "Leads"]
@@ -838,7 +855,7 @@ elif vista == VISTAS[2]:
                     annotations=[dict(text=f"{total:,}<br>leads", x=0.5, y=0.5,
                                       font=dict(size=22, color=GAC_OSCURO),
                                       showarrow=False)])
-                st.plotly_chart(fig_ls, width="stretch")
+                grafica(fig_ls, width="stretch")
 
             st.markdown("**Conversion por producto (ventas / leads captados)**")
             pv = (df_detalle.groupby("Producto")["Estado"]

@@ -36,7 +36,20 @@ REJILLA        = "#3A2230"
 GRIS_DATOS     = "#B9A5AC"
 PALETA_ANOVA   = [GAC_AZUL, GAC_PLATA, GAC_AZUL_MED, GAC_AZUL_CLARO]
 ESCALA_VINO    = [[0, "#4A0A20"], [0.5, "#8F1F42"], [1, "#D6335F"]]
-ESTILO_FUENTE  = dict(family="Arial, sans-serif", size=14, color=GAC_OSCURO)
+ESTILO_FUENTE  = dict(family="Arial, sans-serif", size=16, color=GAC_OSCURO)
+
+# Publicacion de graficas: ticks grandes, hover estilizado y modo
+# interactivo (zoom con rueda, barra de herramientas siempre visible)
+CONFIG_GRAFICA = dict(displaylogo=False, displayModeBar=True, scrollZoom=True,
+                      modeBarButtonsToRemove=["select2d", "lasso2d"])
+def grafica(fig, **kw):
+    fig.update_layout(
+        margin=dict(l=60, r=30, t=70, b=55),
+        hoverlabel=dict(bgcolor="#221119", bordercolor="#D6335F",
+                        font=dict(color="#F3E6EA", size=15, family="Arial")))
+    fig.update_xaxes(tickfont=dict(size=15))
+    fig.update_yaxes(tickfont=dict(size=15))
+    st.plotly_chart(fig, config=CONFIG_GRAFICA, **kw)
 
 LISTA_NUM = ["Leads", "Efectivos", "Ventas Reportadas", "Obj Ventas",
              "Ventas Real", "Conversion", "SDC", "Autorizadas",
@@ -152,7 +165,7 @@ def vista_correlaciones(df_resumen):
     fig_corr.update_layout(font=ESTILO_FUENTE, height=520,
                            plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
     fig_corr.update_traces(textfont=dict(color="#FFFFFF", size=13))
-    st.plotly_chart(fig_corr, width="stretch", key=_key("g"))
+    grafica(fig_corr, width="stretch", key=_key("g"))
 
     st.markdown("**Correlacion de cada variable con Ventas Real**")
     tabla_corr = (df_resumen[LISTA_NUM].corr()["Ventas Real"]
@@ -166,7 +179,7 @@ def vista_correlaciones(df_resumen):
     fig_bar.update_layout(font=ESTILO_FUENTE, height=480,
                           plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
                           xaxis=dict(range=[-1, 1], gridcolor=REJILLA))
-    st.plotly_chart(fig_bar, width="stretch", key=_key("g"))
+    grafica(fig_bar, width="stretch", key=_key("g"))
 
     top_var = str(tabla_corr.iloc[0]["Variable"])
     top_r = float(tabla_corr.iloc[0]["Correlacion con Ventas Real"])
@@ -270,7 +283,7 @@ def vista_reg_simple(df_resumen, df_bcs):
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         legend=dict(orientation="h", yanchor="bottom", y=1.02,
                     xanchor="right", x=1))
-    st.plotly_chart(fig, width="stretch", key=_key("g"))
+    grafica(fig, width="stretch", key=_key("g"))
 
     st.markdown("**Valores reales, predichos y residuales**")
     if es_bcs:
@@ -344,7 +357,7 @@ def vista_reg_multiple(df_resumen):
         fig_hm.update_layout(font=ESTILO_FUENTE, height=420,
                              plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
         fig_hm.update_traces(textfont=dict(color="#FFFFFF", size=13))
-        st.plotly_chart(fig_hm, width="stretch", key=_key("g"))
+        grafica(fig_hm, width="stretch", key=_key("g"))
     with C2:
         st.write("Correlacion Lineal Multiple")
         minimo = min(df_resumen[Variable_y].min(), y_pred.min())
@@ -366,7 +379,7 @@ def vista_reg_multiple(df_resumen):
             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
             legend=dict(orientation="h", yanchor="bottom", y=-0.25,
                         xanchor="center", x=0.5))
-        st.plotly_chart(fig_sc, width="stretch", key=_key("g"))
+        grafica(fig_sc, width="stretch", key=_key("g"))
 
     st.markdown("**Coeficientes del modelo** (el signo y el tamano indican "
                 "hacia donde y cuanto empuja cada variable)")
@@ -461,13 +474,13 @@ def vista_reg_funnel(df_funnel):
         fig_d1.update_layout(
             font=ESTILO_FUENTE, height=400,
             title=dict(text=f"Regresion 1 (R² = {r2_m1:.2f})",
-                       font=dict(size=15, color=GAC_AZUL)),
+                       font=dict(size=17, color=GAC_AZUL)),
             xaxis=dict(title=f"{Variable_y} reales"),
             yaxis=dict(title=f"{Variable_y} predichas", gridcolor=REJILLA),
             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
             legend=dict(orientation="h", yanchor="bottom", y=-0.3,
                         xanchor="center", x=0.5))
-        st.plotly_chart(fig_d1, width="stretch", key=_key("g"))
+        grafica(fig_d1, width="stretch", key=_key("g"))
     with D2:
         fig_d2 = go.Figure()
         fig_d2.add_trace(go.Scatter(
@@ -480,13 +493,13 @@ def vista_reg_funnel(df_funnel):
         fig_d2.update_layout(
             font=ESTILO_FUENTE, height=400,
             title=dict(text=f"Regresion 2 (R² = {r2_m2:.2f})",
-                       font=dict(size=15, color=GAC_AZUL)),
+                       font=dict(size=17, color=GAC_AZUL)),
             xaxis=dict(title=f"{Variable_y} reales"),
             yaxis=dict(title=f"{Variable_y} predichas", gridcolor=REJILLA),
             plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
             legend=dict(orientation="h", yanchor="bottom", y=-0.3,
                         xanchor="center", x=0.5))
-        st.plotly_chart(fig_d2, width="stretch", key=_key("g"))
+        grafica(fig_d2, width="stretch", key=_key("g"))
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -509,7 +522,7 @@ def vista_reg_funnel(df_funnel):
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         legend=dict(orientation="h", yanchor="bottom", y=1.02,
                     xanchor="right", x=1))
-    st.plotly_chart(fig, width="stretch", key=_key("g"))
+    grafica(fig, width="stretch", key=_key("g"))
     if r2_m1 >= 0.7 or r2_m2 >= 0.7:
         hallazgo(f"Con R² de {max(r2_m1, r2_m2):.2f}, el modelo explica bien "
                    "la variacion de las ventas: a mitad de mes, con las citas "
@@ -564,7 +577,7 @@ def vista_logistica_pdm(df_bitacora):
                         x=["Predicho: No", "Predicho: Si"], y=["Real: No", "Real: Si"],
                         title=titulo, aspect="auto")
         fig.update_layout(font=ESTILO_FUENTE, height=380, coloraxis_showscale=False,
-                          title_font=dict(size=15, color=GAC_AZUL),
+                          title_font=dict(size=17, color=GAC_AZUL),
                           plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
         fig.update_traces(textfont=dict(size=17, color="#FFFFFF"))
         return fig
@@ -597,7 +610,7 @@ def vista_logistica_pdm(df_bitacora):
         b2.metric("Precision (PDM=1)", f"{met_base['Precision']:.3f}")
         b3.metric("Sensibilidad (recall)", f"{met_base['Sensibilidad']:.3f}")
         b4.metric("F1", f"{met_base['F1']:.3f}")
-        st.plotly_chart(_fig_matriz(cm_base, "Matriz de confusion - modelo base"), width="stretch", key=_key("g"))
+        grafica(_fig_matriz(cm_base, "Matriz de confusion - modelo base"), width="stretch", key=_key("g"))
         st.caption(f"El modelo base acierta {met_base['Exactitud']*100:.0f}% de las veces, pero solo detecta "
                    f"{int(cm_base[1,1])} de {int(cm_base[1].sum())} pruebas de manejo reales "
                    f"(sensibilidad {met_base['Sensibilidad']*100:.0f}%): como PDM=1 es la clase minoritaria, "
@@ -609,7 +622,7 @@ def vista_logistica_pdm(df_bitacora):
         s2.metric("Precision (PDM=1)", f"{met_over['Precision']:.3f}")
         s3.metric("Sensibilidad (recall)", f"{met_over['Sensibilidad']:.3f}")
         s4.metric("F1", f"{met_over['F1']:.3f}")
-        st.plotly_chart(_fig_matriz(cm_over, "Matriz de confusion - con SMOTE"), width="stretch", key=_key("g"))
+        grafica(_fig_matriz(cm_over, "Matriz de confusion - con SMOTE"), width="stretch", key=_key("g"))
         st.caption(f"SMOTE crea ejemplos sinteticos de PDM=1 en el entrenamiento "
                    f"(de {len(X_ent)} a {len(X_over)} registros, con las clases parejas). "
                    f"La sensibilidad salta a {met_over['Sensibilidad']*100:.0f}% "
@@ -689,7 +702,7 @@ def vista_logistica_ventas(df_resumen):
                         y=["Real: Altas", "Real: Bajas"],
                         title=titulo, aspect="auto")
         fig.update_layout(font=ESTILO_FUENTE, height=380, coloraxis_showscale=False,
-                          title_font=dict(size=15, color=GAC_AZUL),
+                          title_font=dict(size=17, color=GAC_AZUL),
                           plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
         fig.update_traces(textfont=dict(size=17, color="#FFFFFF"))
         return fig
@@ -717,7 +730,7 @@ def vista_logistica_ventas(df_resumen):
     a4.metric("F1", f"{met_m1['F1']:.3f}")
     g1, g2 = st.columns(2)
     with g1:
-        st.plotly_chart(_fig_matriz_rv(confusion_matrix(y_p1, pred_m1),
+        grafica(_fig_matriz_rv(confusion_matrix(y_p1, pred_m1),
                                        "Matriz de confusion - multivariable"),
                         width="stretch", key=_key("g"))
     with g2:
@@ -757,7 +770,7 @@ def vista_logistica_ventas(df_resumen):
             b2.metric("Precision (bajas)", f"{met_rv['Precision']:.3f}")
             b3.metric("Sensibilidad (recall)", f"{met_rv['Sensibilidad']:.3f}")
             b4.metric("F1", f"{met_rv['F1']:.3f}")
-            st.plotly_chart(_fig_matriz_rv(confusion_matrix(y_p2, pred_rv), "Matriz de confusion"),
+            grafica(_fig_matriz_rv(confusion_matrix(y_p2, pred_rv), "Matriz de confusion"),
                             width="stretch", key=_key("g"))
             st.caption(leyenda)
 
@@ -819,14 +832,14 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
 
             C1, C2 = st.columns(2)
             with C1:
-                st.plotly_chart(fig_box(df_citas, "BDC_L", "Potencial",
+                grafica(fig_box(df_citas, "BDC_L", "Potencial",
                     ORDEN_BDC, "Boxplot del potencial por agente",
                     "Potencial (%)"), width="stretch", key=_key("g"))
             with C2:
-                st.plotly_chart(fig_bar_ic95(df_citas, "BDC_L", "Potencial",
+                grafica(fig_bar_ic95(df_citas, "BDC_L", "Potencial",
                     ORDEN_BDC, "Media del potencial con IC 95%",
                     "Potencial (%)"), width="stretch", key=_key("g"))
-            st.plotly_chart(fig_violin(df_citas, "BDC_L", "Potencial",
+            grafica(fig_violin(df_citas, "BDC_L", "Potencial",
                 ORDEN_BDC, "Distribucion del potencial (violin)",
                 "Potencial (%)"), width="stretch", key=_key("g"))
 
@@ -857,7 +870,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
 
             C3, C4 = st.columns([3, 2])
             with C3:
-                st.plotly_chart(fig_interaccion(df_citas, "BDC_L", "PDM_txt",
+                grafica(fig_interaccion(df_citas, "BDC_L", "PDM_txt",
                     "Potencial", ORDEN_BDC, "Grafica de interaccion BDC × PDM",
                     "Potencial promedio"), width="stretch", key=_key("g"))
             with C4:
@@ -914,11 +927,11 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
 
             C1, C2 = st.columns(2)
             with C1:
-                st.plotly_chart(fig_box(df_mkt, "Canal", "Leads",
+                grafica(fig_box(df_mkt, "Canal", "Leads",
                     ORDEN_CANAL, "Boxplot de leads por canal",
                     "Leads mensuales"), width="stretch", key=_key("g"))
             with C2:
-                st.plotly_chart(fig_bar_ic95(df_mkt, "Canal", "Leads",
+                grafica(fig_bar_ic95(df_mkt, "Canal", "Leads",
                     ORDEN_CANAL, "Media de leads con IC 95%",
                     "Leads mensuales"), width="stretch", key=_key("g"))
 
@@ -953,7 +966,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
                  "C(Canal, Sum):C(Anio, Sum)": "Canal × Año",
                  "Residual": "Residual"}),
                 hide_index=True, width="stretch")
-            st.plotly_chart(fig_interaccion(df_mkt, "Anio", "Canal",
+            grafica(fig_interaccion(df_mkt, "Anio", "Canal",
                 "Presupuesto", ["2025", "2026"],
                 "Grafica de interaccion canal × año (presupuesto)",
                 "Presupuesto promedio ($)"), width="stretch", key=_key("g"))
@@ -999,11 +1012,11 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
 
             C1, C2 = st.columns(2)
             with C1:
-                st.plotly_chart(fig_box(df_plazas_sem, "Producto_L", "Leads",
+                grafica(fig_box(df_plazas_sem, "Producto_L", "Leads",
                     ORDEN_PROD, "Boxplot de leads semanales por producto",
                     "Leads por semana"), width="stretch", key=_key("g"))
             with C2:
-                st.plotly_chart(fig_bar_ic95(df_plazas_sem, "Producto_L",
+                grafica(fig_bar_ic95(df_plazas_sem, "Producto_L",
                     "Leads", ORDEN_PROD, "Media de leads con IC 95%",
                     "Leads por semana"), width="stretch", key=_key("g"))
 
@@ -1029,7 +1042,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
                  "Producto_L:Plaza_L": "Producto × Plaza",
                  "Residual": "Residual"}),
                 hide_index=True, width="stretch")
-            st.plotly_chart(fig_interaccion(df_plazas_sem, "Producto_L",
+            grafica(fig_interaccion(df_plazas_sem, "Producto_L",
                 "Plaza_L", "Leads", ORDEN_PROD,
                 "Grafica de interaccion producto × plaza",
                 "Leads semanales promedio"), width="stretch", key=_key("g"))
