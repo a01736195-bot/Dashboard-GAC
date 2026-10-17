@@ -5,14 +5,17 @@ borgona y diseno plano. Reestructurado en octubre 2026 para enfocarse en
 **insights de negocio**: cada vista responde una pregunta concreta en lugar de
 replicar las tecnicas estadisticas de los notebooks de origen.
 
-## Las 4 vistas de negocio
+## Las vistas del dashboard
 
 | Vista | Pregunta que responde | Contenido |
 |---|---|---|
 | 1. Panorama Ejecutivo | ¿Como va la plaza? | KPIs (ventas, cumplimiento, leads/venta, efectividad), tendencia vs objetivo a 30 meses, meses criticos y 6 tarjetas de insight redactadas en lenguaje de negocio |
-| 2. Embudo de Ventas | ¿Donde se fuga la venta? | Embudo mensual promedio, tasa de transicion por etapa vs benchmark (cuellos en rojo), conversion lead→venta y efectividad de leads en el tiempo |
-| 3. Desempeno | ¿Quien y que rinde? | Asesores de piso, ejecutivos BDC (digital), marketing por canal (costo/venta) y productos (cumplimiento BCS) |
-| 4. Laboratorio (evidencia) | ¿Donde quedo el proceso? | Indice de la evidencia estadistica archivada y nota de conciliacion entre fuentes |
+| 2. Embudo de Ventas | ¿Donde se fuga la venta? | Embudo mensual promedio, tasa de transicion por etapa vs benchmark (cuellos en rojo), conversion lead→venta, efectividad de leads y visitas por mes |
+| 3. Desempeno | ¿Quien y que rinde? | Asesores de piso, ejecutivos BDC (digital), marketing por canal (costo/venta), productos (cumplimiento BCS) y leads de plaza por producto/estatus |
+| 4. Modelos Predictivos | ¿Que dicen los modelos? | Correlaciones, regresion lineal simple y multiple, regresion del embudo, regresiones logisticas (PDM y ventas) y ANOVA (citas, marketing, plazas) — todo el modelado del proceso, con explicacion en lenguaje de negocio |
+| 5. Laboratorio (evidencia) | ¿Donde quedo el proceso? | Indice de la evidencia estadistica archivada y nota de conciliacion entre fuentes |
+
+Los modelos estadisticos viven en `vistas_modelos.py` (una funcion por pestana).
 
 ## Evidencia del proceso (no se perdio nada)
 

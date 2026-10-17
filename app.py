@@ -1,13 +1,15 @@
 # Dashboard GAC - Insights de Negocio
-# Reestructuracion: 4 vistas de negocio
+# Reestructuracion: vistas de negocio + modelos estadisticos integrados
 #   1. Panorama Ejecutivo   (KPIs, tendencia vs objetivo, tarjetas de insight)
 #   2. Embudo de Ventas     (conversion por etapa, cuellos de botella)
-#   3. Desempeno            (asesores de piso, BDC, marketing, productos)
-#   4. Laboratorio          (evidencia del proceso estadistico archivado)
+#   3. Desempeno            (asesores de piso, BDC, marketing, productos, leads de plaza)
+#   4. Modelos Predictivos  (correlaciones, regresiones lineales y logisticas, ANOVA)
+#   5. Laboratorio          (evidencia del proceso estadistico archivado)
 #
 # Las 13 vistas originales (Etapas I-III, trazables a los notebooks del
 # equipo) quedan guardadas como evidencia en:
 #   archivo/app_etapas_original.py
+# Los modelos estadisticos viven en vistas_modelos.py (pestanas de la vista 4)
 
 import os
 import streamlit as st
@@ -15,6 +17,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import vistas_modelos as vm
 
 st.set_page_config(page_title="GAC - Insights de Negocio", page_icon="🚗", layout="wide")
 
@@ -28,6 +31,24 @@ def load_data():
     df_bitacora["Periodo"] = pd.to_datetime(df_bitacora["Fecha"]).dt.strftime("%Y-%m")
     df_leads["Fecha"] = pd.to_datetime(df_leads["Periodo"] + "-01")
     return df_bitacora, df_leads
+
+@st.cache_data
+def load_leads_detalle():
+    # Base de leads de plaza (detalle). Si no existe el archivo, devolvemos None
+    try:
+        d = pd.read_csv("base_leads_limpia.csv")
+    except FileNotFoundError:
+        return None
+
+    # Limpieza defensiva (por si el CSV cambia)
+    d["Estado"] = d["Estado"].astype(str).str.strip().str.capitalize()
+    d["Estado"] = d["Estado"].replace({"1 ventas": "Ventas", "1 venta": "Ventas",
+                                       "Nan": "Sin dato"})
+    d["Producto"] = d["Producto"].astype(str).str.strip().replace({"nan": "Sin especificar"})
+    d = d[~d["Producto"].isin(["No envian producto valido"])]
+    d["Temperatura"] = d["Temperatura"].astype(str).str.strip()
+    d["Asesor"] = d["Asesor"].astype(str).str.strip().str.title()
+    return d
 
 @st.cache_data
 def load_regresion_data():
@@ -62,7 +83,31 @@ def load_citas():
 
     dfc["BDC_L"] = dfc["BDC"].apply(limpiar_bdc)
     dfc = dfc[dfc["Potencial"].notna() & dfc["BDC_L"].notna()].copy()
+    dfc["PDM_txt"] = dfc["PDM"].map({True: "Con PDM", False: "Sin PDM"})
     return dfc
+
+@st.cache_data
+def load_plazas_anova():
+    # Plazas: leads de piso -> variable de respuesta = leads por semana
+    try:
+        dfp = pd.read_csv("Plazas.csv")
+    except FileNotFoundError:
+        return None
+    dfp.columns = dfp.columns.str.strip()
+    dfp["Fecha"] = pd.to_datetime(dfp["Fecha Origen"],
+                                  format="%d/%m/%Y %H:%M", errors="coerce")
+    dfp["Producto_L"] = dfp["Producto"].astype(str).str.strip().str.upper()
+    dfp["Plaza_L"] = (dfp["Origen"].astype(str).str.strip().str.upper()
+        .replace({"PLAZA ANGELOPOLIS": "Angelopolis",
+                  "GRAN PATIO TLAXCALA": "Gran Patio Tlaxcala",
+                  "GALERIAS TLAXCALA": "Galerias Tlaxcala"}))
+    dfp = dfp[dfp["Producto_L"].isin(["EMZOOM", "GS8", "EMKOO"])
+              & dfp["Fecha"].notna()
+              & dfp["Plaza_L"].isin(["Angelopolis", "Gran Patio Tlaxcala"])]
+    dfp["Semana"] = dfp["Fecha"].dt.to_period("W").astype(str)
+    sem = (dfp.groupby(["Semana", "Producto_L", "Plaza_L"])
+           .size().reset_index(name="Leads"))
+    return sem
 
 @st.cache_data
 def load_mkt():
@@ -118,8 +163,10 @@ def load_mkt():
     return dfm
 
 df_bitacora, df_leads = load_data()
+df_detalle = load_leads_detalle()
 df_resumen, df_funnel, df_bcs = load_regresion_data()
 df_citas = load_citas()
+df_plazas_sem = load_plazas_anova()
 df_mkt = load_mkt()
 
 # =========================================================
@@ -158,9 +205,6 @@ def tarjeta_insight(icono, titulo, dato, detalle, color=GAC_AZUL):
         "<div style='font-size:13px; color:" + GAC_OSCURO + ";'>" + detalle +
         "</div></div>",
         unsafe_allow_html=True)
-
-def tabla_bonita(df):
-    return df.style.format(precision=1, thousands=",")
 
 # =========================================================
 # PRE-CALCULOS DE NEGOCIO
@@ -211,6 +255,10 @@ g_asesor["% PDM"] = (g_asesor["PDM"] / g_asesor["Visitas"] * 100).round(1)
 g_asesor["% Venta/visita"] = (g_asesor["Ventas"] / g_asesor["Visitas"] * 100).round(1)
 g_asesor = g_asesor.sort_values("Ventas", ascending=False)
 
+# --- Visitas registradas por mes (bitacora) ---
+visitas_mes = (df_bitacora.groupby(["Periodo", "Mes"], as_index=False)
+               .size().rename(columns={"size": "Visitas"}))
+
 # --- BDC digital ---
 g_bdc = None
 if df_citas is not None and len(df_citas):
@@ -241,22 +289,13 @@ if df_bcs is not None:
 efec_inicio = float(df_leads["Efectividad_Leads"].head(6).mean())
 efec_actual = float(df_leads["Efectividad_Leads"].tail(6).mean())
 
-# --- KPIs de los ultimos 12 meses del resumen ---
-r12 = df_resumen.tail(12)
-k_ventas = int(r12["Ventas Real"].sum())
-k_cumpl = float(r12["% CAL Ventas"].mean() * 100)
-k_leads_mes = float(r12["Leads"].mean())
-k_lead_venta = float((r12["Leads"].sum() / r12["Ventas Real"].sum()))
-k_efec = efec_actual
-n_meses_bajo = int((df_resumen["% CAL Ventas"] < 1).sum())
-
 # =========================================================
 # ENCABEZADO Y NAVEGACION
 # =========================================================
 st.markdown("<h1 style='color:" + GAC_AZUL + ";'>🚗 GAC · Insights de Negocio</h1>",
             unsafe_allow_html=True)
-st.caption("Plaza Angelopolis · Analitica comercial: panorama, embudo, desempeno "
-           "y evidencia del proceso estadistico")
+st.caption("Plaza Angelopolis · Analitica comercial: panorama, embudo, "
+           "desempeno, modelos predictivos y evidencia del proceso")
 st.divider()
 
 if os.path.exists("logo_gac.png"):
@@ -268,18 +307,23 @@ else:
 st.sidebar.markdown("---")
 
 VISTAS = ["📊 Panorama Ejecutivo", "🔻 Embudo de Ventas",
-          "👥 Desempeno", "🧪 Laboratorio (evidencia)"]
+          "👥 Desempeno", "📐 Modelos Predictivos",
+          "🧪 Laboratorio (evidencia)"]
 vista = st.sidebar.radio("Vista:", VISTAS, key="nav_vista")
 
 st.sidebar.markdown("---")
 st.sidebar.write("📋 Bitacora de piso: **%d** registros" % len(df_bitacora))
 st.sidebar.write("📈 Leads reales: **%d** meses" % len(df_leads))
+if df_detalle is not None:
+    st.sidebar.write("🏙️ Leads plaza: **%d** registros" % len(df_detalle))
 st.sidebar.write("📊 Base resumen: **%d** meses" % len(df_resumen))
 st.sidebar.write("🔻 Embudo: **%d** meses" % len(df_funnel))
 if df_citas is not None:
     st.sidebar.write("📞 Citas digital: **%d** registros" % len(df_citas))
 if df_mkt is not None:
     st.sidebar.write("📣 Marketing: **%d** obs." % len(df_mkt))
+if df_plazas_sem is not None:
+    st.sidebar.write("🏙️ Plazas: **%d** semanas-prod." % len(df_plazas_sem))
 st.sidebar.markdown("---")
 st.sidebar.caption("Evidencia del proceso estadistico:\n`archivo/app_etapas_original.py`")
 
@@ -338,7 +382,7 @@ if vista == VISTAS[0]:
     tasa_agend = float(df_trans.loc[df_trans["Transicion"] == "Agendamiento", "Tasa %"].iloc[0])
     c1, c2, c3 = st.columns(3)
     with c1:
-        tarjeta_insight("💳", "Aprobacion de credito", f" Solo {tasa_aprob:.0f}% de las solicitudes se aprueba",
+        tarjeta_insight("💳", "Aprobacion de credito", f"Solo {tasa_aprob:.0f}% de las solicitudes se aprueba",
             "El mayor cuello del embudo. 6 de cada 10 solicitudes se caen en "
             "aprobacion: revisar filtros de las financieras y documentacion "
             "que se pide al cliente.", ROJO_ALERTA)
@@ -439,7 +483,7 @@ elif vista == VISTAS[1]:
             yaxis=dict(autorange="reversed"), showlegend=False)
         st.plotly_chart(fig_tr, width="stretch")
 
-    c1, c2 = st.columns(2)
+    c1, c2, c3 = st.columns(3)
     with c1:
         fig_c = go.Figure(go.Scatter(
             x=df_funnel["Mes"], y=df_funnel["Conv_Lead_Venta"].round(2),
@@ -459,6 +503,13 @@ elif vista == VISTAS[1]:
         estilo_fig(fig_e, "Efectividad de leads por mes (%)")
         fig_e.update_yaxes(gridcolor=REJILLA)
         st.plotly_chart(fig_e, width="stretch")
+    with c3:
+        fig_v = go.Figure(go.Bar(
+            x=visitas_mes["Periodo"], y=visitas_mes["Visitas"],
+            marker_color=GAC_AZUL_MED))
+        estilo_fig(fig_v, "Visitas registradas por mes (bitacora)")
+        fig_v.update_xaxes(tickangle=-45)
+        st.plotly_chart(fig_v, width="stretch")
 
     st.markdown("**Detalle mensual del embudo**")
     tabla_f = df_funnel[["Mes"] + ETAPAS + ["Conv_Lead_Venta"]].copy()
@@ -472,9 +523,9 @@ elif vista == VISTAS[1]:
 elif vista == VISTAS[2]:
     st.subheader("¿Quien y que rinde?")
 
-    tab_ases, tab_bdc, tab_mkt, tab_prod = st.tabs(
+    tab_ases, tab_bdc, tab_mkt, tab_prod, tab_leads = st.tabs(
         ["Asesores de piso", "Ejecutivos BDC (digital)", "Marketing por canal",
-         "Productos (BCS)"])
+         "Productos (BCS)", "Leads de plaza"])
 
     with tab_ases:
         col1, col2 = st.columns([3, 4])
@@ -576,8 +627,85 @@ elif vista == VISTAS[2]:
         else:
             st.info("Base BCS no disponible.")
 
+    with tab_leads:
+        if df_detalle is not None:
+            total = len(df_detalle)
+            n_ventas = int((df_detalle["Estado"] == "Ventas").sum())
+            tasa_cierre = n_ventas / total if total else 0
+            K1, K2, K3, K4 = st.columns(4)
+            K1.metric("Leads captados", total)
+            K2.metric("Contactados", int((df_detalle["Estado"] == "Contactado").sum()))
+            K3.metric("Ventas concretadas", n_ventas)
+            K4.metric("Tasa de cierre", f"{tasa_cierre:.1%}")
+
+            c1, c2 = st.columns(2)
+            with c1:
+                tab_prod_freq = (df_detalle["Producto"].value_counts().reset_index())
+                tab_prod_freq.columns = ["Producto", "Leads"]
+                fig_lp = px.bar(tab_prod_freq.head(10), x="Producto", y="Leads",
+                                text="Leads", color_discrete_sequence=[GAC_AZUL])
+                estilo_fig(fig_lp, "Leads captados por producto (plaza)")
+                fig_lp.update_traces(textposition="outside")
+                fig_lp.update_xaxes(tickangle=-30)
+                st.plotly_chart(fig_lp, width="stretch")
+            with c2:
+                tab_est = df_detalle["Estado"].value_counts().reset_index()
+                tab_est.columns = ["Estatus", "Leads"]
+                fig_ls = px.pie(data_frame=tab_est, names="Estatus", values="Leads",
+                                title="Estatus de los leads de plaza",
+                                color="Estatus",
+                                color_discrete_map={"Ventas": GAC_AZUL,
+                                                    "Contactado": GAC_AZUL_MED,
+                                                    "Finalizado": GAC_AZUL_CLARO,
+                                                    "Sin dato": GAC_PLATA})
+                fig_ls.update_traces(textinfo="percent+label")
+                fig_ls.update_layout(font=ESTILO_FUENTE, height=420,
+                                     paper_bgcolor=GAC_BLANCO)
+                st.plotly_chart(fig_ls, width="stretch")
+
+            st.markdown("**Conversion por producto (ventas / leads captados)**")
+            pv = (df_detalle.groupby("Producto")["Estado"]
+                  .agg(total="count",
+                       ventas=lambda s: int((s == "Ventas").sum())).reset_index())
+            pv = pv[pv["total"] >= 5]
+            pv["% cierre"] = (pv["ventas"] / pv["total"] * 100).round(1)
+            pv = pv.sort_values("% cierre", ascending=False)
+            st.dataframe(pv.rename(columns={"total": "Leads", "ventas": "Ventas"}),
+                         width="stretch", hide_index=True)
+        else:
+            st.info("Base de leads de plaza (base_leads_limpia.csv) no disponible.")
+
 # =========================================================
-# VISTA 4: LABORATORIO (EVIDENCIA DEL PROCESO)
+# VISTA 4: MODELOS PREDICTIVOS
+# =========================================================
+elif vista == VISTAS[3]:
+    st.subheader("¿Que dicen los modelos estadisticos?")
+    st.caption("Todo el modelado predictivo del proceso (Etapa II) y el "
+               "despliegue ANOVA (Etapa III), integrado con explicacion en "
+               "lenguaje de negocio. Trazable a los notebooks del equipo.")
+
+    tab_corr, tab_simple, tab_multi, tab_fun, tab_logpdm, tab_logvent, tab_anova = st.tabs([
+        "Correlaciones", "Reg. lineal simple", "Reg. lineal multiple",
+        "Reg. del embudo", "Reg. logistica (PDM)",
+        "Reg. logistica (Ventas)", "ANOVA"])
+
+    with tab_corr:
+        vm.vista_correlaciones(df_resumen)
+    with tab_simple:
+        vm.vista_reg_simple(df_resumen, df_bcs)
+    with tab_multi:
+        vm.vista_reg_multiple(df_resumen)
+    with tab_fun:
+        vm.vista_reg_funnel(df_funnel)
+    with tab_logpdm:
+        vm.vista_logistica_pdm(df_bitacora)
+    with tab_logvent:
+        vm.vista_logistica_ventas(df_resumen)
+    with tab_anova:
+        vm.vista_anova(df_citas, df_mkt, df_plazas_sem)
+
+# =========================================================
+# VISTA 5: LABORATORIO (EVIDENCIA DEL PROCESO)
 # =========================================================
 else:
     st.subheader("🧪 Laboratorio — evidencia del proceso estadistico")
@@ -585,22 +713,25 @@ else:
     Las **13 vistas originales** del dashboard (Etapas I, II y III: analisis
     univariado, correlaciones, regresiones lineales y logisticas, y el
     despliegue ANOVA) se conservan intactas como evidencia del trabajo del
-    equipo. No se perdio nada: la version anterior sigue versionada en este
-    mismo repositorio.
+    equipo. Los modelos estadisticos ya estan **integrados en vivo** en la
+    vista "📐 Modelos Predictivos" (modulo `vistas_modelos.py`); este
+    archivo es la version completa original, por si se necesita comparar
+    o revertir algo.
     """)
     st.markdown("**Donde encontrar cada cosa:**")
     st.markdown("""
 | Artefacto | Contenido |
 |---|---|
-| `archivo/app_etapas_original.py` | Dashboard completo con las 13 vistas originales (Etapas I–III) listo para correr con `streamlit run` |
+| `vistas_modelos.py` | Modelos predictivos y ANOVA integrados en el dashboard actual (vista 4) |
+| `archivo/app_etapas_original.py` | Dashboard completo con las 13 vistas originales (Etapas I-III) listo para correr con `streamlit run` |
 | `DASHBOARD_GAC.ipynb` | Notebook que generaba y ejecutaba la version original |
 | `base_resumen_limpio.csv` | Base mensual de 30 meses / 26 variables usada en las regresiones |
 | `funnel_mensual.csv` | Embudo mensual de 18 meses usado en las regresiones del embudo |
 | `bcs_modelos.csv` | 6 modelos GAC (Objetivo vs Ventas reales) del Balance Scorecard |
 | Historial de git (`git log`) | Todos los commits del proceso, incluida la version previa a esta reestructuracion |
     """)
-    st.info("Para consultar una vista estadistica puntual, corre la version "
-            "archivada:  `streamlit run archivo/app_etapas_original.py`")
+    st.info("Para consultar la version original completa:  "
+            "`streamlit run archivo/app_etapas_original.py`")
     st.caption("Nota de conciliacion: la bitacora de piso y el embudo mensual "
                "reportan conversiones distintas en etapas compartidas "
                "(p. ej. PDM → SDC: 5.3% vs 82.3%). Se deben a definiciones de "
