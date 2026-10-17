@@ -170,41 +170,86 @@ df_plazas_sem = load_plazas_anova()
 df_mkt = load_mkt()
 
 # =========================================================
-# TEMA VINO TINTO / BORGONA (presentacion GAC)
+# TEMA VINO TINTO OSCURO (presentacion GAC)
 # =========================================================
-GAC_AZUL       = "#800020"
-GAC_AZUL_MED   = "#9B1B30"
-GAC_AZUL_CLARO = "#DDA0A8"
+GAC_AZUL       = "#D6335F"   # vino vivo: acento principal sobre fondo oscuro
+GAC_AZUL_MED   = "#A8284C"
+GAC_AZUL_CLARO = "#E89AAA"
 GAC_PLATA      = "#C9747F"
-GAC_OSCURO     = "#4A0414"
-GAC_BLANCO     = "#FFFFFF"
-REJILLA        = "#F3E4E7"
-VERDE_OK       = "#2E7D32"
-AMBAR          = "#B26A00"
-ROJO_ALERTA    = "#B00020"
+GAC_OSCURO     = "#F3E6EA"   # tinta clara: texto y lineas sobre el oscuro
+GAC_BLANCO     = "#251219"   # "papel" de las graficas: panel oscuro vino
+PANEL          = "#221119"
+BORDE_PANEL    = "#40222F"
+TEXTO_SUAVE    = "#C9A2AE"
+REJILLA        = "#3A2230"
+VERDE_OK       = "#3FBF6B"
+AMBAR          = "#E8A33D"
+ROJO_ALERTA    = "#FF5468"
+RAMPA_VINO     = ["#F0B9C7", "#E89AAA", "#C9747F", "#D6335F",
+                  "#A8284C", "#7E1330", "#5C0A1E"]
 
-ESTILO_FUENTE = dict(family="Arial, sans-serif", size=13, color=GAC_OSCURO)
+ESTILO_FUENTE = dict(family="Arial, sans-serif", size=14, color=GAC_OSCURO)
+
+# CSS global: tipografia mas grande, KPIs y desplegables legibles, y
+# graficas enmarcadas como tarjetas (estilo dashboard oscuro de referencia)
+st.markdown("""
+<style>
+  .stApp h1 { font-size: 2.7rem !important; }
+  .stApp h2 { font-size: 2.1rem !important; }
+  .stApp h3 { font-size: 1.5rem !important; }
+  [data-testid="stMetricLabel"] p { font-size: 1.05rem !important; }
+  [data-testid="stMetricValue"] { font-size: 2.4rem !important; font-weight: 700 !important; }
+  button[data-baseweb="tab"] p { font-size: 1.12rem !important; }
+  [data-testid="stExpander"] summary p { font-size: 1.12rem !important; font-weight: 600; }
+  [data-testid="stPlotlyChart"] {
+      background: #221119; border: 1px solid #40222F; border-radius: 14px;
+      padding: 14px 14px 6px 14px; box-shadow: 0 4px 16px rgba(0,0,0,.35); }
+  [data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
+  [data-testid="stSidebar"] > div:first-child { background: #1C0C15; }
+  [data-testid="stSidebar"] p { font-size: 1.04rem !important; }
+  .stRadio [data-testid="stMarkdownContainer"] p { font-size: 1.06rem !important; }
+  [data-testid="stCaptionContainer"] { font-size: 0.98rem !important; }
+</style>
+""", unsafe_allow_html=True)
 
 def estilo_fig(fig, titulo, alto=420):
     fig.update_layout(
         font=ESTILO_FUENTE, height=alto,
-        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        title=dict(text=titulo, font=dict(size=17, color=GAC_AZUL)),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         yaxis=dict(gridcolor=REJILLA))
     return fig
 
-def tarjeta_insight(icono, titulo, dato, detalle, color=GAC_AZUL):
+def tarjeta_insight(titulo, dato, detalle, color=GAC_AZUL):
     st.markdown(
-        "<div style='border:1px solid #EBD3D9; border-left:5px solid " + color +
-        "; border-radius:8px; padding:12px 14px; background:#FDF8F9; "
-        "margin-bottom:10px;'>"
-        "<div style='font-size:14px; font-weight:bold; color:" + GAC_OSCURO + ";'>"
-        + icono + " " + titulo + "</div>"
-        "<div style='font-size:21px; font-weight:bold; color:" + color +
-        "; margin:4px 0;'>" + dato + "</div>"
-        "<div style='font-size:13px; color:" + GAC_OSCURO + ";'>" + detalle +
-        "</div></div>",
-        unsafe_allow_html=True)
+        "<div style='background:" + PANEL + "; border:1px solid " + BORDE_PANEL +
+        "; border-left:5px solid " + color + "; border-radius:14px; "
+        "padding:18px 20px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,.35);'>"
+        "<div style='font-size:15px; font-weight:700; letter-spacing:.4px; "
+        "text-transform:uppercase; color:" + TEXTO_SUAVE + ";'>" + titulo + "</div>"
+        "<div style='font-size:31px; font-weight:800; color:" + color +
+        "; margin:6px 0 8px 0; line-height:1.15;'>" + dato + "</div>"
+        "<div style='font-size:15px; color:" + GAC_OSCURO + "; line-height:1.5;'>" +
+        detalle + "</div></div>", unsafe_allow_html=True)
+
+DEGRADADOS_KPI = [
+    "linear-gradient(135deg,#7A0E28 0%,#C42B54 55%,#E35A7C 100%)",
+    "linear-gradient(135deg,#4A0A22 0%,#8F1F42 60%,#C42B54 100%)",
+    "linear-gradient(135deg,#931232 0%,#D6335F 60%,#F0769A 100%)",
+]
+
+def tarjeta_kpi(etiqueta, valor, subtexto="", variante=0):
+    g = DEGRADADOS_KPI[variante % len(DEGRADADOS_KPI)]
+    sub = ("<div style='font-size:14px; color:rgba(255,255,255,.82); "
+           "margin-top:6px;'>" + subtexto + "</div>") if subtexto else ""
+    st.markdown(
+        "<div style='background:" + g + "; border-radius:16px; padding:18px 20px; "
+        "box-shadow:0 6px 18px rgba(0,0,0,.45); min-height:128px;'>"
+        "<div style='font-size:13.5px; font-weight:600; letter-spacing:.5px; "
+        "text-transform:uppercase; color:rgba(255,255,255,.88);'>" + etiqueta + "</div>"
+        "<div style='font-size:42px; font-weight:800; color:#FFFFFF; "
+        "line-height:1.1; margin-top:4px;'>" + valor + "</div>" + sub +
+        "</div>", unsafe_allow_html=True)
 
 # =========================================================
 # PRE-CALCULOS DE NEGOCIO
@@ -292,7 +337,7 @@ efec_actual = float(df_leads["Efectividad_Leads"].tail(6).mean())
 # =========================================================
 # ENCABEZADO Y NAVEGACION
 # =========================================================
-st.markdown("<h1 style='color:" + GAC_AZUL + ";'>🚗 GAC · Insights de Negocio</h1>",
+st.markdown("<h1 style='color:" + GAC_AZUL + ";'>GAC · Insights de Negocio</h1>",
             unsafe_allow_html=True)
 st.caption("Plaza Angelopolis · Analitica comercial: panorama, embudo, "
            "desempeno, modelos predictivos y evidencia del proceso")
@@ -306,28 +351,32 @@ else:
         unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-VISTAS = ["📊 Panorama Ejecutivo", "🔻 Embudo de Ventas",
-          "👥 Desempeno", "📐 Modelos Predictivos",
-          "🧪 Laboratorio (evidencia)"]
+VISTAS = ["Panorama Ejecutivo", "Embudo de Ventas",
+          "Desempeno", "Modelos Predictivos",
+          "Laboratorio (evidencia)"]
 vista = st.sidebar.radio("Vista:", VISTAS, key="nav_vista")
 
 st.sidebar.markdown("---")
-st.sidebar.write("📋 Bitacora de piso: **%d** registros" % len(df_bitacora))
-st.sidebar.write("📈 Leads reales: **%d** meses" % len(df_leads))
+st.sidebar.write("Bitacora de piso: **%d** registros" % len(df_bitacora))
+st.sidebar.write("Leads reales: **%d** meses" % len(df_leads))
 if df_detalle is not None:
-    st.sidebar.write("🏙️ Leads plaza: **%d** registros" % len(df_detalle))
-st.sidebar.write("📊 Base resumen: **%d** meses" % len(df_resumen))
-st.sidebar.write("🔻 Embudo: **%d** meses" % len(df_funnel))
+    st.sidebar.write("Leads plaza: **%d** registros" % len(df_detalle))
+st.sidebar.write("Base resumen: **%d** meses" % len(df_resumen))
+st.sidebar.write("Embudo: **%d** meses" % len(df_funnel))
 if df_citas is not None:
-    st.sidebar.write("📞 Citas digital: **%d** registros" % len(df_citas))
+    st.sidebar.write("Citas digital: **%d** registros" % len(df_citas))
 if df_mkt is not None:
-    st.sidebar.write("📣 Marketing: **%d** obs." % len(df_mkt))
+    st.sidebar.write("Marketing: **%d** obs." % len(df_mkt))
 if df_plazas_sem is not None:
-    st.sidebar.write("🏙️ Plazas: **%d** semanas-prod." % len(df_plazas_sem))
+    st.sidebar.write("Plazas: **%d** semanas-prod." % len(df_plazas_sem))
 st.sidebar.markdown("---")
 st.sidebar.caption("Evidencia del proceso estadistico:\n`archivo/app_etapas_original.py`")
 
-st.caption("📍 Estas en: **" + vista + "**")
+st.markdown(
+    "<div style='display:inline-block; background:" + PANEL + "; border:1px solid " +
+    BORDE_PANEL + "; border-radius:999px; padding:6px 16px; font-size:15px; "
+    "color:" + TEXTO_SUAVE + ";'>Estas en: <b style='color:" + GAC_AZUL_CLARO +
+    ";'>" + vista + "</b></div>", unsafe_allow_html=True)
 
 # =========================================================
 # VISTA 1: PANORAMA EJECUTIVO
@@ -341,11 +390,20 @@ if vista == VISTAS[0]:
     n_meses_bajo_r = int((r["% CAL Ventas"] < 1).sum())
 
     k1, k2, k3, k4, k5 = st.columns(5)
-    k1.metric("Ventas (" + str(len(r)) + " meses)", f"{int(r['Ventas Real'].sum()):,}")
-    k2.metric("Cumplimiento de objetivo", f"{float(r['% CAL Ventas'].mean())*100:.0f}%")
-    k3.metric("Leads / mes", f"{r['Leads'].mean():,.0f}")
-    k4.metric("Leads por venta", f"{r['Leads'].sum()/r['Ventas Real'].sum():.0f}")
-    k5.metric("Efectividad de leads (ult. 6 meses)", f"{efec_actual:.0f}%")
+    with k1:
+        tarjeta_kpi("Ventas (" + str(len(r)) + " meses)",
+                    f"{int(r['Ventas Real'].sum()):,}", variante=0)
+    with k2:
+        tarjeta_kpi("Cumplimiento de objetivo",
+                    f"{float(r['% CAL Ventas'].mean())*100:.0f}%", variante=1)
+    with k3:
+        tarjeta_kpi("Leads / mes", f"{r['Leads'].mean():,.0f}", variante=2)
+    with k4:
+        tarjeta_kpi("Leads por venta",
+                    f"{r['Leads'].sum()/r['Ventas Real'].sum():.0f}", variante=1)
+    with k5:
+        tarjeta_kpi("Efectividad de leads", f"{efec_actual:.0f}%",
+                    subtexto="ultimos 6 meses", variante=0)
     st.caption("Meses bajo objetivo en el periodo: **%d de %d**" % (n_meses_bajo_r, len(r)))
 
     # Tendencia: ventas vs objetivo + % de cumplimiento
@@ -372,27 +430,27 @@ if vista == VISTAS[0]:
                                             "Obj Ventas", "% CAL Ventas"]].copy()
     anomalias["% CAL Ventas"] = (anomalias["% CAL Ventas"] * 100).round(0)
     if len(anomalias):
-        st.markdown("**⚠️ Meses criticos (menos del 60% del objetivo):**")
+        st.markdown("**Meses criticos (menos del 60% del objetivo):**")
         st.dataframe(anomalias.rename(columns={"% CAL Ventas": "% cumplimiento"}),
                      width="stretch", hide_index=True)
 
-    st.markdown("### 🔎 Hallazgos clave (los datos ya los tienes; aqui estan redactados)")
+    st.markdown("### Hallazgos clave (los datos ya los tienes; aqui estan redactados)")
 
     tasa_aprob = float(df_trans.loc[df_trans["Transicion"] == "Aprobacion de credito", "Tasa %"].iloc[0])
     tasa_agend = float(df_trans.loc[df_trans["Transicion"] == "Agendamiento", "Tasa %"].iloc[0])
     c1, c2, c3 = st.columns(3)
     with c1:
-        tarjeta_insight("💳", "Aprobacion de credito", f"Solo {tasa_aprob:.0f}% de las solicitudes se aprueba",
+        tarjeta_insight("Aprobacion de credito", f"Solo {tasa_aprob:.0f}% de las solicitudes se aprueba",
             "El mayor cuello del embudo. 6 de cada 10 solicitudes se caen en "
             "aprobacion: revisar filtros de las financieras y documentacion "
             "que se pide al cliente.", ROJO_ALERTA)
     with c2:
-        tarjeta_insight("📅", "Agendamiento de citas", f"Solo {tasa_agend:.0f}% de los leads efectivos agendan",
+        tarjeta_insight("Agendamiento de citas", f"Solo {tasa_agend:.0f}% de los leads efectivos agendan",
             "2 de cada 3 leads contactados no llegan a agendar cita. "
             "Oportunidad: reforzar el contacto BDC en las primeras 48 horas.",
             ROJO_ALERTA)
     with c3:
-        tarjeta_insight("📉", "Calidad del lead", f"Efectividad: {efec_inicio:.0f}% → {efec_actual:.0f}%",
+        tarjeta_insight("Calidad del lead", f"Efectividad: {efec_inicio:.0f}% → {efec_actual:.0f}%",
             "El volumen de leads casi se triplico desde 2024, pero la "
             "efectividad cayo ~20 puntos. Mas leads no significan mas ventas: "
             "vale mas la calidad de la captura que el volumen.", AMBAR)
@@ -400,26 +458,26 @@ if vista == VISTAS[0]:
     with c4:
         if g_bdc is not None and len(g_bdc) >= 2:
             mejor = g_bdc.iloc[0]; peor = g_bdc.sort_values("Registros", ascending=False).iloc[0]
-            tarjeta_insight("👥", "Brecha entre ejecutivos BDC",
+            tarjeta_insight("Brecha entre ejecutivos BDC",
                 f"{peor['BDC_L']}: {peor['% Venta']:.0f}% vs {mejor['BDC_L']}: {mejor['% Venta']:.0f}%",
                 f"{peor['BDC_L']} atiende el mayor volumen ({int(peor['Registros'])} registros) "
                 f"con la menor conversion; {mejor['BDC_L']} convierte "
                 f"{mejor['% Venta']/max(peor['% Venta'],0.1):.1f}x mas. Revisar asignacion y proceso.",
                 AMBAR)
         else:
-            tarjeta_insight("👥", "Brecha entre ejecutivos BDC", "Sin datos",
+            tarjeta_insight("Brecha entre ejecutivos BDC", "Sin datos",
                             "La base de citas digitales no esta disponible.")
     with c5:
         if g_mkt is not None and len(g_mkt) >= 2 and "Piso" in set(g_mkt["Canal"]):
             cv = g_mkt.set_index("Canal")["Costo / venta"]
             ratio = cv["Piso"] / cv["Digital"]
-            tarjeta_insight("📣", "Costo por venta: Piso vs Digital",
+            tarjeta_insight("Costo por venta: Piso vs Digital",
                 f"Piso cuesta {ratio:.1f}x mas que Digital",
                 f"${cv['Piso']:,.0f} por venta en piso vs ${cv['Digital']:,.0f} en digital. "
                 "El piso convierte mejor (11.5% vs 1.4%), pero el costo por venta "
                 "es desproporcionado: evaluar la mezcla de presupuesto.", AMBAR)
         else:
-            tarjeta_insight("📣", "Marketing por canal", "Sin datos suficientes",
+            tarjeta_insight("Marketing por canal", "Sin datos suficientes",
                             "La base de marketing no tiene los 3 canales completos.")
     with c6:
         if df_bcs is not None:
@@ -429,13 +487,13 @@ if vista == VISTAS[0]:
                                  zip(bajo["Modelo"], bajo["Cumplimiento %"])) or "ninguno"
             txt_alto = ", ".join(f"{m} ({c:.0f}%)" for m, c in
                                  zip(alto["Modelo"], alto["Cumplimiento %"])) or "ninguno"
-            tarjeta_insight("🚗", "Objetivos por modelo mal calibrados",
+            tarjeta_insight("Objetivos por modelo mal calibrados",
                 "Cumplimientos de " + f"{df_bcs['Cumplimiento %'].min():.0f}% a {df_bcs['Cumplimiento %'].max():.0f}%",
                 f"Bajo objetivo: {txt_bajo}. Sobre-objetivo: {txt_alto}. "
                 "La dispersion sugiere metas mal calibradas o un mix comercial "
                 "desbalanceado; recalibrar objetivos por modelo.", AMBAR)
         else:
-            tarjeta_insight("🚗", "Objetivos por modelo", "Sin datos",
+            tarjeta_insight("Objetivos por modelo", "Sin datos",
                             "La base BCS no esta disponible.")
 
 # =========================================================
@@ -453,8 +511,7 @@ elif vista == VISTAS[1]:
             y=[NOMBRE_ETAPA[e] for e in ETAPAS],
             x=prom_etapas[ETAPAS].round(0),
             textinfo="value+percent previous",
-            marker_color=[GAC_AZUL_CLARO, GAC_PLATA, GAC_AZUL_MED, GAC_AZUL,
-                          GAC_OSCURO, GAC_AZUL_MED, GAC_PLATA, GAC_AZUL]))
+            marker_color=RAMPA_VINO + ["#3E0717"]))
         fig_fun.update_layout(font=ESTILO_FUENTE, height=480,
             title=dict(text="Embudo promedio por mes", font=dict(size=15, color=GAC_AZUL)),
             paper_bgcolor=GAC_BLANCO,
@@ -488,7 +545,8 @@ elif vista == VISTAS[1]:
         fig_c = go.Figure(go.Scatter(
             x=df_funnel["Mes"], y=df_funnel["Conv_Lead_Venta"].round(2),
             mode="lines+markers", line=dict(color=GAC_AZUL, width=3),
-            marker=dict(size=8), fill="tozeroy", fillcolor="#F3E4E7"))
+            marker=dict(size=8), fill="tozeroy",
+            fillcolor="rgba(214,51,95,0.15)"))
         estilo_fig(fig_c, "Conversion lead → venta por mes (%)")
         fig_c.update_yaxes(gridcolor=REJILLA)
         st.plotly_chart(fig_c, width="stretch")
@@ -517,6 +575,37 @@ elif vista == VISTAS[1]:
     tabla_f.columns = ["Mes"] + [NOMBRE_ETAPA[e] for e in ETAPAS] + ["Conv. lead→venta %"]
     st.dataframe(tabla_f, width="stretch", hide_index=True)
 
+    st.markdown("### Hallazgos del embudo")
+    gaps = df_trans["Tasa %"] - df_trans["Benchmark %"]
+    peor_t = df_trans.loc[gaps.idxmin()]
+    n_bajo = int((df_trans["Tasa %"] < df_trans["Benchmark %"]).sum())
+    cuellos = ", ".join(df_trans.loc[df_trans["Tasa %"] < df_trans["Benchmark %"],
+                                    "Transicion"].str.lower())
+    conv_prom = float(df_funnel["Conv_Lead_Venta"].mean())
+    conv_max = float(df_funnel["Conv_Lead_Venta"].max())
+    conv_min = float(df_funnel["Conv_Lead_Venta"].min())
+    mes_mejor = str(df_funnel.loc[df_funnel["Conv_Lead_Venta"].idxmax(), "Mes"])
+    mes_peor = str(df_funnel.loc[df_funnel["Conv_Lead_Venta"].idxmin(), "Mes"])
+    h1, h2, h3 = st.columns(3)
+    with h1:
+        tarjeta_insight("El cuello del embudo",
+            f"{peor_t['Transicion']}: {peor_t['Tasa %']:.0f}%",
+            f"La transicion mas lejos de su benchmark ({peor_t['Benchmark %']:.0f}%): "
+            f"brecha de {abs(float(peor_t['Tasa %']) - float(peor_t['Benchmark %'])):.0f} puntos. "
+            "Cada punto recuperado aqui vale mas que en cualquier otra etapa.",
+            ROJO_ALERTA)
+    with h2:
+        tarjeta_insight("Conversion lead → venta",
+            f"{conv_prom:.1f}% promedio mensual",
+            f"Mejor mes: {mes_mejor} ({conv_max:.1f}%); peor mes: {mes_peor} "
+            f"({conv_min:.1f}%). Esa variabilidad dice que el cierre depende "
+            "mas del proceso que del volumen de leads.", GAC_AZUL)
+    with h3:
+        tarjeta_insight("Transiciones bajo benchmark",
+            f"{n_bajo} de {len(df_trans)}",
+            "Etapas por debajo del minimo aceptable: " + cuellos + ".",
+            AMBAR)
+
 # =========================================================
 # VISTA 3: DESEMPENO
 # =========================================================
@@ -535,12 +624,6 @@ elif vista == VISTAS[2]:
                 "% PDM": "% prueba de manejo",
                 "% Venta/visita": "% venta por visita"}),
                 width="stretch", hide_index=True)
-            sin_ventas = g_asesor[g_asesor["Ventas"] == 0]
-            if len(sin_ventas):
-                st.warning("Asesores sin ventas cerradas en el periodo: "
-                           + ", ".join(sin_ventas["Asesor"])
-                           + " (" + ", ".join(str(int(v)) + " visitas" for v in sin_ventas["Visitas"]) + "). "
-                           "Revisar asignacion de leads, capacitacion de cierre o rotacion de piso.")
         with col2:
             fig_a = px.bar(g_asesor.sort_values("Ventas"), x="Ventas", y="Asesor",
                            orientation="h", text="Ventas",
@@ -549,6 +632,30 @@ elif vista == VISTAS[2]:
             fig_a.update_traces(textposition="outside")
             fig_a.update_xaxes(gridcolor=REJILLA)
             st.plotly_chart(fig_a, width="stretch")
+
+        st.markdown("### Hallazgos · asesores de piso")
+        sin_ventas = g_asesor[g_asesor["Ventas"] == 0]
+        top_a = g_asesor.iloc[0]
+        share_top = top_a["Ventas"] / max(g_asesor["Ventas"].sum(), 1) * 100
+        ha1, ha2 = st.columns(2)
+        with ha1:
+            tarjeta_insight("Lider de piso",
+                f"{top_a['Asesor']}: {int(top_a['Ventas'])} ventas",
+                f"Concentra el {share_top:.0f}% de las ventas de piso y convierte "
+                f"{top_a['% Venta/visita']:.0f}% de sus visitas. Su proceso es la "
+                "referencia para capacitar al resto del equipo.", VERDE_OK)
+        with ha2:
+            if len(sin_ventas):
+                tarjeta_insight("Asesores sin ventas cerradas",
+                    f"{len(sin_ventas)} de {len(g_asesor)}",
+                    "Sin cierres en el periodo: " + ", ".join(sin_ventas["Asesor"]) +
+                    " (" + ", ".join(str(int(v)) + " visitas" for v in sin_ventas["Visitas"]) +
+                    "). Revisar asignacion de leads, capacitacion de cierre o "
+                    "rotacion de piso.", ROJO_ALERTA)
+            else:
+                tarjeta_insight("Asesores sin ventas cerradas", "Ninguno",
+                    "Todos los asesores cerraron al menos una venta en el periodo.",
+                    VERDE_OK)
 
     with tab_bdc:
         if g_bdc is not None:
@@ -567,12 +674,28 @@ elif vista == VISTAS[2]:
                 fig_b.update_traces(textposition="outside")
                 fig_b.update_xaxes(gridcolor=REJILLA)
                 st.plotly_chart(fig_b, width="stretch")
+
+            st.markdown("### Hallazgos · ejecutivos BDC")
             mejor_b = g_bdc.iloc[0]; peor_b = g_bdc.sort_values("Registros", ascending=False).iloc[0]
-            if peor_b["% Venta"] < mejor_b["% Venta"] / 2:
-                st.warning(f"**Brecha de desempeno:** {peor_b['BDC_L']} concentra el mayor volumen "
-                           f"({int(peor_b['Registros'])} registros) pero converte solo "
-                           f"{peor_b['% Venta']:.1f}%, contra {mejor_b['% Venta']:.1f}% de "
-                           f"{mejor_b['BDC_L']}. Vale la pena auditar su proceso de seguimiento.")
+            hb1, hb2 = st.columns(2)
+            with hb1:
+                tarjeta_insight("Mejor conversion BDC",
+                    f"{mejor_b['BDC_L']}: {mejor_b['% Venta']:.1f}%",
+                    f"Con {int(mejor_b['Registros'])} registros atendidos. "
+                    "Documentar su guion de seguimiento y replicarlo en el equipo.",
+                    VERDE_OK)
+            with hb2:
+                if peor_b["% Venta"] < mejor_b["% Venta"] / 2:
+                    tarjeta_insight("Brecha de desempeno",
+                        f"{peor_b['BDC_L']}: {peor_b['% Venta']:.1f}%",
+                        f"Concentra el mayor volumen ({int(peor_b['Registros'])} registros) "
+                        f"pero convierte {peor_b['% Venta']:.1f}% contra {mejor_b['% Venta']:.1f}% "
+                        f"de {mejor_b['BDC_L']}. Auditar su proceso de seguimiento.",
+                        ROJO_ALERTA)
+                else:
+                    tarjeta_insight("Brecha de desempeno", "Sin brecha critica",
+                        "Ningun ejecutivo de alto volumen convierte a menos de la "
+                        "mitad del mejor del equipo.", VERDE_OK)
         else:
             st.info("Base de citas digitales no disponible.")
 
@@ -599,6 +722,29 @@ elif vista == VISTAS[2]:
                 fig_m.update_traces(texttemplate="$%{text:,.0f}", textposition="outside")
                 fig_m.update_yaxes(gridcolor=REJILLA)
                 st.plotly_chart(fig_m, width="stretch")
+
+            st.markdown("### Hallazgos · marketing por canal")
+            eficiente = g_mkt.sort_values("Costo / venta").iloc[0]
+            hm1, hm2 = st.columns(2)
+            with hm1:
+                tarjeta_insight("Canal mas eficiente",
+                    f"{eficiente['Canal']}: ${eficiente['Costo / venta']:,.0f} / venta",
+                    f"Es el canal con menor costo por venta cerrada "
+                    f"({eficiente['Conv. %']:.1f}% de conversion). La palanca "
+                    "para bajar el costo total esta en la mezcla, no en "
+                    "apostar todo a un solo canal.", VERDE_OK)
+            with hm2:
+                if "Piso" in set(g_mkt["Canal"]) and "Digital" in set(g_mkt["Canal"]):
+                    cv = g_mkt.set_index("Canal")["Costo / venta"]
+                    tarjeta_insight("Piso vs Digital",
+                        f"Piso cuesta {cv['Piso']/cv['Digital']:.1f}x mas por venta",
+                        f"${cv['Piso']:,.0f} por venta en piso vs ${cv['Digital']:,.0f} "
+                        "en digital. El piso convierte mejor pero su costo es "
+                        "desproporcionado: evaluar la mezcla de presupuesto.",
+                        AMBAR)
+                else:
+                    tarjeta_insight("Piso vs Digital", "Sin datos",
+                                    "No hay meses completos de ambos canales.")
         else:
             st.info("Base de marketing sin meses completos de los 3 canales.")
 
@@ -624,6 +770,25 @@ elif vista == VISTAS[2]:
                 estilo_fig(fig_p, "Cumplimiento % del objetivo por modelo (linea = 100%)")
                 fig_p.update_xaxes(gridcolor=REJILLA, range=[0, max(260, float(df_bcs["Cumplimiento %"].max()) * 1.15)])
                 st.plotly_chart(fig_p, width="stretch")
+
+            st.markdown("### Hallazgos · productos (BCS)")
+            mod_bajo = df_bcs.loc[df_bcs["Cumplimiento %"].idxmin()]
+            mod_alto = df_bcs.loc[df_bcs["Cumplimiento %"].idxmax()]
+            hp1, hp2 = st.columns(2)
+            with hp1:
+                tarjeta_insight("Modelo mas rezagado",
+                    f"{mod_bajo['Modelo']}: {mod_bajo['Cumplimiento %']:.0f}%",
+                    f"Solo {int(mod_bajo['Ventas_Reales'])} de "
+                    f"{int(mod_bajo['Objetivo'])} unidades del objetivo. "
+                    "Revisar inventario, incentivos y esfuerzo de piso para "
+                    "este modelo.", ROJO_ALERTA)
+            with hp2:
+                tarjeta_insight("Objetivos mal calibrados",
+                    f"De {df_bcs['Cumplimiento %'].min():.0f}% a {df_bcs['Cumplimiento %'].max():.0f}%",
+                    f"{mod_alto['Modelo']} supera el objetivo ({mod_alto['Cumplimiento %']:.0f}%) "
+                    f"mientras {mod_bajo['Modelo']} no se acerca. La dispersion "
+                    "sugiere metas mal calibradas o un mix comercial "
+                    "desbalanceado: recalibrar por modelo.", AMBAR)
         else:
             st.info("Base BCS no disponible.")
 
@@ -633,10 +798,16 @@ elif vista == VISTAS[2]:
             n_ventas = int((df_detalle["Estado"] == "Ventas").sum())
             tasa_cierre = n_ventas / total if total else 0
             K1, K2, K3, K4 = st.columns(4)
-            K1.metric("Leads captados", total)
-            K2.metric("Contactados", int((df_detalle["Estado"] == "Contactado").sum()))
-            K3.metric("Ventas concretadas", n_ventas)
-            K4.metric("Tasa de cierre", f"{tasa_cierre:.1%}")
+            with K1:
+                tarjeta_kpi("Leads captados", f"{total:,}", variante=0)
+            with K2:
+                tarjeta_kpi("Contactados",
+                            f"{int((df_detalle['Estado'] == 'Contactado').sum()):,}",
+                            variante=1)
+            with K3:
+                tarjeta_kpi("Ventas concretadas", f"{n_ventas:,}", variante=2)
+            with K4:
+                tarjeta_kpi("Tasa de cierre", f"{tasa_cierre:.1%}", variante=1)
 
             c1, c2 = st.columns(2)
             with c1:
@@ -652,15 +823,21 @@ elif vista == VISTAS[2]:
                 tab_est = df_detalle["Estado"].value_counts().reset_index()
                 tab_est.columns = ["Estatus", "Leads"]
                 fig_ls = px.pie(data_frame=tab_est, names="Estatus", values="Leads",
-                                title="Estatus de los leads de plaza",
+                                hole=0.58,
                                 color="Estatus",
-                                color_discrete_map={"Ventas": GAC_AZUL,
-                                                    "Contactado": GAC_AZUL_MED,
-                                                    "Finalizado": GAC_AZUL_CLARO,
-                                                    "Sin dato": GAC_PLATA})
-                fig_ls.update_traces(textinfo="percent+label")
+                                color_discrete_map={"Ventas": "#D6335F",
+                                                    "Contactado": "#A8284C",
+                                                    "Finalizado": "#E89AAA",
+                                                    "Sin dato": "#C9747F"})
+                fig_ls.update_traces(textinfo="percent+label", textfont_size=15,
+                                     marker=dict(line=dict(color="#221119", width=2)))
                 fig_ls.update_layout(font=ESTILO_FUENTE, height=420,
-                                     paper_bgcolor=GAC_BLANCO)
+                    title=dict(text="Estatus de los leads de plaza",
+                               font=dict(size=17, color=GAC_AZUL)),
+                    paper_bgcolor=GAC_BLANCO,
+                    annotations=[dict(text=f"{total:,}<br>leads", x=0.5, y=0.5,
+                                      font=dict(size=22, color=GAC_OSCURO),
+                                      showarrow=False)])
                 st.plotly_chart(fig_ls, width="stretch")
 
             st.markdown("**Conversion por producto (ventas / leads captados)**")
@@ -672,6 +849,28 @@ elif vista == VISTAS[2]:
             pv = pv.sort_values("% cierre", ascending=False)
             st.dataframe(pv.rename(columns={"total": "Leads", "ventas": "Ventas"}),
                          width="stretch", hide_index=True)
+
+            st.markdown("### Hallazgos · leads de plaza")
+            hl1, hl2 = st.columns(2)
+            with hl1:
+                if len(pv):
+                    mejor_p = pv.iloc[0]
+                    tarjeta_insight("Producto con mejor cierre",
+                        f"{mejor_p['Producto']}: {mejor_p['% cierre']:.1f}%",
+                        f"Cierra {int(mejor_p['ventas'])} ventas de "
+                        f"{int(mejor_p['total'])} leads captados. Es el producto "
+                        "que mejor aprovecha el trafico de la plaza: priorizarlo "
+                        "en exhibicion y disponibilidad.", VERDE_OK)
+                else:
+                    tarjeta_insight("Producto con mejor cierre", "Sin datos",
+                        "Ningun producto acumula 5 o mas leads para comparar.")
+            with hl2:
+                tarjeta_insight("Tasa de cierre de la plaza",
+                    f"{tasa_cierre:.1%}",
+                    f"De {total:,} leads captados se concretaron {n_ventas:,} "
+                    "ventas. Cada punto de cierre adicional son ventas sin "
+                    "gastar un peso mas en marketing: el seguimiento oportuno "
+                    "es la palanca.", GAC_AZUL)
         else:
             st.info("Base de leads de plaza (base_leads_limpia.csv) no disponible.")
 
@@ -708,13 +907,13 @@ elif vista == VISTAS[3]:
 # VISTA 5: LABORATORIO (EVIDENCIA DEL PROCESO)
 # =========================================================
 else:
-    st.subheader("🧪 Laboratorio — evidencia del proceso estadistico")
+    st.subheader("Laboratorio — evidencia del proceso estadistico")
     st.markdown("""
     Las **13 vistas originales** del dashboard (Etapas I, II y III: analisis
     univariado, correlaciones, regresiones lineales y logisticas, y el
     despliegue ANOVA) se conservan intactas como evidencia del trabajo del
     equipo. Los modelos estadisticos ya estan **integrados en vivo** en la
-    vista "📐 Modelos Predictivos" (modulo `vistas_modelos.py`); este
+    vista "Modelos Predictivos" (modulo `vistas_modelos.py`); este
     archivo es la version completa original, por si se necesita comparar
     o revertir algo.
     """)

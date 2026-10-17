@@ -22,18 +22,21 @@ from scipy import stats
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 
-# ---------- TEMA (mismo que app.py) ----------
-GAC_AZUL       = "#800020"
-GAC_AZUL_MED   = "#9B1B30"
-GAC_AZUL_CLARO = "#DDA0A8"
+# ---------- TEMA (mismo que app.py: vino tinto oscuro) ----------
+GAC_AZUL       = "#D6335F"   # vino vivo: acento principal sobre fondo oscuro
+GAC_AZUL_MED   = "#A8284C"
+GAC_AZUL_CLARO = "#E89AAA"
 GAC_PLATA      = "#C9747F"
-GAC_OSCURO     = "#4A0414"
-GAC_BLANCO     = "#FFFFFF"
-REJILLA        = "#F3E4E7"
-GRIS_DATOS     = "#9AA3B0"
+GAC_OSCURO     = "#F3E6EA"   # tinta clara: texto y lineas sobre el oscuro
+GAC_BLANCO     = "#251219"   # "papel" de las graficas: panel oscuro vino
+PANEL          = "#221119"
+BORDE_PANEL    = "#40222F"
+TEXTO_SUAVE    = "#C9A2AE"
+REJILLA        = "#3A2230"
+GRIS_DATOS     = "#B9A5AC"
 PALETA_ANOVA   = [GAC_AZUL, GAC_PLATA, GAC_AZUL_MED, GAC_AZUL_CLARO]
-ESCALA_VINO    = [[0, "#FBF2F3"], [0.5, "#DDA0A8"], [1, "#800020"]]
-ESTILO_FUENTE  = dict(family="Arial, sans-serif", size=13, color=GAC_OSCURO)
+ESCALA_VINO    = [[0, "#4A0A20"], [0.5, "#8F1F42"], [1, "#D6335F"]]
+ESTILO_FUENTE  = dict(family="Arial, sans-serif", size=14, color=GAC_OSCURO)
 
 LISTA_NUM = ["Leads", "Efectivos", "Ventas Reportadas", "Obj Ventas",
              "Ventas Real", "Conversion", "SDC", "Autorizadas",
@@ -60,7 +63,7 @@ def fig_box(df, x, y, orden, titulo, ey):
     fig = px.box(df, x=x, y=y, category_orders={x: orden}, color=x,
                  color_discrete_sequence=PALETA_ANOVA, points="outliers")
     fig.update_layout(font=ESTILO_FUENTE, height=430, showlegend=False,
-        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        title=dict(text=titulo, font=dict(size=17, color=GAC_AZUL)),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         xaxis=dict(title=None), yaxis=dict(title=ey, gridcolor=REJILLA))
     return fig
@@ -73,7 +76,7 @@ def fig_bar_ic95(df, x, y, orden, titulo, ey):
         marker_color=PALETA_ANOVA[:len(res)],
         text=np.round(res["mean"], 1), textposition="outside"))
     fig.update_layout(font=ESTILO_FUENTE, height=430, showlegend=False,
-        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        title=dict(text=titulo, font=dict(size=17, color=GAC_AZUL)),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         xaxis=dict(title=None),
         yaxis=dict(title=ey, gridcolor=REJILLA,
@@ -84,7 +87,7 @@ def fig_violin(df, x, y, orden, titulo, ey):
     fig = px.violin(df, x=x, y=y, category_orders={x: orden}, color=x,
                     box=True, color_discrete_sequence=PALETA_ANOVA)
     fig.update_layout(font=ESTILO_FUENTE, height=400, showlegend=False,
-        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        title=dict(text=titulo, font=dict(size=17, color=GAC_AZUL)),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         xaxis=dict(title=None), yaxis=dict(title=ey, gridcolor=REJILLA))
     return fig
@@ -101,7 +104,7 @@ def fig_interaccion(df, x, linea, y, orden_x, titulo, ey):
             line=dict(color=PALETA_ANOVA[i % len(PALETA_ANOVA)], width=3),
             marker=dict(size=10)))
     fig.update_layout(font=ESTILO_FUENTE, height=420,
-        title=dict(text=titulo, font=dict(size=15, color=GAC_AZUL)),
+        title=dict(text=titulo, font=dict(size=17, color=GAC_AZUL)),
         plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO,
         xaxis=dict(title=None), yaxis=dict(title=ey, gridcolor=REJILLA),
         legend=dict(orientation="h", yanchor="bottom", y=1.02,
@@ -113,6 +116,19 @@ _contador = {"n": 0}
 def _key(base="fig"):
     _contador["n"] += 1
     return f"vm_{base}_{_contador['n']}"
+
+# ---------- HALLAZGO CLAVE (franja de interpretacion de negocio) ----------
+def hallazgo(texto):
+    limpio = texto.replace("**", "")
+    st.markdown(
+        "<div style='background:#2A1220; border:1px solid " + BORDE_PANEL +
+        "; border-left:5px solid " + GAC_AZUL + "; border-radius:12px; "
+        "padding:14px 18px; margin:10px 0 16px 0; box-shadow:0 4px 14px rgba(0,0,0,.3);'>"
+        "<span style='font-size:14px; font-weight:700; letter-spacing:.5px; "
+        "text-transform:uppercase; color:" + GAC_AZUL_CLARO + ";'>Hallazgo clave"
+        "&nbsp;·&nbsp;</span>"
+        "<span style='font-size:15.5px; color:" + GAC_OSCURO + "; line-height:1.5;'>" +
+        limpio + "</span></div>", unsafe_allow_html=True)
 
 # =========================================================
 # CORRELACIONES
@@ -135,6 +151,7 @@ def vista_correlaciones(df_resumen):
                          color_continuous_scale=ESCALA_VINO, zmin=-1, zmax=1)
     fig_corr.update_layout(font=ESTILO_FUENTE, height=520,
                            plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
+    fig_corr.update_traces(textfont=dict(color="#FFFFFF", size=13))
     st.plotly_chart(fig_corr, width="stretch", key=_key("g"))
 
     st.markdown("**Correlacion de cada variable con Ventas Real**")
@@ -151,9 +168,13 @@ def vista_correlaciones(df_resumen):
                           xaxis=dict(range=[-1, 1], gridcolor=REJILLA))
     st.plotly_chart(fig_bar, width="stretch", key=_key("g"))
 
-    st.info("Las variables con mayor correlacion positiva con las ventas "
-            "(Autorizadas, Formalizado, SDC) son las mejores candidatas "
-            "para el modelo de regresion.")
+    top_var = str(tabla_corr.iloc[0]["Variable"])
+    top_r = float(tabla_corr.iloc[0]["Correlacion con Ventas Real"])
+    hallazgo(f"**{top_var}** es la variable que mas se mueve con las ventas "
+             f"(r = {top_r:.2f}). Las senales de credito (Autorizadas, "
+             f"Formalizado, SDC) encabezan la lista: son las mejores palancas "
+             f"para predecir el mes y las que alimentan los modelos de "
+             f"regresion.")
 
 # =========================================================
 # REGRESION LINEAL SIMPLE
@@ -215,6 +236,11 @@ def vista_reg_simple(df_resumen, df_bcs):
         f"+ ({pendiente:.4f}) × {Variable_x}`")
     st.caption("R² indica que porcentaje de la variacion de Y explica la "
                f"variable X: aqui, {r2*100:.1f}%.")
+    hallazgo(f"Con la configuracion actual, **{Variable_x}** explica el "
+             f"**{r2*100:.0f}%** de la variacion de **{Variable_y}** "
+             f"(R² = {r2:.2f}). Cada unidad adicional de {Variable_x} se "
+             f"asocia con {pendiente:+.2f} unidades de {Variable_y} — esa es "
+             f"la palanca de proyeccion rapida del mes.")
 
     fig = go.Figure()
     if es_bcs:
@@ -301,6 +327,12 @@ def vista_reg_multiple(df_resumen):
     M2.metric("R (correlacion multiple)", f"{r:.4f}")
     M3.metric("R² ajustado", f"{r2_adj:.4f}")
     st.markdown(f"**Ecuacion del modelo:** `{ecuacion}`")
+    var_fuerte = Variables_x[int(np.argmax(np.abs(model.coef_)))]
+    hallazgo(f"Con las variables elegidas, el modelo explica el "
+             f"**{r2_adj*100:.0f}%** de la variacion de **{Variable_y}** "
+             f"(R² ajustado = {r2_adj:.2f}). La senal de mayor peso es "
+             f"**{var_fuerte}**: es la primera que conviene vigilar durante "
+             f"el mes.")
 
     C1, C2 = st.columns(2)
     with C1:
@@ -311,6 +343,7 @@ def vista_reg_multiple(df_resumen):
                            color_continuous_scale=ESCALA_VINO, zmin=-1, zmax=1)
         fig_hm.update_layout(font=ESTILO_FUENTE, height=420,
                              plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
+        fig_hm.update_traces(textfont=dict(color="#FFFFFF", size=13))
         st.plotly_chart(fig_hm, width="stretch", key=_key("g"))
     with C2:
         st.write("Correlacion Lineal Multiple")
@@ -478,7 +511,7 @@ def vista_reg_funnel(df_funnel):
                     xanchor="right", x=1))
     st.plotly_chart(fig, width="stretch", key=_key("g"))
     if r2_m1 >= 0.7 or r2_m2 >= 0.7:
-        st.success(f"Con R² de {max(r2_m1, r2_m2):.2f}, el modelo explica bien "
+        hallazgo(f"Con R² de {max(r2_m1, r2_m2):.2f}, el modelo explica bien "
                    "la variacion de las ventas: a mitad de mes, con las citas "
                    "efectivas y SDC aprobadas acumuladas, se puede proyectar "
                    "el cierre con razonable confianza.")
@@ -533,7 +566,7 @@ def vista_logistica_pdm(df_bitacora):
         fig.update_layout(font=ESTILO_FUENTE, height=380, coloraxis_showscale=False,
                           title_font=dict(size=15, color=GAC_AZUL),
                           plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
-        fig.update_traces(textfont_size=16)
+        fig.update_traces(textfont=dict(size=17, color="#FFFFFF"))
         return fig
 
     esc = StandardScaler()
@@ -599,6 +632,13 @@ def vista_logistica_pdm(df_bitacora):
           no aporta, porque quien ya compro ya paso por la prueba.
         """)
 
+    hallazgo(f"Para no dejar ir prospectos con potencial de prueba de manejo, "
+             f"el modelo **con SMOTE** es la mejor alarma: atrapa "
+             f"{met_over['Sensibilidad']*100:.0f}% de los casos reales "
+             f"(sensibilidad), a costa de revisar mas falsos positivos. Las "
+             f"senales que mas pesan: **estatus activo del lead**, "
+             f"**intervencion de gerente** y **SDC**.")
+
     st.caption("Nota de reproducibilidad: el notebook original usaba division aleatoria sin semilla "
                "(random_state=None), por lo que sus cifras exactas cambiaban en cada corrida; aqui se fija "
                f"semilla = {SEMILLA} para que el tablero siempre muestre lo mismo. La base es "
@@ -651,7 +691,7 @@ def vista_logistica_ventas(df_resumen):
         fig.update_layout(font=ESTILO_FUENTE, height=380, coloraxis_showscale=False,
                           title_font=dict(size=15, color=GAC_AZUL),
                           plot_bgcolor=GAC_BLANCO, paper_bgcolor=GAC_BLANCO)
-        fig.update_traces(textfont_size=16)
+        fig.update_traces(textfont=dict(size=17, color="#FFFFFF"))
         return fig
 
     def _entrena_rv(X, y, ponderar=False, con_smote=False):
@@ -730,6 +770,12 @@ def vista_logistica_ventas(df_resumen):
     de marcar algunas falsas alarmas (precision {met_p['Precision']:.2f}). Para anticipar meses flojos
     y reaccionar a tiempo (promociones, empuje de piso de ventas), esa compensacion conviene.
     """)
+    hallazgo(f"La alarma que conviene para anticipar meses flojos es el modelo "
+             f"**balanceado** (reponderacion o SMOTE): detecta el "
+             f"**{met_p['Sensibilidad']*100:.0f}%** de los meses de ventas "
+             f"bajas, con precision de {met_p['Precision']:.2f}. Sin balanceo, "
+             f"los leads solos no separan y el modelo no detecta ningun mes "
+             f"malo (sensibilidad {met_l['Sensibilidad']:.2f}).")
     st.caption("Division 70/30 con semilla 42 y stratify, igual que el notebook; la prueba son 9 meses "
                "(6 de ventas altas, 3 de bajas). Con n = 30 los resultados son orientativos.")
 
@@ -743,7 +789,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
     st.caption("H0: las medias de los grupos son iguales · alfa = 0.05")
 
     tab_citas, tab_mkt, tab_plazas = st.tabs(
-        ["📞 Citas Digital", "📣 Marketing por canal", "🏙️ Plazas"])
+        ["Citas Digital", "Marketing por canal", "Plazas"])
 
     # -----------------------------------------------------
     with tab_citas:
@@ -789,7 +835,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
                 {"BDC_L": "Agente BDC", "Residual": "Residual"}),
                 hide_index=True, width="stretch")
             medias_bdc = df_citas.groupby("BDC_L")["Potencial"].mean()
-            st.success(
+            hallazgo(
                 f"**Interpretacion:** p = {anova_c.pvalue:.1e} < 0.05 → **se "
                 f"rechaza H₀**: el agente BDC si influye en el potencial de "
                 f"compra. Saul promedia {medias_bdc['Saul']:.1f}% contra "
@@ -841,6 +887,8 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
         else:
             from statsmodels.stats.oneway import anova_oneway
             ORDEN_CANAL = ["Digital", "Plaza", "Piso"]
+            df_mkt = df_mkt.copy()
+            df_mkt["Anio"] = df_mkt["Fecha"].dt.year.astype(str)
             st.markdown("#### Leads mensuales segun canal de marketing")
             st.caption(f"Bloque 'Presupuesto mensual de MKT por canal' del "
                        f"archivo maestro → {len(df_mkt)} observaciones "
@@ -879,7 +927,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
                 {"C(Canal)": "Canal", "Residual": "Residual"}),
                 hide_index=True, width="stretch")
             medias_canal = df_mkt.groupby("Canal")["Leads"].mean()
-            st.success(
+            hallazgo(
                 f"**Interpretacion:** p = {anova_m.pvalue:.1e} < 0.05 → **se "
                 f"rechaza H₀**: el canal determina los leads mensuales. "
                 f"Digital genera {medias_canal['Digital']:.0f} leads/mes "
@@ -964,7 +1012,7 @@ def vista_anova(df_citas, df_mkt, df_plazas_sem):
                 {"Producto_L": "Producto", "Residual": "Residual"}),
                 hide_index=True, width="stretch")
             medias_prod = df_plazas_sem.groupby("Producto_L")["Leads"].mean()
-            st.success(
+            hallazgo(
                 f"**Interpretacion:** p = {formato_p(anova_p.pvalue)} < 0.05 "
                 f"→ **se rechaza H₀**: el producto influye en los leads "
                 f"semanales. GS8 capta {medias_prod['GS8']:.1f} leads/semana "
