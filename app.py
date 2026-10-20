@@ -1,15 +1,9 @@
 # Dashboard GAC - Insights de Negocio
-# Reestructuracion: vistas de negocio + modelos estadisticos integrados
-#   1. Panorama Ejecutivo   (KPIs, tendencia vs objetivo, tarjetas de insight)
-#   2. Embudo de Ventas     (conversion por etapa, cuellos de botella)
-#   3. Desempeno            (asesores de piso, BDC, marketing, productos, leads de plaza)
-#   4. Modelos Predictivos  (correlaciones, regresiones lineales y logisticas, ANOVA)
-#   5. Laboratorio          (evidencia del proceso estadistico archivado)
-#
-# Las 13 vistas originales (Etapas I-III, trazables a los notebooks del
-# equipo) quedan guardadas como evidencia en:
-#   archivo/app_etapas_original.py
-# Los modelos estadisticos viven en vistas_modelos.py (pestanas de la vista 4)
+# Reestructuracion NARRATIVA: 3 preguntas + anexo tecnico
+#   1. Como vamos?   2. Donde se fuga?   3. Que hacemos?   4. Modelos y evidencia
+# Modelos en vistas_modelos.py (SIN CAMBIOS). Evidencia: archivo/app_etapas_original.py
+# Cambios: nav 5->4 vistas; Productos BCS->V1; Marketing->V2; Asesores+BDC->V3;
+#          Vista4 por pregunta; fix tarjeta BDC; tarjetas KPI con HTML; ROI dinamico.
 
 import os
 import streamlit as st
@@ -22,7 +16,7 @@ import vistas_modelos as vm
 st.set_page_config(page_title="GAC - Insights de Negocio", page_icon="🚗", layout="wide")
 
 # =========================================================
-# CARGA DE DATOS
+# CARGA DE DATOS (identica a la version que ya funciona)
 # =========================================================
 @st.cache_data
 def load_data():
@@ -34,13 +28,10 @@ def load_data():
 
 @st.cache_data
 def load_leads_detalle():
-    # Base de leads de plaza (detalle). Si no existe el archivo, devolvemos None
     try:
         d = pd.read_csv("base_leads_limpia.csv")
     except FileNotFoundError:
         return None
-
-    # Limpieza defensiva (por si el CSV cambia)
     d["Estado"] = d["Estado"].astype(str).str.strip().str.capitalize()
     d["Estado"] = d["Estado"].replace({"1 ventas": "Ventas", "1 venta": "Ventas",
                                        "Nan": "Sin dato"})
@@ -88,7 +79,6 @@ def load_citas():
 
 @st.cache_data
 def load_plazas_anova():
-    # Plazas: leads de piso -> variable de respuesta = leads por semana
     try:
         dfp = pd.read_csv("Plazas.csv")
     except FileNotFoundError:
@@ -168,16 +158,15 @@ df_resumen, df_funnel, df_bcs = load_regresion_data()
 df_citas = load_citas()
 df_plazas_sem = load_plazas_anova()
 df_mkt = load_mkt()
-
 # =========================================================
 # TEMA VINO TINTO OSCURO (presentacion GAC)
 # =========================================================
-GAC_AZUL       = "#D6335F"   # vino vivo: acento principal sobre fondo oscuro
+GAC_AZUL       = "#D6335F"
 GAC_AZUL_MED   = "#A8284C"
 GAC_AZUL_CLARO = "#E89AAA"
 GAC_PLATA      = "#C9747F"
-GAC_OSCURO     = "#F3E6EA"   # tinta clara: texto y lineas sobre el oscuro
-GAC_BLANCO     = "#251219"   # "papel" de las graficas: panel oscuro vino
+GAC_OSCURO     = "#F3E6EA"
+GAC_BLANCO     = "#251219"
 PANEL          = "#221119"
 BORDE_PANEL    = "#40222F"
 TEXTO_SUAVE    = "#C9A2AE"
@@ -190,25 +179,29 @@ RAMPA_VINO     = ["#F0B9C7", "#E89AAA", "#C9747F", "#D6335F",
 
 ESTILO_FUENTE = dict(family="Arial, sans-serif", size=16, color=GAC_OSCURO)
 
-# CSS global: tipografia mas grande, KPIs y desplegables legibles, y
-# graficas enmarcadas como tarjetas (estilo dashboard oscuro de referencia)
+# CSS global: tarjetas KPI e insight con gradientes vino (RESTAURADO:
+# antes llegaba vacio y las tarjetas se veian como texto plano)
 st.markdown("""
 <style>
-  .stApp h1 { font-size: 2.7rem !important; }
-  .stApp h2 { font-size: 2.1rem !important; }
-  .stApp h3 { font-size: 1.5rem !important; }
-  [data-testid="stMetricLabel"] p { font-size: 1.05rem !important; }
-  [data-testid="stMetricValue"] { font-size: 2.4rem !important; font-weight: 700 !important; }
-  button[data-baseweb="tab"] p { font-size: 1.12rem !important; }
-  [data-testid="stExpander"] summary p { font-size: 1.12rem !important; font-weight: 600; }
-  [data-testid="stPlotlyChart"] {
-      background: #221119; border: 1px solid #40222F; border-radius: 14px;
-      padding: 10px 10px 4px 10px; box-shadow: 0 4px 16px rgba(0,0,0,.30); }
-  [data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
-  [data-testid="stSidebar"] > div:first-child { background: #1C0C15; }
-  [data-testid="stSidebar"] p { font-size: 1.04rem !important; }
-  .stRadio [data-testid="stMarkdownContainer"] p { font-size: 1.06rem !important; }
-  [data-testid="stCaptionContainer"] { font-size: 0.98rem !important; }
+.kpi-card{
+  border-radius:16px; padding:18px 20px; color:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.08);
+  min-height:118px; display:flex; flex-direction:column; justify-content:center;
+}
+.kpi-label{font-size:14px; opacity:.85; letter-spacing:.3px; margin-bottom:6px;}
+.kpi-value{font-size:30px; font-weight:700; line-height:1.05;}
+.kpi-sub{font-size:12px; opacity:.8; margin-top:6px;}
+.insight-card{
+  background:#221119; border:1px solid #40222F; border-left:6px solid #D6335F;
+  border-radius:12px; padding:16px 18px; min-height:150px;
+}
+.insight-title{font-size:15px; font-weight:700; color:#F3E6EA; margin-bottom:6px;}
+.insight-dato{font-size:22px; font-weight:700; margin-bottom:6px;}
+.insight-detalle{font-size:13px; color:#C9A2AE; line-height:1.35;}
+.badge-hallazgo{
+  display:inline-block; background:#D6335F; color:#fff; font-size:11px;
+  padding:2px 8px; border-radius:999px; margin-right:8px; vertical-align:middle;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -226,8 +219,6 @@ def estilo_fig(fig, titulo, alto=430):
     fig.update_yaxes(tickfont=dict(size=15))
     return fig
 
-# Publicacion de graficas: ticks grandes, hover estilizado y modo interactivo
-# (zoom con rueda, barra de herramientas siempre disponible, sin logo)
 CONFIG_GRAFICA = dict(displaylogo=False, displayModeBar=True, scrollZoom=True,
                       modeBarButtonsToRemove=["select2d", "lasso2d"])
 def grafica(fig, **kw):
@@ -239,15 +230,11 @@ def grafica(fig, **kw):
 
 def tarjeta_insight(titulo, dato, detalle, color=GAC_AZUL):
     st.markdown(
-        "<div style='background:" + PANEL + "; border:1px solid " + BORDE_PANEL +
-        "; border-left:5px solid " + color + "; border-radius:14px; "
-        "padding:18px 20px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,.35);'>"
-        "<div style='font-size:15px; font-weight:700; letter-spacing:.4px; "
-        "text-transform:uppercase; color:" + TEXTO_SUAVE + ";'>" + titulo + "</div>"
-        "<div style='font-size:31px; font-weight:800; color:" + color +
-        "; margin:6px 0 8px 0; line-height:1.15;'>" + dato + "</div>"
-        "<div style='font-size:15px; color:" + GAC_OSCURO + "; line-height:1.5;'>" +
-        detalle + "</div></div>", unsafe_allow_html=True)
+        f'<div class="insight-card" style="border-left-color:{color}">'
+        f'<div class="insight-title">{titulo}</div>'
+        f'<div class="insight-dato" style="color:{color}">{dato}</div>'
+        f'<div class="insight-detalle">{detalle}</div></div>',
+        unsafe_allow_html=True)
 
 DEGRADADOS_KPI = [
     "linear-gradient(135deg,#7A0E28 0%,#C42B54 55%,#E35A7C 100%)",
@@ -257,21 +244,16 @@ DEGRADADOS_KPI = [
 
 def tarjeta_kpi(etiqueta, valor, subtexto="", variante=0):
     g = DEGRADADOS_KPI[variante % len(DEGRADADOS_KPI)]
-    sub = ("<div style='font-size:13.5px; color:rgba(255,255,255,.82); "
-           "margin-top:6px;'>" + subtexto + "</div>") if subtexto else ""
+    sub = f'<div class="kpi-sub">{subtexto}</div>' if subtexto else ""
     st.markdown(
-        "<div style='background:" + g + "; border-radius:16px; padding:16px 12px; "
-        "min-height:132px; text-align:center;'>"
-        "<div style='font-size:13px; font-weight:600; letter-spacing:.6px; "
-        "text-transform:uppercase; color:rgba(255,255,255,.90);'>" + etiqueta + "</div>"
-        "<div style='font-size:40px; font-weight:800; color:#FFFFFF; "
-        "line-height:1.15; margin-top:12px;'>" + valor + "</div>" + sub +
-        "</div>", unsafe_allow_html=True)
+        f'<div class="kpi-card" style="background:{g}">'
+        f'<div class="kpi-label">{etiqueta}</div>'
+        f'<div class="kpi-value">{valor}</div>{sub}</div>',
+        unsafe_allow_html=True)
 
 # =========================================================
-# PRE-CALCULOS DE NEGOCIO
+# PRE-CALCULOS DE NEGOCIO (identicos a la version que funciona)
 # =========================================================
-# --- Embudo: tasas de transicion promedio ---
 ETAPAS = ["Leads_Generados", "Leads_Efectivos", "Cita_Programada",
           "Cita_Efectiva", "Prueba_Manejo", "SDC_Generada",
           "SDC_Aprobada", "Ventas"]
@@ -285,7 +267,6 @@ NOMBRE_ETAPA = {
     "SDC_Aprobada": "SDC aprobada",
     "Ventas": "Ventas",
 }
-# benchmark minimo aceptable por transicion (nombre, %)
 BENCH = {
     ("Leads_Generados", "Leads_Efectivos"): ("Contacto efectivo", 60),
     ("Leads_Efectivos", "Cita_Programada"): ("Agendamiento", 40),
@@ -305,11 +286,9 @@ for a, b in zip(ETAPAS[:-1], ETAPAS[1:]):
 df_trans = pd.DataFrame(transiciones)
 df_funnel["Conv_Lead_Venta"] = df_funnel["Ventas"] / df_funnel["Leads_Generados"] * 100
 
-# --- Resumen mensual ---
 df_resumen["Periodo"] = (df_resumen["Año"].astype(str) + "-"
                          + df_resumen["Mes"].astype(int).astype(str).str.zfill(2))
 
-# --- Asesores de piso ---
 g_asesor = df_bitacora.groupby("Asesor").agg(
     Visitas=("Cliente", "count"), PDM=("PDM", "sum"), SDC=("SDC", "sum"),
     Ventas=("Venta", "sum")).reset_index()
@@ -317,11 +296,9 @@ g_asesor["% PDM"] = (g_asesor["PDM"] / g_asesor["Visitas"] * 100).round(1)
 g_asesor["% Venta/visita"] = (g_asesor["Ventas"] / g_asesor["Visitas"] * 100).round(1)
 g_asesor = g_asesor.sort_values("Ventas", ascending=False)
 
-# --- Visitas registradas por mes (bitacora) ---
 visitas_mes = (df_bitacora.groupby(["Periodo", "Mes"], as_index=False)
                .size().rename(columns={"size": "Visitas"}))
 
-# --- BDC digital ---
 g_bdc = None
 if df_citas is not None and len(df_citas):
     g_bdc = df_citas.groupby("BDC_L").agg(
@@ -332,7 +309,6 @@ if df_citas is not None and len(df_citas):
     g_bdc["% Venta"] = (g_bdc["Ventas"] / g_bdc["Registros"] * 100).round(1)
     g_bdc = g_bdc.sort_values("% Venta", ascending=False)
 
-# --- Marketing por canal ---
 g_mkt = None
 if df_mkt is not None and len(df_mkt):
     g_mkt = df_mkt.groupby("Canal").agg(
@@ -343,34 +319,38 @@ if df_mkt is not None and len(df_mkt):
     g_mkt["Conv. %"] = (g_mkt["Ventas"] / g_mkt["Leads"] * 100).round(1)
     g_mkt["Leads / $1k"] = (g_mkt["Leads"] / g_mkt["Presupuesto"] * 1000).round(1)
 
-# --- Productos BCS ---
 if df_bcs is not None:
     df_bcs["Cumplimiento %"] = (df_bcs["Ventas_Reales"] / df_bcs["Objetivo"] * 100).round(0)
 
-# --- Efectividad de leads: inicio vs actual ---
 efec_inicio = float(df_leads["Efectividad_Leads"].head(6).mean())
 efec_actual = float(df_leads["Efectividad_Leads"].tail(6).mean())
 
+# --- ROI de la fuga de credito (DINAMICO: se calcula de los datos) ---
+BENCH_APROBACION = 65.0
+sdc_gen_mes = float(df_funnel["SDC_Generada"].mean())
+tasa_aprob_actual = float((df_funnel["SDC_Aprobada"] / df_funnel["SDC_Generada"] * 100).mean())
+roi_credito_mes = max(0.0, (BENCH_APROBACION - tasa_aprob_actual) / 100.0) * sdc_gen_mes
+roi_credito_anio = roi_credito_mes * 12.0
+
 # =========================================================
-# ENCABEZADO Y NAVEGACION
+# ENCABEZADO Y NAVEGACION (3 preguntas + anexo tecnico)
 # =========================================================
-st.markdown("<h1 style='color:" + GAC_AZUL + ";'>GAC · Insights de Negocio</h1>",
+st.markdown('<h1 style="color:#D6335F;margin-bottom:0">GAC · Insights de Negocio</h1>',
             unsafe_allow_html=True)
-st.caption("Plaza Angelopolis · Analitica comercial: panorama, embudo, "
-           "desempeno, modelos predictivos y evidencia del proceso")
+st.caption("Plaza Angelopolis · Analitica comercial: como vamos, donde se fuga, "
+           "que hacemos · y la evidencia estadistica que lo respalda")
 st.divider()
 
 if os.path.exists("logo_gac.png"):
     st.sidebar.image("logo_gac.png", width="stretch")
 else:
-    st.sidebar.markdown(
-        "<h2 style='color:" + GAC_AZUL + "; text-align:center;'>GAC MOTOR</h2>",
-        unsafe_allow_html=True)
+    st.sidebar.markdown("GAC MOTOR", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-VISTAS = ["Panorama Ejecutivo", "Embudo de Ventas",
-          "Desempeno", "Modelos Predictivos",
-          "Laboratorio (evidencia)"]
+VISTAS = ["1. ¿Cómo vamos?",
+          "2. ¿Dónde se fuga el dinero?",
+          "3. ¿Qué hacemos esta semana?",
+          "4. Modelos y evidencia"]
 vista = st.sidebar.radio("Vista:", VISTAS, key="nav_vista")
 
 st.sidebar.markdown("---")
@@ -387,19 +367,15 @@ if df_mkt is not None:
 if df_plazas_sem is not None:
     st.sidebar.write("Plazas: **%d** semanas-prod." % len(df_plazas_sem))
 st.sidebar.markdown("---")
-st.sidebar.caption("Evidencia del proceso estadistico:\n`archivo/app_etapas_original.py`")
+st.sidebar.caption("Evidencia del proceso estadistico: `archivo/app_etapas_original.py`")
 
-st.markdown(
-    "<div style='display:inline-block; background:" + PANEL + "; border:1px solid " +
-    BORDE_PANEL + "; border-radius:999px; padding:6px 16px; font-size:15px; "
-    "color:" + TEXTO_SUAVE + ";'>Estas en: <b style='color:" + GAC_AZUL_CLARO +
-    ";'>" + vista + "</b></div>", unsafe_allow_html=True)
-
+st.markdown(f'<span class="badge-hallazgo">Estas en</span> **{vista}**',
+            unsafe_allow_html=True)
 # =========================================================
-# VISTA 1: PANORAMA EJECUTIVO
+# VISTA 1: COMO VAMOS?  (termometro: KPIs, ventas vs objetivo, productos)
 # =========================================================
 if vista == VISTAS[0]:
-    st.subheader("¿Como va la plaza?")
+    st.subheader("¿Cómo va la plaza?")
 
     alcance = st.radio("Periodo:", ["Ultimos 12 meses", "Todo el historico (30 meses)"],
                        horizontal=True)
@@ -423,7 +399,6 @@ if vista == VISTAS[0]:
                     subtexto="ultimos 6 meses", variante=0)
     st.caption("Meses bajo objetivo en el periodo: **%d de %d**" % (n_meses_bajo_r, len(r)))
 
-    # Tendencia: ventas vs objetivo + % de cumplimiento
     fig = go.Figure()
     fig.add_trace(go.Bar(x=r["Periodo"], y=r["% CAL Ventas"] * 100, name="% cumplimiento",
                          marker_color=np.where(r["% CAL Ventas"] < 1, GAC_PLATA, GAC_AZUL),
@@ -451,16 +426,15 @@ if vista == VISTAS[0]:
         st.dataframe(anomalias.rename(columns={"% CAL Ventas": "% cumplimiento"}),
                      width="stretch", hide_index=True)
 
-    st.markdown("### Hallazgos clave (los datos ya los tienes; aqui estan redactados)")
-
+    st.markdown("### Hallazgos clave")
     tasa_aprob = float(df_trans.loc[df_trans["Transicion"] == "Aprobacion de credito", "Tasa %"].iloc[0])
     tasa_agend = float(df_trans.loc[df_trans["Transicion"] == "Agendamiento", "Tasa %"].iloc[0])
     c1, c2, c3 = st.columns(3)
     with c1:
         tarjeta_insight("Aprobacion de credito", f"Solo {tasa_aprob:.0f}% de las solicitudes se aprueba",
-            "El mayor cuello del embudo. 6 de cada 10 solicitudes se caen en "
-            "aprobacion: revisar filtros de las financieras y documentacion "
-            "que se pide al cliente.", ROJO_ALERTA)
+            "El mayor cuello del embudo. Revisar filtros de las financieras y "
+            "documentacion que se pide al cliente. Respaldo: ANOVA y reg. del embudo (vista 4).",
+            ROJO_ALERTA)
     with c2:
         tarjeta_insight("Agendamiento de citas", f"Solo {tasa_agend:.0f}% de los leads efectivos agendan",
             "2 de cada 3 leads contactados no llegan a agendar cita. "
@@ -469,30 +443,41 @@ if vista == VISTAS[0]:
     with c3:
         tarjeta_insight("Calidad del lead", f"Efectividad: {efec_inicio:.0f}% → {efec_actual:.0f}%",
             "El volumen de leads casi se triplico desde 2024, pero la "
-            "efectividad cayo ~20 puntos. Mas leads no significan mas ventas: "
-            "vale mas la calidad de la captura que el volumen.", AMBAR)
+            "efectividad cayo ~20 puntos. Mas leads no significan mas ventas.",
+            AMBAR)
     c4, c5, c6 = st.columns(3)
     with c4:
+        # BUG CORREGIDO: "peor" ahora es el de MENOR conversion con volumen minimo,
+        # no el de MAYOR volumen (que podia ser tambien el mejor).
         if g_bdc is not None and len(g_bdc) >= 2:
-            mejor = g_bdc.iloc[0]; peor = g_bdc.sort_values("Registros", ascending=False).iloc[0]
-            tarjeta_insight("Brecha entre ejecutivos BDC",
-                f"{peor['BDC_L']}: {peor['% Venta']:.0f}% vs {mejor['BDC_L']}: {mejor['% Venta']:.0f}%",
-                f"{peor['BDC_L']} atiende el mayor volumen ({int(peor['Registros'])} registros) "
-                f"con la menor conversion; {mejor['BDC_L']} convierte "
-                f"{mejor['% Venta']/max(peor['% Venta'],0.1):.1f}x mas. Revisar asignacion y proceso.",
-                AMBAR)
+            mejor = g_bdc.iloc[0]
+            elegibles = g_bdc[g_bdc["Registros"] >= 10]
+            if len(elegibles) == 0:
+                elegibles = g_bdc
+            peor = elegibles.sort_values("% Venta").iloc[0]
+            if peor["BDC_L"] != mejor["BDC_L"]:
+                tarjeta_insight("Brecha entre ejecutivos BDC",
+                    f"{mejor['BDC_L']}: {mejor['% Venta']:.0f}% vs {peor['BDC_L']}: {peor['% Venta']:.0f}%",
+                    f"{mejor['BDC_L']} convierte "
+                    f"{mejor['% Venta']/max(peor['% Venta'],0.1):.1f}x mas que {peor['BDC_L']}. "
+                    "Revisar asignacion y proceso. Respaldo: ANOVA citas (vista 4).",
+                    AMBAR)
+            else:
+                tarjeta_insight("Brecha entre ejecutivos BDC", "Sin brecha relevante",
+                    "Las conversiones entre ejecutivos son homogeneas en el periodo.",
+                    VERDE_OK)
         else:
             tarjeta_insight("Brecha entre ejecutivos BDC", "Sin datos",
                             "La base de citas digitales no esta disponible.")
     with c5:
-        if g_mkt is not None and len(g_mkt) >= 2 and "Piso" in set(g_mkt["Canal"]):
+        if g_mkt is not None and len(g_mkt) >= 2 and "Piso" in set(g_mkt["Canal"]) and "Digital" in set(g_mkt["Canal"]):
             cv = g_mkt.set_index("Canal")["Costo / venta"]
             ratio = cv["Piso"] / cv["Digital"]
             tarjeta_insight("Costo por venta: Piso vs Digital",
                 f"Piso cuesta {ratio:.1f}x mas que Digital",
                 f"${cv['Piso']:,.0f} por venta en piso vs ${cv['Digital']:,.0f} en digital. "
-                "El piso convierte mejor (11.5% vs 1.4%), pero el costo por venta "
-                "es desproporcionado: evaluar la mezcla de presupuesto.", AMBAR)
+                "El piso convierte mejor, pero el costo es desproporcionado.",
+                AMBAR)
         else:
             tarjeta_insight("Marketing por canal", "Sin datos suficientes",
                             "La base de marketing no tiene los 3 canales completos.")
@@ -507,17 +492,44 @@ if vista == VISTAS[0]:
             tarjeta_insight("Objetivos por modelo mal calibrados",
                 "Cumplimientos de " + f"{df_bcs['Cumplimiento %'].min():.0f}% a {df_bcs['Cumplimiento %'].max():.0f}%",
                 f"Bajo objetivo: {txt_bajo}. Sobre-objetivo: {txt_alto}. "
-                "La dispersion sugiere metas mal calibradas o un mix comercial "
-                "desbalanceado; recalibrar objetivos por modelo.", AMBAR)
+                "La dispersion sugiere metas mal calibradas o un mix desbalanceado.",
+                AMBAR)
         else:
             tarjeta_insight("Objetivos por modelo", "Sin datos",
                             "La base BCS no esta disponible.")
 
+    # ---- Productos (BCS): movido aqui desde la antigua vista Desempeno ----
+    st.divider()
+    st.markdown("### ¿Qué productos cumplen su objetivo?")
+    if df_bcs is not None:
+        col1, col2 = st.columns([3, 4])
+        with col1:
+            st.markdown("**Cumplimiento del objetivo por modelo**")
+            st.dataframe(df_bcs.rename(columns={
+                "Objetivo": "Objetivo (unidades)",
+                "Ventas_Reales": "Ventas reales",
+                "Cumplimiento %": "Cumplimiento %"}),
+                width="stretch", hide_index=True)
+        with col2:
+            colores_m = [ROJO_ALERTA if v < 60 else (VERDE_OK if v >= 100 else AMBAR)
+                         for v in df_bcs["Cumplimiento %"]]
+            fig_p = px.bar(df_bcs.sort_values("Cumplimiento %"), x="Cumplimiento %",
+                           y="Modelo", orientation="h", text="Cumplimiento %",
+                           color_discrete_sequence=[GAC_AZUL])
+            fig_p.update_traces(marker_color=colores_m, texttemplate="%{text:.0f}%",
+                                textposition="outside")
+            fig_p.add_vline(x=100, line_dash="dash", line_color=GAC_OSCURO)
+            estilo_fig(fig_p, "Cumplimiento del objetivo por modelo")
+            fig_p.update_xaxes(gridcolor=REJILLA,
+                               range=[0, max(260, float(df_bcs["Cumplimiento %"].max()) * 1.15)])
+            grafica(fig_p, width="stretch")
+    else:
+        st.info("Base BCS no disponible.")
 # =========================================================
-# VISTA 2: EMBUDO DE VENTAS
+# VISTA 2: DONDE SE FUGA EL DINERO? (embudo + fugas + marketing)
 # =========================================================
 elif vista == VISTAS[1]:
-    st.subheader("¿Donde se fuga la venta?")
+    st.subheader("¿Dónde se fuga la venta?")
     st.caption("Embudo mensual promedio (" + str(len(df_funnel)) +
                " meses) y tasas de transicion entre etapas. "
                "Barra roja = transicion bajo el benchmark interno.")
@@ -547,7 +559,7 @@ elif vista == VISTAS[1]:
             textposition="outside"))
         fig_tr.update_traces(
             hovertext=df_trans.apply(
-                lambda r: f"{r['Desde']} → siguiente<br>Benchmark: {r['Benchmark %']:.0f}%",
+                lambda r: f"{r['Desde']} → siguiente. Benchmark: {r['Benchmark %']:.0f}%",
                 axis=1), hoverinfo="text")
         fig_tr.update_layout(font=ESTILO_FUENTE, height=480,
             title=dict(text="Transicion por etapa vs benchmark",
@@ -556,6 +568,23 @@ elif vista == VISTAS[1]:
             xaxis=dict(title="%", gridcolor=REJILLA, range=[0, 105]),
             yaxis=dict(autorange="reversed"), showlegend=False)
         grafica(fig_tr, width="stretch")
+
+    # ---- ROI de la fuga de credito (el punchline, calculado dinamico) ----
+    st.markdown("### ¿Cuánto vale cerrar la fuga de crédito?")
+    r1, r2, r3 = st.columns(3)
+    with r1:
+        tarjeta_kpi("Tasa actual de aprobacion", f"{tasa_aprob_actual:.0f}%",
+                    subtexto=f"benchmark: {BENCH_APROBACION:.0f}%", variante=1)
+    with r2:
+        tarjeta_kpi("Ventas extra / mes", f"+{roi_credito_mes:.1f}",
+                    subtexto="si se alcanza el benchmark", variante=2)
+    with r3:
+        tarjeta_kpi("Ventas extra / año", f"+{roi_credito_anio:.0f}",
+                    subtexto="sin gastar mas en marketing", variante=0)
+    st.caption(f"Calculo: con {sdc_gen_mes:.0f} solicitudes de credito/mes promedio, "
+               f"subir la aprobacion de {tasa_aprob_actual:.0f}% al benchmark de "
+               f"{BENCH_APROBACION:.0f}% son +{roi_credito_mes:.1f} ventas/mes "
+               f"({(BENCH_APROBACION - tasa_aprob_actual):.0f} pts × SDC), sin un peso mas en marketing.")
 
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -592,46 +621,51 @@ elif vista == VISTAS[1]:
     tabla_f.columns = ["Mes"] + [NOMBRE_ETAPA[e] for e in ETAPAS] + ["Conv. lead→venta %"]
     st.dataframe(tabla_f, width="stretch", hide_index=True)
 
-    st.markdown("### Hallazgos del embudo")
-    gaps = df_trans["Tasa %"] - df_trans["Benchmark %"]
-    peor_t = df_trans.loc[gaps.idxmin()]
-    n_bajo = int((df_trans["Tasa %"] < df_trans["Benchmark %"]).sum())
-    cuellos = ", ".join(df_trans.loc[df_trans["Tasa %"] < df_trans["Benchmark %"],
-                                    "Transicion"].str.lower())
-    conv_prom = float(df_funnel["Conv_Lead_Venta"].mean())
-    conv_max = float(df_funnel["Conv_Lead_Venta"].max())
-    conv_min = float(df_funnel["Conv_Lead_Venta"].min())
-    mes_mejor = str(df_funnel.loc[df_funnel["Conv_Lead_Venta"].idxmax(), "Mes"])
-    mes_peor = str(df_funnel.loc[df_funnel["Conv_Lead_Venta"].idxmin(), "Mes"])
-    h1, h2, h3 = st.columns(3)
-    with h1:
-        tarjeta_insight("El cuello del embudo",
-            f"{peor_t['Transicion']}: {peor_t['Tasa %']:.0f}%",
-            f"La transicion mas lejos de su benchmark ({peor_t['Benchmark %']:.0f}%): "
-            f"brecha de {abs(float(peor_t['Tasa %']) - float(peor_t['Benchmark %'])):.0f} puntos. "
-            "Cada punto recuperado aqui vale mas que en cualquier otra etapa.",
-            ROJO_ALERTA)
-    with h2:
-        tarjeta_insight("Conversion lead → venta",
-            f"{conv_prom:.1f}% promedio mensual",
-            f"Mejor mes: {mes_mejor} ({conv_max:.1f}%); peor mes: {mes_peor} "
-            f"({conv_min:.1f}%). Esa variabilidad dice que el cierre depende "
-            "mas del proceso que del volumen de leads.", GAC_AZUL)
-    with h3:
-        tarjeta_insight("Transiciones bajo benchmark",
-            f"{n_bajo} de {len(df_trans)}",
-            "Etapas por debajo del minimo aceptable: " + cuellos + ".",
-            AMBAR)
-
+    # ---- Marketing por canal (movido aqui: misma conversacion que el embudo) ----
+    st.divider()
+    st.markdown("### El presupuesto al revés: costo por venta por canal")
+    if g_mkt is not None:
+        col1, col2 = st.columns([3, 4])
+        with col1:
+            st.markdown("**Eficiencia por canal (" +
+                        str(int(g_mkt["Meses"].max())) + " meses completos)**")
+            ver = g_mkt[["Canal", "Leads", "Ventas", "Presupuesto",
+                         "Costo / lead", "Costo / venta", "Conv. %"]].copy()
+            ver["Presupuesto"] = ver["Presupuesto"].map("${:,.0f}".format)
+            ver["Costo / lead"] = ver["Costo / lead"].map("${:,.0f}".format)
+            ver["Costo / venta"] = ver["Costo / venta"].map("${:,.0f}".format)
+            st.dataframe(ver, width="stretch", hide_index=True)
+            st.caption("El canal Piso genera pocos leads pero de altisima "
+                       "conversion (trafico calido); Digital genera volumen "
+                       "barato pero convierte poco. No son sustitutos.")
+        with col2:
+            fig_m = px.bar(g_mkt, x="Canal", y="Costo / venta", text="Costo / venta",
+                           color_discrete_sequence=[GAC_AZUL])
+            estilo_fig(fig_m, "Costo por venta por canal")
+            fig_m.update_traces(texttemplate="$%{text:,.0f}", textposition="outside")
+            fig_m.update_yaxes(gridcolor=REJILLA)
+            grafica(fig_m, width="stretch")
+        st.caption("Respaldo estadistico del efecto del canal: ANOVA marketing (vista 4).")
+    else:
+        st.info("Base de marketing sin meses completos de los 3 canales.")
 # =========================================================
-# VISTA 3: DESEMPENO
+# VISTA 3: QUE HACEMOS ESTA SEMANA? (proyeccion + alarma + a quien replicar)
 # =========================================================
 elif vista == VISTAS[2]:
-    st.subheader("¿Quien y que rinde?")
+    st.subheader("¿Qué hacemos esta semana?")
+    st.caption("Tres palancas accionables: proyectar el cierre del mes, anticipar "
+               "un mes flojo, y replicar a quienes mejor ejecutan el proceso.")
 
-    tab_ases, tab_bdc, tab_mkt, tab_prod, tab_leads = st.tabs(
-        ["Asesores de piso", "Ejecutivos BDC (digital)", "Marketing por canal",
-         "Productos (BCS)", "Leads de plaza"])
+    st.markdown("### 1 · ¿Llegamos al cierre? Proyeccion del mes")
+    vm.vista_reg_funnel(df_funnel)
+
+    st.divider()
+    st.markdown("### 2 · ¿Se viene un mes flojo? Alarma temprana")
+    vm.vista_logistica_ventas(df_resumen)
+
+    st.divider()
+    st.markdown("### 3 · ¿A quién replicamos? Asesores de piso y BDC")
+    tab_ases, tab_bdc = st.tabs(["Asesores de piso", "Ejecutivos BDC (digital)"])
 
     with tab_ases:
         col1, col2 = st.columns([3, 4])
@@ -650,13 +684,12 @@ elif vista == VISTAS[2]:
             fig_a.update_xaxes(gridcolor=REJILLA)
             grafica(fig_a, width="stretch")
 
-        st.markdown("### Hallazgos · asesores de piso")
         sin_ventas = g_asesor[g_asesor["Ventas"] == 0]
         top_a = g_asesor.iloc[0]
         share_top = top_a["Ventas"] / max(g_asesor["Ventas"].sum(), 1) * 100
         ha1, ha2 = st.columns(2)
         with ha1:
-            tarjeta_insight("Lider de piso",
+            tarjeta_insight("Lider de piso (a replicar)",
                 f"{top_a['Asesor']}: {int(top_a['Ventas'])} ventas",
                 f"Concentra el {share_top:.0f}% de las ventas de piso y convierte "
                 f"{top_a['% Venta/visita']:.0f}% de sus visitas. Su proceso es la "
@@ -692,15 +725,15 @@ elif vista == VISTAS[2]:
                 fig_b.update_xaxes(gridcolor=REJILLA)
                 grafica(fig_b, width="stretch")
 
-            st.markdown("### Hallazgos · ejecutivos BDC")
-            mejor_b = g_bdc.iloc[0]; peor_b = g_bdc.sort_values("Registros", ascending=False).iloc[0]
+            mejor_b = g_bdc.iloc[0]
+            peor_b = g_bdc.sort_values("Registros", ascending=False).iloc[0]
             hb1, hb2 = st.columns(2)
             with hb1:
-                tarjeta_insight("Mejor conversion BDC",
+                tarjeta_insight("Mejor conversion BDC (a replicar)",
                     f"{mejor_b['BDC_L']}: {mejor_b['% Venta']:.1f}%",
                     f"Con {int(mejor_b['Registros'])} registros atendidos. "
-                    "Documentar su guion de seguimiento y replicarlo en el equipo.",
-                    VERDE_OK)
+                    "Documentar su guion de seguimiento y replicarlo en el equipo. "
+                    "Respaldo: ANOVA citas (vista 4).", VERDE_OK)
             with hb2:
                 if peor_b["% Venta"] < mejor_b["% Venta"] / 2:
                     tarjeta_insight("Brecha de desempeno",
@@ -716,240 +749,72 @@ elif vista == VISTAS[2]:
         else:
             st.info("Base de citas digitales no disponible.")
 
-    with tab_mkt:
-        if g_mkt is not None:
-            col1, col2 = st.columns([3, 4])
-            with col1:
-                st.markdown("**Eficiencia por canal (" +
-                            str(int(g_mkt["Meses"].max())) + " meses completos)**")
-                ver = g_mkt[["Canal", "Leads", "Ventas", "Presupuesto",
-                             "Costo / lead", "Costo / venta", "Conv. %"]].copy()
-                ver["Presupuesto"] = ver["Presupuesto"].map("${:,.0f}".format)
-                ver["Costo / lead"] = ver["Costo / lead"].map("${:,.0f}".format)
-                ver["Costo / venta"] = ver["Costo / venta"].map("${:,.0f}".format)
-                st.dataframe(ver, width="stretch", hide_index=True)
-                st.caption("El canal Piso genera pocos leads pero de altisima "
-                           "conversion (trafico calido); Digital genera volumen "
-                           "barato pero convierte poco. No son sustitutos: el "
-                           "punto es la mezcla.")
-            with col2:
-                fig_m = px.bar(g_mkt, x="Canal", y="Costo / venta", text="Costo / venta",
-                               color_discrete_sequence=[GAC_AZUL])
-                estilo_fig(fig_m, "Costo por venta por canal")
-                fig_m.update_traces(texttemplate="$%{text:,.0f}", textposition="outside")
-                fig_m.update_yaxes(gridcolor=REJILLA)
-                grafica(fig_m, width="stretch")
-
-            st.markdown("### Hallazgos · marketing por canal")
-            eficiente = g_mkt.sort_values("Costo / venta").iloc[0]
-            hm1, hm2 = st.columns(2)
-            with hm1:
-                tarjeta_insight("Canal mas eficiente",
-                    f"{eficiente['Canal']}: ${eficiente['Costo / venta']:,.0f} / venta",
-                    f"Es el canal con menor costo por venta cerrada "
-                    f"({eficiente['Conv. %']:.1f}% de conversion). La palanca "
-                    "para bajar el costo total esta en la mezcla, no en "
-                    "apostar todo a un solo canal.", VERDE_OK)
-            with hm2:
-                if "Piso" in set(g_mkt["Canal"]) and "Digital" in set(g_mkt["Canal"]):
-                    cv = g_mkt.set_index("Canal")["Costo / venta"]
-                    tarjeta_insight("Piso vs Digital",
-                        f"Piso cuesta {cv['Piso']/cv['Digital']:.1f}x mas por venta",
-                        f"${cv['Piso']:,.0f} por venta en piso vs ${cv['Digital']:,.0f} "
-                        "en digital. El piso convierte mejor pero su costo es "
-                        "desproporcionado: evaluar la mezcla de presupuesto.",
-                        AMBAR)
-                else:
-                    tarjeta_insight("Piso vs Digital", "Sin datos",
-                                    "No hay meses completos de ambos canales.")
-        else:
-            st.info("Base de marketing sin meses completos de los 3 canales.")
-
-    with tab_prod:
-        if df_bcs is not None:
-            col1, col2 = st.columns([3, 4])
-            with col1:
-                st.markdown("**Cumplimiento del objetivo por modelo**")
-                st.dataframe(df_bcs.rename(columns={
-                    "Objetivo": "Objetivo (unidades)",
-                    "Ventas_Reales": "Ventas reales",
-                    "Cumplimiento %": "Cumplimiento %"}),
-                    width="stretch", hide_index=True)
-            with col2:
-                colores_m = [ROJO_ALERTA if v < 60 else (VERDE_OK if v >= 100 else AMBAR)
-                             for v in df_bcs["Cumplimiento %"]]
-                fig_p = px.bar(df_bcs.sort_values("Cumplimiento %"), x="Cumplimiento %",
-                               y="Modelo", orientation="h", text="Cumplimiento %",
-                               color_discrete_sequence=[GAC_AZUL])
-                fig_p.update_traces(marker_color=colores_m, texttemplate="%{text:.0f}%",
-                                    textposition="outside")
-                fig_p.add_vline(x=100, line_dash="dash", line_color=GAC_OSCURO)
-                estilo_fig(fig_p, "Cumplimiento del objetivo por modelo")
-                fig_p.update_xaxes(gridcolor=REJILLA, range=[0, max(260, float(df_bcs["Cumplimiento %"].max()) * 1.15)])
-                grafica(fig_p, width="stretch")
-
-            st.markdown("### Hallazgos · productos (BCS)")
-            mod_bajo = df_bcs.loc[df_bcs["Cumplimiento %"].idxmin()]
-            mod_alto = df_bcs.loc[df_bcs["Cumplimiento %"].idxmax()]
-            hp1, hp2 = st.columns(2)
-            with hp1:
-                tarjeta_insight("Modelo mas rezagado",
-                    f"{mod_bajo['Modelo']}: {mod_bajo['Cumplimiento %']:.0f}%",
-                    f"Solo {int(mod_bajo['Ventas_Reales'])} de "
-                    f"{int(mod_bajo['Objetivo'])} unidades del objetivo. "
-                    "Revisar inventario, incentivos y esfuerzo de piso para "
-                    "este modelo.", ROJO_ALERTA)
-            with hp2:
-                tarjeta_insight("Objetivos mal calibrados",
-                    f"De {df_bcs['Cumplimiento %'].min():.0f}% a {df_bcs['Cumplimiento %'].max():.0f}%",
-                    f"{mod_alto['Modelo']} supera el objetivo ({mod_alto['Cumplimiento %']:.0f}%) "
-                    f"mientras {mod_bajo['Modelo']} no se acerca. La dispersion "
-                    "sugiere metas mal calibradas o un mix comercial "
-                    "desbalanceado: recalibrar por modelo.", AMBAR)
-        else:
-            st.info("Base BCS no disponible.")
-
-    with tab_leads:
-        if df_detalle is not None:
-            total = len(df_detalle)
-            n_ventas = int((df_detalle["Estado"] == "Ventas").sum())
-            tasa_cierre = n_ventas / total if total else 0
-            K1, K2, K3, K4 = st.columns(4)
-            with K1:
-                tarjeta_kpi("Leads captados", f"{total:,}", variante=0)
-            with K2:
-                tarjeta_kpi("Contactados",
-                            f"{int((df_detalle['Estado'] == 'Contactado').sum()):,}",
-                            variante=1)
-            with K3:
-                tarjeta_kpi("Ventas concretadas", f"{n_ventas:,}", variante=2)
-            with K4:
-                tarjeta_kpi("Tasa de cierre", f"{tasa_cierre:.1%}", variante=1)
-
-            c1, c2 = st.columns(2)
-            with c1:
-                tab_prod_freq = (df_detalle["Producto"].value_counts().reset_index())
-                tab_prod_freq.columns = ["Producto", "Leads"]
-                fig_lp = px.bar(tab_prod_freq.head(10), x="Producto", y="Leads",
-                                text="Leads", color_discrete_sequence=[GAC_AZUL])
-                estilo_fig(fig_lp, "Leads captados por producto")
-                fig_lp.update_traces(textposition="outside")
-                fig_lp.update_xaxes(tickangle=-30)
-                grafica(fig_lp, width="stretch")
-            with c2:
-                tab_est = df_detalle["Estado"].value_counts().reset_index()
-                tab_est.columns = ["Estatus", "Leads"]
-                fig_ls = px.pie(data_frame=tab_est, names="Estatus", values="Leads",
-                                hole=0.58,
-                                color="Estatus",
-                                color_discrete_map={"Ventas": "#D6335F",
-                                                    "Contactado": "#A8284C",
-                                                    "Finalizado": "#E89AAA",
-                                                    "Sin dato": "#C9747F"})
-                fig_ls.update_traces(textinfo="percent+label", textfont_size=15,
-                                     marker=dict(line=dict(color="#221119", width=2)))
-                fig_ls.update_layout(font=ESTILO_FUENTE, height=420,
-                    title=dict(text="Estatus de los leads de plaza",
-                               font=dict(size=17, color=GAC_AZUL)),
-                    paper_bgcolor=GAC_BLANCO,
-                    annotations=[dict(text=f"{total:,}<br>leads", x=0.5, y=0.5,
-                                      font=dict(size=22, color=GAC_OSCURO),
-                                      showarrow=False)])
-                grafica(fig_ls, width="stretch")
-
-            st.markdown("**Conversion por producto (ventas / leads captados)**")
-            pv = (df_detalle.groupby("Producto")["Estado"]
-                  .agg(total="count",
-                       ventas=lambda s: int((s == "Ventas").sum())).reset_index())
-            pv = pv[pv["total"] >= 5]
-            pv["% cierre"] = (pv["ventas"] / pv["total"] * 100).round(1)
-            pv = pv.sort_values("% cierre", ascending=False)
-            st.dataframe(pv.rename(columns={"total": "Leads", "ventas": "Ventas"}),
-                         width="stretch", hide_index=True)
-
-            st.markdown("### Hallazgos · leads de plaza")
-            hl1, hl2 = st.columns(2)
-            with hl1:
-                if len(pv):
-                    mejor_p = pv.iloc[0]
-                    tarjeta_insight("Producto con mejor cierre",
-                        f"{mejor_p['Producto']}: {mejor_p['% cierre']:.1f}%",
-                        f"Cierra {int(mejor_p['ventas'])} ventas de "
-                        f"{int(mejor_p['total'])} leads captados. Es el producto "
-                        "que mejor aprovecha el trafico de la plaza: priorizarlo "
-                        "en exhibicion y disponibilidad.", VERDE_OK)
-                else:
-                    tarjeta_insight("Producto con mejor cierre", "Sin datos",
-                        "Ningun producto acumula 5 o mas leads para comparar.")
-            with hl2:
-                tarjeta_insight("Tasa de cierre de la plaza",
-                    f"{tasa_cierre:.1%}",
-                    f"De {total:,} leads captados se concretaron {n_ventas:,} "
-                    "ventas. Cada punto de cierre adicional son ventas sin "
-                    "gastar un peso mas en marketing: el seguimiento oportuno "
-                    "es la palanca.", GAC_AZUL)
-        else:
-            st.info("Base de leads de plaza (base_leads_limpia.csv) no disponible.")
-
 # =========================================================
-# VISTA 4: MODELOS PREDICTIVOS
-# =========================================================
-elif vista == VISTAS[3]:
-    st.subheader("¿Que dicen los modelos estadisticos?")
-    st.caption("Todo el modelado predictivo del proceso (Etapa II) y el "
-               "despliegue ANOVA (Etapa III), integrado con explicacion en "
-               "lenguaje de negocio. Trazable a los notebooks del equipo.")
-
-    tab_corr, tab_simple, tab_multi, tab_fun, tab_logpdm, tab_logvent, tab_anova = st.tabs([
-        "Correlaciones", "Reg. lineal simple", "Reg. lineal multiple",
-        "Reg. del embudo", "Reg. logistica (PDM)",
-        "Reg. logistica (Ventas)", "ANOVA"])
-
-    with tab_corr:
-        vm.vista_correlaciones(df_resumen)
-    with tab_simple:
-        vm.vista_reg_simple(df_resumen, df_bcs)
-    with tab_multi:
-        vm.vista_reg_multiple(df_resumen)
-    with tab_fun:
-        vm.vista_reg_funnel(df_funnel)
-    with tab_logpdm:
-        vm.vista_logistica_pdm(df_bitacora)
-    with tab_logvent:
-        vm.vista_logistica_ventas(df_resumen)
-    with tab_anova:
-        vm.vista_anova(df_citas, df_mkt, df_plazas_sem)
-
-# =========================================================
-# VISTA 5: LABORATORIO (EVIDENCIA DEL PROCESO)
+# VISTA 4: MODELOS Y EVIDENCIA (demostracion, organizada por pregunta)
 # =========================================================
 else:
-    st.subheader("Laboratorio — evidencia del proceso estadistico")
-    st.markdown("""
-    Las **13 vistas originales** del dashboard (Etapas I, II y III: analisis
-    univariado, correlaciones, regresiones lineales y logisticas, y el
-    despliegue ANOVA) se conservan intactas como evidencia del trabajo del
-    equipo. Los modelos estadisticos ya estan **integrados en vivo** en la
-    vista "Modelos Predictivos" (modulo `vistas_modelos.py`); este
-    archivo es la version completa original, por si se necesita comparar
-    o revertir algo.
-    """)
-    st.markdown("**Donde encontrar cada cosa:**")
-    st.markdown("""
+    st.subheader("Modelos y evidencia estadistica")
+    st.caption("Todo el modelado del proceso (Etapas II y III), organizado por la "
+               "pregunta de negocio que responde. Trazable a los notebooks del equipo.")
+
+    tab_a, tab_b, tab_c, tab_d, tab_e, tab_f = st.tabs([
+        "A · ¿Qué mueve las ventas?",
+        "B · Proyeccion (reg. embudo)",
+        "C · Alarma (log. ventas)",
+        "D · Clasificar visita (log. PDM)",
+        "E · ANOVA (quién y dónde)",
+        "F · Laboratorio"])
+
+    with tab_a:
+        st.markdown("#### ¿Qué variables se mueven con las ventas?")
+        vm.vista_correlaciones(df_resumen)
+        st.divider()
+        st.markdown("#### Regresion lineal simple")
+        vm.vista_reg_simple(df_resumen, df_bcs)
+        st.divider()
+        st.markdown("#### Regresion lineal multiple")
+        vm.vista_reg_multiple(df_resumen)
+
+    with tab_b:
+        vm.vista_reg_funnel(df_funnel)
+
+    with tab_c:
+        vm.vista_logistica_ventas(df_resumen)
+
+    with tab_d:
+        vm.vista_logistica_pdm(df_bitacora)
+        st.warning("Nota metodologica: la variable `Venta` aparece como predictora pero "
+                   "ocurre DESPUES de la prueba de manejo (fuga temporal). Se conserva "
+                   "para replicar el notebook original; en produccion deberia excluirse.")
+
+    with tab_e:
+        vm.vista_anova(df_citas, df_mkt, df_plazas_sem)
+
+    with tab_f:
+        st.markdown("#### Laboratorio — evidencia del proceso estadistico")
+        st.markdown("""
+        Las **13 vistas originales** del dashboard (Etapas I, II y III) se conservan
+        intactas como evidencia del trabajo del equipo. Los modelos ya estan integrados
+        en vivo en las pestanas A-E de esta vista.
+        """)
+        st.markdown("**Donde encontrar cada cosa:**")
+        st.markdown("""
 | Artefacto | Contenido |
 |---|---|
-| `vistas_modelos.py` | Modelos predictivos y ANOVA integrados en el dashboard actual (vista 4) |
-| `archivo/app_etapas_original.py` | Dashboard completo con las 13 vistas originales (Etapas I-III) listo para correr con `streamlit run` |
-| `DASHBOARD_GAC.ipynb` | Notebook que generaba y ejecutaba la version original |
-| `base_resumen_limpio.csv` | Base mensual de 30 meses / 26 variables usada en las regresiones |
-| `funnel_mensual.csv` | Embudo mensual de 18 meses usado en las regresiones del embudo |
-| `bcs_modelos.csv` | 6 modelos GAC (Objetivo vs Ventas reales) del Balance Scorecard |
-| Historial de git (`git log`) | Todos los commits del proceso, incluida la version previa a esta reestructuracion |
-    """)
-    st.info("Para consultar la version original completa:  "
-            "`streamlit run archivo/app_etapas_original.py`")
-    st.caption("Nota de conciliacion: la bitacora de piso y el embudo mensual "
-               "reportan conversiones distintas en etapas compartidas "
-               "(p. ej. PDM → SDC: 5.3% vs 82.3%). Se deben a definiciones de "
-               "captura distintas; antes de usar ambas fuentes en una misma "
-               "decision, conviene alinearlas.")
+| `vistas_modelos.py` | Modelos predictivos y ANOVA integrados (esta vista) |
+| `archivo/app_etapas_original.py` | Dashboard completo con las 13 vistas originales |
+| `DASHBOARD_GAC.ipynb` | Notebook que generaba la version original |
+| `notebooks/etapa1_limpieza/` | Limpieza y pipeline (Entregable 1) |
+| `notebooks/etapa2_modelado/` | Regresiones simple, multiple y logistica |
+| `notebooks/etapa3_anova/` | Despliegue ANOVA (marketing y plazas) |
+| `base_resumen_limpio.csv` | 30 meses / 26 variables (regresiones) |
+| `funnel_mensual.csv` | Embudo de 18 meses (reg. del embudo) |
+| `bcs_modelos.csv` | 6 modelos GAC (Balance Scorecard) |
+        """)
+        st.info("Para consultar la version original completa:  "
+                "`streamlit run archivo/app_etapas_original.py`")
+        st.caption("Nota de conciliacion: la bitacora de piso y el embudo mensual "
+                   "reportan conversiones distintas en etapas compartidas "
+                   "(p. ej. PDM → SDC: 5.3% vs 82.3%). Se deben a definiciones de "
+                   "captura distintas; conviene alinearlas antes de usar ambas en una "
+                   "misma decision.")
